@@ -1,0 +1,94 @@
+{
+  "app": "Deskly — coworking desk booking (Mission 022 generalisation brief)",
+  "brand": "Deskly",
+  "tagline": "Book a desk that fits the day.",
+  "subtitle": "Hot desks and quiet corners across four floors. Reserve in two taps.",
+  "location": "Bengaluru",
+  "currency": "₹",
+  "unit": "",
+  "domain": "booking",
+  "family": "deskly",
+  "views": ["desks", "bookings"],
+  "navigation": {
+    "desks": { "label": "Desks" },
+    "bookings": { "label": "Bookings", "testid": "bookings-open" }
+  },
+  "entity": {
+    "id": "desk",
+    "label": "Desk",
+    "plural": "Desks",
+    "media": false,
+    "titleClass": "desk-name",
+    "backTestid": "back-btn",
+    "collection": { "listTestid": "desk-list", "itemTestid": "desk-card", "openTestid": "desk-open" },
+    "fields": [
+      { "id": "name", "type": "text", "role": "title", "label": "Desk" },
+      { "id": "zone", "type": "enum", "role": "subtitle", "label": "Zone", "options": ["Window", "Quiet", "Collaboration", "Standing"] },
+      { "id": "rate", "type": "money", "role": "price", "label": "Day rate", "suffix": "/day" },
+      { "id": "rating", "type": "rating", "role": "meta", "label": "Rating" },
+      { "id": "reviews", "type": "number", "role": "meta", "label": "Reviews", "suffix": " reviews" },
+      { "id": "seats", "type": "number", "role": "stat", "label": "Seats" },
+      { "id": "floor", "type": "text", "role": "detail", "label": "Floor" },
+      { "id": "amenities", "type": "list", "role": "detail", "label": "Amenities" },
+      { "id": "note", "type": "text", "role": "detail", "label": "Good to know" }
+    ],
+    "records": [
+      { "id": "d1", "name": "Window desk 04", "zone": "Window", "rate": 450, "rating": 4.8, "reviews": 61, "seats": 1, "floor": "2nd floor", "amenities": ["Monitor", "Ergonomic chair", "Power"], "note": "Morning sun until about 11. The quietest corner of the second floor, and the one people ask for by name." },
+      { "id": "d2", "name": "Quiet pod 11", "zone": "Quiet", "rate": 520, "rating": 4.9, "reviews": 44, "seats": 1, "floor": "3rd floor", "amenities": ["Acoustic panel", "Monitor", "Locker"], "note": "Enclosed on three sides; calls are not allowed here." },
+      { "id": "d3", "name": "Team table 02", "zone": "Collaboration", "rate": 900, "rating": 4.6, "reviews": 38, "seats": 4, "floor": "1st floor", "amenities": ["Whiteboard", "Speakerphone", "Power"], "note": "Seats four comfortably, six at a squeeze." },
+      { "id": "d4", "name": "Standing desk 07", "zone": "Standing", "rate": 400, "rating": 4.4, "reviews": 27, "seats": 1, "floor": "2nd floor", "amenities": ["Height adjustable", "Anti-fatigue mat"], "note": "Adjusts between sitting and standing height." },
+      { "id": "d5", "name": "Window desk 09", "zone": "Window", "rate": 470, "rating": 4.7, "reviews": 52, "seats": 1, "floor": "4th floor", "amenities": ["Monitor", "Power", "Plant"], "note": "Top floor, best light in the building." },
+      { "id": "d6", "name": "Quiet pod 03", "zone": "Quiet", "rate": 500, "rating": 4.5, "reviews": 31, "seats": 1, "floor": "1st floor", "amenities": ["Acoustic panel", "Locker"], "note": "Close to the kitchen, so it is quiet but not silent." }
+    ]
+  },
+  "search": { "fields": ["name", "zone"], "placeholder": "Search desks or zones", "testid": "search" },
+  "filters": [
+    { "id": "zone", "field": "zone", "label": "Zone", "testid": "zone-chip", "dataAttr": "data-zone", "allLabel": "All" }
+  ],
+  "availability": {
+    "days": 5,
+    "slots": ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM", "7:00 PM"],
+    "label": "Pick a day and time",
+    "slotLabel": "Time",
+    "dayTestid": "day-chip",
+    "slotTestid": "slot",
+    "dayAttr": "data-day",
+    "slotAttr": "data-slot",
+    "errorTestid": "error-time",
+    "required": true,
+    "blockOn": "bookings",
+    "message": "Pick a time for the desk.",
+    "rule": { "kind": "modulo", "modulus": 4, "remainder": 1, "inputs": ["recordIndex", "dayIndex", "slotIndex"] }
+  },
+  "actions": [
+    { "id": "reserve", "label": "Reserve desk", "kind": "commit", "testid": "reserve-btn",
+      "form": [
+        { "id": "guest", "label": "Your name", "type": "text", "testid": "guest-name", "errorTestid": "error-guest",
+          "required": true, "minLength": 2, "message": "Enter your name (at least 2 characters)." },
+        { "id": "team", "label": "Team (optional)", "type": "text", "testid": "guest-team", "errorTestid": "error-team",
+          "required": false },
+        { "id": "phone", "label": "Mobile number", "type": "tel", "testid": "guest-phone", "errorTestid": "error-phone",
+          "required": true, "pattern": "^\\d{10}$", "stripWhitespace": true, "message": "Enter a 10-digit mobile number." }
+      ],
+      "result": { "collection": "bookings", "referencePrefix": "DK", "title": "Desk reserved", "referenceTestid": "booking-ref", "summaryTestid": "booking-summary" }
+    }
+  ],
+  "collections": [
+    { "id": "bookings", "view": "bookings", "label": "My bookings", "listTestid": "bookings-list",
+      "itemTestid": "booking-item", "backTestid": "back-btn",
+      "fields": ["id", "slot", "guest", "phone"],
+      "emptyMessage": "No desks booked yet.",
+      "cancel": { "testid": "cancel-btn", "confirmTestid": "cancel-confirm", "label": "Cancel booking", "confirmLabel": "Confirm cancel", "keepLabel": "Keep it" } }
+  ],
+  "banners": [
+    { "id": "next", "collection": "bookings", "testid": "next-booking", "label": "Next desk", "fields": ["id", "slot"], "emptyHide": true }
+  ],
+  "functionalContract": {
+    "views": ["desks", "detail", "confirmation", "bookings"],
+    "testids": ["app-header", "search", "search-btn", "zone-chip", "desk-list", "desk-card", "desk-open",
+      "detail-title", "detail-price", "stat-strip", "detail-list", "day-chip", "slot", "error-time",
+      "form", "guest-name", "guest-team", "guest-phone", "error-guest", "error-phone",
+      "reserve-btn", "booking-ref", "booking-summary", "booking-item", "bookings-open",
+      "next-booking", "cancel-btn", "cancel-confirm", "empty-state", "back-btn"]
+  }
+}

@@ -1,0 +1,695 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Deskly",
+    "domain": "booking",
+    "family": "deskly",
+    "density": "compact",
+    "densityBasis": "saturated share 39.38% — a colour-committed board reads dense",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "desk",
+    "label": "Desk",
+    "plural": "Desks",
+    "media": false,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Desk"
+      },
+      {
+        "id": "zone",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Zone",
+        "options": [
+          "Window",
+          "Quiet",
+          "Collaboration",
+          "Standing"
+        ]
+      },
+      {
+        "id": "rate",
+        "type": "money",
+        "role": "price",
+        "label": "Day rate",
+        "suffix": "/day"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "seats",
+        "type": "number",
+        "role": "stat",
+        "label": "Seats"
+      },
+      {
+        "id": "floor",
+        "type": "text",
+        "role": "detail",
+        "label": "Floor"
+      },
+      {
+        "id": "amenities",
+        "type": "list",
+        "role": "detail",
+        "label": "Amenities"
+      },
+      {
+        "id": "note",
+        "type": "text",
+        "role": "detail",
+        "label": "Good to know"
+      }
+    ],
+    "titleClass": "desk-name"
+  },
+  "search": {
+    "fields": [
+      "name",
+      "zone"
+    ],
+    "placeholder": "Search desks or zones",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "zone",
+      "field": "zone",
+      "label": "Zone",
+      "testid": "zone-chip",
+      "dataAttr": "data-zone",
+      "allLabel": "All"
+    }
+  ],
+  "availability": {
+    "days": 5,
+    "slots": [
+      "9:00 AM",
+      "11:00 AM",
+      "1:00 PM",
+      "3:00 PM",
+      "5:00 PM",
+      "7:00 PM"
+    ],
+    "label": "Pick a day and time",
+    "slotLabel": "Time",
+    "dayTestid": "day-chip",
+    "slotTestid": "slot",
+    "dayAttr": "data-day",
+    "slotAttr": "data-slot",
+    "errorTestid": "error-time",
+    "required": true,
+    "blockOn": "bookings",
+    "message": "Pick a time for the desk.",
+    "rule": {
+      "kind": "modulo",
+      "modulus": 4,
+      "remainder": 1,
+      "inputs": [
+        "recordIndex",
+        "dayIndex",
+        "slotIndex"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "id": "reserve",
+      "label": "Reserve desk",
+      "kind": "commit",
+      "testid": "reserve-btn",
+      "form": [
+        {
+          "id": "guest",
+          "label": "Your name",
+          "type": "text",
+          "testid": "guest-name",
+          "errorTestid": "error-guest",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name (at least 2 characters)."
+        },
+        {
+          "id": "team",
+          "label": "Team (optional)",
+          "type": "text",
+          "testid": "guest-team",
+          "errorTestid": "error-team",
+          "required": false
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "guest-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "result": {
+        "collection": "bookings",
+        "referencePrefix": "DK",
+        "title": "Desk reserved",
+        "referenceTestid": "booking-ref",
+        "summaryTestid": "booking-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "bookings",
+      "view": "bookings",
+      "label": "My bookings",
+      "listTestid": "bookings-list",
+      "itemTestid": "booking-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "id",
+        "slot",
+        "guest",
+        "phone"
+      ],
+      "emptyMessage": "No desks booked yet.",
+      "cancel": {
+        "testid": "cancel-btn",
+        "confirmTestid": "cancel-confirm",
+        "label": "Cancel booking",
+        "confirmLabel": "Confirm cancel",
+        "keepLabel": "Keep it"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "next",
+      "collection": "bookings",
+      "testid": "next-booking",
+      "label": "Next desk",
+      "fields": [
+        "id",
+        "slot"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-desks",
+        "label": "Desks",
+        "view": "desks",
+        "icon": "grid",
+        "dataNav": "desks"
+      },
+      {
+        "id": "bookings-open",
+        "label": "Bookings",
+        "view": "bookings",
+        "icon": "grid",
+        "dataNav": "bookings"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "desks",
+      "purpose": "browse",
+      "title": "Book a desk that fits the day.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Deskly",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Book a desk that fits the day.",
+            "subtitle": "Hot desks and quiet corners across four floors. Reserve in two taps."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search desks or zones",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "desk",
+            "fields": [
+              "name",
+              "zone"
+            ]
+          }
+        },
+        {
+          "id": "filter-zone",
+          "component": "filter-chips",
+          "props": {
+            "label": "Zone",
+            "testid": "zone-chip",
+            "allLabel": "All",
+            "valueAttr": "data-zone"
+          },
+          "binding": {
+            "entity": "desk",
+            "filterId": "zone",
+            "field": "zone",
+            "options": [
+              "Window",
+              "Quiet",
+              "Collaboration",
+              "Standing"
+            ]
+          }
+        },
+        {
+          "id": "banner-next",
+          "component": "status-banner",
+          "props": {
+            "testid": "next-booking",
+            "label": "Next desk",
+            "emptyHide": true
+          },
+          "binding": {
+            "collection": "bookings",
+            "fields": [
+              "id",
+              "slot"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "desk-list",
+            "itemTestid": "desk-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 3
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "desk-open"
+          },
+          "binding": {
+            "entity": "desk",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:zone"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bookings",
+      "purpose": "collection",
+      "title": "My bookings",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Deskly",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "My bookings",
+            "testid": "bookings-list",
+            "itemTestid": "booking-item",
+            "cancelTestid": "cancel-btn",
+            "confirmTestid": "cancel-confirm",
+            "confirmLabel": "Confirm cancel",
+            "keepLabel": "Keep it",
+            "cancelLabel": "Cancel booking"
+          },
+          "binding": {
+            "collection": "bookings",
+            "fields": [
+              "id",
+              "slot",
+              "guest",
+              "phone"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "No desks booked yet."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Desk",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Deskly",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "desk-name"
+          },
+          "binding": {
+            "entity": "desk",
+            "title": "name",
+            "subtitle": "zone",
+            "price": "rate"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "desk",
+            "fields": [
+              "seats"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "desk",
+            "fields": [
+              "rating",
+              "reviews",
+              "floor",
+              "amenities",
+              "note"
+            ]
+          }
+        },
+        {
+          "id": "availability",
+          "component": "availability-picker",
+          "props": {
+            "label": "Pick a day and time",
+            "dayTestid": "day-chip",
+            "slotTestid": "slot",
+            "dayAttr": "data-day",
+            "slotAttr": "data-slot",
+            "errorTestid": "error-time",
+            "required": true
+          },
+          "binding": {
+            "entity": "desk",
+            "availability": {
+              "days": 5,
+              "slots": [
+                "9:00 AM",
+                "11:00 AM",
+                "1:00 PM",
+                "3:00 PM",
+                "5:00 PM",
+                "7:00 PM"
+              ],
+              "label": "Pick a day and time",
+              "slotLabel": "Time",
+              "dayTestid": "day-chip",
+              "slotTestid": "slot",
+              "dayAttr": "data-day",
+              "slotAttr": "data-slot",
+              "errorTestid": "error-time",
+              "required": true,
+              "blockOn": "bookings",
+              "message": "Pick a time for the desk.",
+              "rule": {
+                "kind": "modulo",
+                "modulus": 4,
+                "remainder": 1,
+                "inputs": [
+                  "recordIndex",
+                  "dayIndex",
+                  "slotIndex"
+                ]
+              }
+            }
+          },
+          "states": [
+            "free",
+            "taken",
+            "selected",
+            "disabled"
+          ]
+        },
+        {
+          "id": "form",
+          "component": "form-fields",
+          "props": {
+            "testid": "form",
+            "submitLabel": "Reserve desk"
+          },
+          "binding": {
+            "entity": "desk",
+            "fields": [
+              {
+                "id": "guest",
+                "label": "Your name",
+                "type": "text",
+                "testid": "guest-name",
+                "errorTestid": "error-guest",
+                "required": true,
+                "minLength": 2,
+                "message": "Enter your name (at least 2 characters)."
+              },
+              {
+                "id": "team",
+                "label": "Team (optional)",
+                "type": "text",
+                "testid": "guest-team",
+                "errorTestid": "error-team",
+                "required": false
+              },
+              {
+                "id": "phone",
+                "label": "Mobile number",
+                "type": "tel",
+                "testid": "guest-phone",
+                "errorTestid": "error-phone",
+                "required": true,
+                "pattern": "^\\d{10}$",
+                "stripWhitespace": true,
+                "message": "Enter a 10-digit mobile number."
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "component": "primary-action",
+          "props": {
+            "label": "Reserve desk",
+            "testid": "reserve-btn",
+            "action": "reserve",
+            "showAmount": false
+          },
+          "binding": {
+            "entity": "desk",
+            "amountField": "rate"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Desk reserved",
+            "testid": "booking-ref",
+            "summaryTestid": "booking-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "desk",
+            "referencePrefix": "DK"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "desks",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "desks",
+      "trigger": "back"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "reserve",
+      "creates": "bookings",
+      "preconditions": [
+        "formValid",
+        "availabilitySelected"
+      ],
+      "persists": true
+    },
+    {
+      "id": "cancel-bookings",
+      "from": "bookings",
+      "trigger": "cancel",
+      "deletes": "bookings",
+      "requiresConfirmation": true,
+      "preconditions": [
+        "itemExists"
+      ],
+      "restores": "frees the slot or resource the record held"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "compact",
+      "basis": "saturated share 39.38% — a colour-committed board reads dense",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "tabbar",
+      "basis": "2 top-level destinations, mobile-first",
+      "source": "rule"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "3",
+      "basis": "density \"compact\" sets 3 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "commitShape",
+      "value": "form+primary-action",
+      "basis": "a single-step commit is declared",
+      "source": "brief"
+    },
+    {
+      "id": "timeSelection",
+      "value": "availability-picker",
+      "basis": "availability is declared with days and slots",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> status-banner -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

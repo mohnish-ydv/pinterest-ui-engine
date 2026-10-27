@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "puppeteer-core": "25.16.0"
+  },
+  "description": "Brief-to-app engine: give it a product brief (JSON), get a complete, self-contained mobile web application. Includes the M042 design grammar and M043 composition layer. See INTEGRATION.md for the contract.",
+  "engines": {
+    "node": ">=18"
+  },
+  "name": "pinterest-ui-engine",
+  "private": true,
+  "scripts": {
+    "example": "node pinterest-ui-engine/engine/run.mjs examples/fern-and-co",
+    "generate": "node pinterest-ui-engine/engine/run.mjs",
+    "test:core": "node run-suites.mjs core",
+    "test:design": "node run-suites.mjs design",
+    "test:fixtures": "node run-suites.mjs fixtures",
+    "verify:env": "node pinterest-ui-engine/engine/verify_env.mjs"
+  },
+  "version": "1.24.0-mission043"
+}

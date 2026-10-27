@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "note": "Art-direction archetypes as DATA, not code. Mission 017 hardcoded these three sketches (including hexes) inside art_direction.mjs, which is why the neutral-gallery sketch silently forced ground:#FFFFFF over every spec's ground colour. Each sketch value is now a symbolic source resolved against the run's spec: {\"from\":\"spec.<key>\"} reads spec.palette[key]; a literal string is used as-is.",
+  "archetypes": [
+    {
+      "id": "committed-field",
+      "name": "Committed field (reference-faithful)",
+      "sketch": {
+        "ground": {
+          "from": "spec.ground"
+        },
+        "field": {
+          "from": "spec.brand"
+        },
+        "fieldText": "#FFFFFF",
+        "surface": {
+          "from": "spec.surface"
+        },
+        "ink": {
+          "from": "spec.ink"
+        },
+        "sheetOverlap": true,
+        "promoBoard": {
+          "from": "spec.board"
+        }
+      },
+      "principles": [
+        "Brand hue owns a real field (hero), not just buttons",
+        "Content sheet overlaps the field — the overlap is the brand gesture",
+        "Product visuals lead; chrome stays quiet"
+      ],
+      "tradeoffs": "Highest fidelity when the reference commits its hue to large fields. The field colour must carry white text at >=4.5:1, which constrains the brand shade.",
+      "recommendedWhen": "saturationRegime is committed (sat>=0.25 over ~25% of the board): the reference spends its hue on fields, so the app should too."
+    },
+    {
+      "id": "neutral-gallery",
+      "name": "Neutral gallery",
+      "sketch": {
+        "ground": {
+          "from": "spec.ground"
+        },
+        "field": null,
+        "fieldText": null,
+        "surface": {
+          "from": "spec.surface"
+        },
+        "ink": {
+          "from": "spec.ink"
+        },
+        "sheetOverlap": false,
+        "promoBoard": {
+          "from": "spec.board"
+        }
+      },
+      "principles": [
+        "Ground stays neutral; colour delegated to product visuals",
+        "Brand appears only on actions and selection",
+        "Hierarchy from typography and spacing alone"
+      ],
+      "tradeoffs": "Safest and cleanest, and the right reading when the reference rations its hue to actions and state. Risks reading as generic if the brand accent is weak.",
+      "recommendedWhen": "saturationRegime is neutral or mixed: the reference keeps its ground quiet and delegates colour to actions, selection and state."
+    },
+    {
+      "id": "dark-board",
+      "name": "Dark board (photo-board-led)",
+      "sketch": {
+        "ground": {
+          "from": "spec.board"
+        },
+        "field": {
+          "from": "spec.brandDeep"
+        },
+        "fieldText": "#FFFFFF",
+        "surface": "#3A2A2E",
+        "ink": "#F6ECE8",
+        "sheetOverlap": true,
+        "promoBoard": {
+          "from": "spec.brand"
+        }
+      },
+      "principles": [
+        "The reference's dark photo boards become the ground",
+        "Brand hue becomes the accent rather than the field",
+        "Maximum mood; product visuals glow against the dark"
+      ],
+      "tradeoffs": "Distinctive, but inverts a light reference into a dark app and taxes body-text contrast everywhere. Only defensible when the reference's own ground is dark.",
+      "recommendedWhen": "groundValue is dark: the reference's canvas itself is dark, not merely accented."
+    }
+  ]
+}

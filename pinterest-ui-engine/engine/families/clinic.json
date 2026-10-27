@@ -1,0 +1,61 @@
+{
+  "$schema": "design-family/1",
+  "family": "clinic",
+  "description": "CarePoint — near-white, blue-rationed clinic booking derived from reference R15 (Medica). This family is the reason the family-config layer exists: Mission 018's run inherited a warm blush hairline, a Playfair serif and a white ground from the butcher compiler, and the template worked around all three with hardcoded hexes. Those decisions are now declared here.",
+  "typography": {
+    "displayStrategy": "sans",
+    "displayStack": null,
+    "uiStack": "-apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "displayRoleNote": "The R15 reference is sans-led at every level: hierarchy comes from weight and size, not from a display face. displayStrategy 'sans' resolves the display role to the UI stack, which is what the reference actually does."
+  },
+  "borders": {
+    "hairline": "palette:tint",
+    "stepperHairline": "palette:tint",
+    "hairlineWidth": "1px",
+    "stepperWidth": "1.5px",
+    "focusRing": {
+      "width": "3px",
+      "offset": "2px",
+      "color": "brand"
+    }
+  },
+  "shadows": {
+    "card": "0 4px 14px rgba(22, 40, 63, 0.05)",
+    "sheet": "0 -12px 32px rgba(22, 40, 63, 0.08)"
+  },
+  "surfaces": {
+    "groundSource": "spec",
+    "inputBg": "#EDF1F8",
+    "inputTextSource": "ink"
+  },
+  "semantic": {
+    "error": "spec",
+    "warning": null,
+    "success": "palette:cert"
+  },
+  "states": {
+    "hoverTarget": "brandDeep",
+    "disabled": {
+      "bg": "#EDF1F8",
+      "fg": "#5B6E84"
+    }
+  },
+  "density": {
+    "lineHeight": 1.45,
+    "bodyScale": 1
+  },
+  "space": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32
+  ],
+  "responsive": {
+    "breakpoint": 900,
+    "mobile": "Single column. Doctor list is a stacked row list. Slot grid 4-up. Fixed bottom tab bar (Home / Appointments).",
+    "desktop": "Doctor list becomes a 2-column grid. Tab bar hidden; bottom padding reserved for it is dropped."
+  }
+}

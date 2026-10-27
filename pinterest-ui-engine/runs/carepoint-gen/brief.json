@@ -1,0 +1,54 @@
+{
+  "app": "CarePoint expressed as a generation brief (Mission 021 capability test)",
+  "brand": "CarePoint",
+  "tagline": "Find your doctor.",
+  "subtitle": "Book a visit in under a minute. No advance payment.",
+  "location": "Bengaluru",
+  "currency": "₹",
+  "unit": "",
+  "domain": "booking",
+  "family": "clinic",
+  "views": ["browse"],
+  "entity": {
+    "id": "doctor",
+    "label": "Doctor",
+    "plural": "Doctors",
+    "media": false,
+    "fields": [
+      { "id": "name", "type": "text", "role": "title", "label": "Doctor" },
+      { "id": "specialty", "type": "text", "role": "subtitle", "label": "Specialty" },
+      { "id": "rating", "type": "rating", "role": "meta", "label": "Rating" },
+      { "id": "reviews", "type": "number", "role": "meta", "label": "Reviews", "suffix": " reviews" },
+      { "id": "fee", "type": "money", "role": "price", "label": "Fee" },
+      { "id": "experience", "type": "number", "role": "stat", "label": "Years" },
+      { "id": "specialtyType", "type": "enum", "role": "facet", "label": "Specialty", "options": ["General", "Dentist", "Dermatologist"] },
+      { "id": "about", "type": "text", "role": "detail", "label": "About" },
+      { "id": "clinic", "type": "text", "role": "detail", "label": "Clinic" }
+    ],
+    "records": [
+      { "id": "ananya-rao", "name": "Dr. Ananya Rao", "specialty": "General Physician", "rating": 4.8, "reviews": 132, "fee": 500, "experience": 12, "specialtyType": "General", "about": "General physician with a focus on preventive care.", "clinic": "CarePoint Indiranagar" },
+      { "id": "meera-iyer", "name": "Dr. Meera Iyer", "specialty": "Dentist", "rating": 4.7, "reviews": 98, "fee": 600, "experience": 9, "specialtyType": "Dentist", "about": "Restorative and cosmetic dentistry.", "clinic": "CarePoint Koramangala" },
+      { "id": "vikram-shetty", "name": "Dr. Vikram Shetty", "specialty": "Dermatologist", "rating": 4.6, "reviews": 76, "fee": 700, "experience": 15, "specialtyType": "Dermatologist", "about": "Clinical dermatology and skin surgery.", "clinic": "CarePoint Jayanagar" }
+    ]
+  },
+  "search": { "fields": ["name", "specialty"], "placeholder": "Search doctors" },
+  "filters": [{ "id": "specialty", "field": "specialtyType", "label": "Specialty", "control": "chips" }],
+  "actions": [
+    {
+      "id": "book", "label": "Book appointment", "kind": "commit",
+      "form": [
+        { "id": "patient", "label": "Patient name", "type": "text", "required": true, "minLength": 2, "message": "Enter the patient's name (at least 2 characters)." },
+        { "id": "phone", "label": "Phone number", "type": "tel", "required": true, "pattern": "^\\d{10}$", "message": "Enter a 10-digit mobile number." }
+      ],
+      "options": { "id": "slot", "label": "Available slots", "values": ["10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM"], "required": true },
+      "result": { "collection": "appointments", "referencePrefix": "CP", "title": "Appointment booked" }
+    }
+  ],
+  "functionalContract": {
+    "views": ["browse", "detail", "confirmation"],
+    "testids": ["app-header", "search", "search-btn", "filter-specialty", "doctor-list", "doctor-card",
+      "detail-title", "detail-price", "stat-strip", "detail-list", "option-slot", "form",
+      "field-patient", "field-phone", "error-patient", "error-phone", "primary-action",
+      "confirm-ref", "confirm-summary", "empty-state", "back-btn"]
+  }
+}

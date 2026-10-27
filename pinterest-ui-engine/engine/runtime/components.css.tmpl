@@ -1,0 +1,785 @@
+/*@GENERATED@*/
+/* Component library CSS — driven entirely by design tokens.
+   MISSION 021. This single stylesheet serves every generated app: there is no
+   app-specific rule in it. Hierarchy is expressed in relative steps (em/rem)
+   so a design family's base size, line-height, radii, shadows and colours
+   still govern the result, while the component vocabulary stays portable
+   across runs with different type-scale key names. */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: {{font.ui}};
+  background: {{color.ground}};
+  color: {{color.ink}};
+  font-size: {{scale.body}}px;
+  line-height: {{density.lineHeight}};
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+input { font: inherit; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+  outline: {{borders.focusRing.width}} solid {{color.brand}};
+  outline-offset: {{borders.focusRing.offset}};
+}
+[hidden] { display: none !important; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 12px; top: 12px; z-index: 50; background: {{color.surface}}; color: {{color.ink}}; padding: 10px 14px; border-radius: 8px; }
+
+/* ---------- header ---------- */
+.app-hdr { background: {{color.surface}}; border-bottom: 1px solid {{color.line}}; }
+.hdr-in { display: flex; align-items: center; gap: 10px; padding-top: 13px; padding-bottom: 13px; }
+.brand-mark {
+  display: grid; place-items: center; width: 32px; height: 32px; flex: 0 0 auto;
+  border-radius: 10px; background: {{color.brand}}; color: {{color.onBrand}};
+  font-size: 0.85em; font-weight: 800; letter-spacing: 0.02em;
+}
+.brand-name { font-weight: 800; font-size: 1.15em; }
+.hdr-ctx { margin-left: auto; color: {{color.inkSoft}}; font-size: 0.85em; }
+.back-btn {
+  width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%;
+  background: {{color.surface}}; border: 1px solid {{color.line}};
+  display: grid; place-items: center; font-size: 1.1em;
+}
+
+/* ---------- page heading ---------- */
+.sect { margin-top: {{density.sectionGap}}px; }
+.sect:first-child { margin-top: 20px; }
+.page-title { font-family: {{font.display}}; font-size: {{scale.display}}px; line-height: 1.12; margin: 0 0 6px; letter-spacing: -0.02em; }
+.page-sub { color: {{color.inkSoft}}; margin: 0; }
+.sect-title { font-size: {{scale.section}}px; margin: 0 0 10px; font-weight: 700; letter-spacing: -0.01em; }
+
+/* ---------- search ---------- */
+.search-row { display: flex; gap: 8px; }
+.search {
+  flex: 1; min-width: 0; display: flex; align-items: center;
+  background: {{color.input}}; border-radius: 12px; padding: 0 14px;
+}
+.search input {
+  flex: 1; min-width: 0; border: 0; outline: none; background: none;
+  padding: 12px 0; color: {{color.inputText}};
+}
+.search input::placeholder { color: {{color.inkSoft}}; }
+.search-btn {
+  flex: 0 0 auto; background: {{state.cta.bg}}; color: {{state.cta.fg}};
+  border-radius: 12px; padding: 0 20px; font-weight: 700;
+  transition: background 0.15s ease;
+}
+.search-btn:hover { background: {{state.cta.hoverBg}}; }
+
+/* ---------- filter chips ---------- */
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; }
+.chip {
+  flex: 0 0 auto; border: 1px solid {{color.line}}; background: {{state.chipOff.bg}};
+  color: {{state.chipOff.fg}}; border-radius: {{radius.pill}}px; padding: 7px 13px;
+  font-weight: 600; font-size: 0.86em; transition: border-color 0.15s ease, background 0.15s ease;
+}
+.chip:hover { border-color: {{color.brand}}; }
+.chip-on { background: {{state.chipOn.bg}}; color: {{state.chipOn.fg}}; border-color: {{color.brand}}; }
+
+/* ---------- collection: cards ---------- */
+/* M038: a phone shows two product cards across (every commerce board
+   does); only the narrowest screens fall back to one. */
+.collection.is-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: {{density.cardGap}}px; }
+@media (max-width: 359px) {
+  .collection.is-cards { grid-template-columns: repeat(1, 1fr); }
+}
+.card {
+  position: relative; background: {{color.surface}}; border: 1px solid {{color.line}};
+  border-radius: {{radius.card}}px; box-shadow: {{shadow.card}}; overflow: hidden;
+}
+.card-open { display: block; width: 100%; text-align: left; padding: 0; }
+.card-media {
+  /* MISSION 034: 132 -> 96. A gallery card at 132px of media plus padding put
+     two of six records on a phone screen where the baseline showed six. */
+  display: grid; place-items: center; height: var(--media-h, 96px);
+  background: linear-gradient(135deg, hsl(var(--media-hue) var(--media-sat) var(--media-light)), hsl(var(--media-hue) var(--media-sat) calc(var(--media-light) - 9%)));
+}
+.media-mark { color: {{color.onBrand}}; font-weight: 800; font-size: 1.6em; letter-spacing: 0.04em; opacity: 0.92; }
+/* M037: on cards the initials are a watermark, not a headline — the
+   product name below the media carries the identity. */
+.card-media .media-mark { font-size: 1.05em; opacity: 0.55; }
+.card-body { display: block; padding: 12px 14px 13px; }
+.card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card-title { font-weight: 700; font-size: 1.05em; }
+.card-sub { display: block; color: {{color.inkSoft}}; font-size: 0.88em; margin-top: 2px; }
+.card-meta { display: block; color: {{color.inkSoft}}; font-size: 0.82em; margin-top: 3px; line-height: 1.35; }
+.card-stats { display: block; color: {{color.inkSoft}}; font-size: 0.8em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.card-price { display: block; font-weight: 800; font-size: 1.05em; margin-top: 8px; }
+.badge {
+  flex: 0 0 auto; background: {{state.badge.bg}}; color: {{state.badge.fg}};
+  border-radius: {{radius.pill}}px; padding: 3px 9px; font-size: 0.72em; font-weight: 700; white-space: nowrap;
+}
+.pill {
+  display: inline-block; background: {{state.badge.bg}}; color: {{state.badge.fg}};
+  border-radius: {{radius.pill}}px; padding: 3px 10px; font-size: 0.78em; font-weight: 700;
+}
+/* Status tones: the pill is the state's colour, not decoration. Semantic
+   foregrounds sit on the badge ground; the warning tone is an amber wash
+   with body ink, distinct from both. */
+.pill[data-tone="ok"] { color: {{color.success}}; }
+.pill[data-tone="bad"] { color: {{color.error}}; }
+.pill[data-tone="warn"] { background: color-mix(in srgb, {{color.star}} 30%, {{color.surface}}); color: {{color.ink}}; }
+.save-btn {
+  position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%;
+  background: {{color.surface}}; color: {{color.brand}}; font-size: 1.1em; line-height: 1;
+  display: grid; place-items: center; box-shadow: {{shadow.card}};
+}
+.save-btn.is-on { background: {{color.brand}}; color: {{color.onBrand}}; }
+.save-btn.wide { position: static; width: 100%; height: 44px; border-radius: {{radius.pill}}px; margin-top: 12px; font-size: 0.95em; font-weight: 700; border: 1.5px solid {{color.brand}}; box-shadow: none; }
+.save-btn.wide.is-on { border-color: {{color.brand}}; }
+
+/* ---------- collection: rows ---------- */
+.collection.is-rows { display: flex; flex-direction: column; gap: 10px; }
+.row { background: {{color.surface}}; border: 1px solid {{color.line}}; border-radius: {{radius.card}}px; }
+.row-open { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 13px 14px; }
+.row-chip {
+  flex: 0 0 auto; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
+  background: {{color.tint}}; color: {{state.badge.fg}}; font-weight: 800; font-size: 0.9em;
+}
+.row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.row-title { font-weight: 700; font-size: 1.07em; letter-spacing: -0.01em; }
+.row-sub { color: {{color.inkSoft}}; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-chev { color: {{color.inkSoft}}; font-size: 1.2em; }
+/* M036: the figures column had NO rules at all — price and statistics
+   rendered as one running string ("₹9004.9 · 2,400": a fee glued to a
+   rating). Price leads, statistics sit quietly beneath it. */
+.row-figures { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.row-price { font-weight: 800; font-size: 1.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row-stats { color: {{color.inkSoft}}; font-size: 0.8em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row-meta { color: {{color.inkSoft}}; font-size: 0.85em; }
+
+/* ---------- record header ---------- */
+.rec-media {
+  display: grid; place-items: center; height: 160px; margin-top: 14px;
+  border-radius: {{radius.card}}px;
+  background: linear-gradient(135deg, hsl(var(--media-hue) var(--media-sat) var(--media-light)), hsl(var(--media-hue) var(--media-sat) calc(var(--media-light) - 9%)));
+}
+.rec-head { padding-top: 14px; }
+.rec-title { font-family: {{font.display}}; font-size: calc({{scale.section}}px * 1.3); margin: 0 0 4px; line-height: 1.18; letter-spacing: -0.015em; }
+.rec-badges { margin: 6px 0 0; }
+.rec-sub { color: {{color.inkSoft}}; margin: 0; }
+.rec-meta { color: {{color.inkSoft}}; font-size: 0.88em; margin: 6px 0 0; }
+.rec-price { font-weight: 800; font-size: 1.5em; margin: 10px 0 8px; font-variant-numeric: tabular-nums; }
+
+/* ---------- stats + detail list ---------- */
+.stats {
+  display: flex; background: {{color.surface}}; border: 1px solid {{color.line}};
+  border-radius: {{radius.card}}px; padding: 12px 4px;
+}
+.stats span { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.stats span + span { border-left: 1px solid {{color.line}}; }
+/* M036: a lone statistic in a full-width band reads as a stray empty box
+   (an article's reading time stretched across the page). With one value
+   the band dissolves and the stat sits inline like a byline fact. */
+.stats:has(> span:only-child) { background: none; border: none; padding: 2px 0; }
+.stats span:only-child { align-items: flex-start; }
+.stats strong { font-size: 1.12em; font-variant-numeric: tabular-nums; }
+.stats small { color: {{color.inkSoft}}; font-size: 0.72em; }
+
+.dl { background: {{color.surface}}; border: 1px solid {{color.line}}; border-radius: {{radius.card}}px; padding: 2px 14px; }
+.dl-row { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid {{color.line}}; font-size: 0.92em; }
+.dl-row:last-child { border-bottom: 0; }
+.dl-label { color: {{color.inkSoft}}; }
+.dl-row.is-stacked { display: block; }
+.dl-row.is-stacked .dl-label { display: block; margin-bottom: 4px; }
+.dl-prose { display: block; color: {{color.ink}}; line-height: 1.5; }
+.dl-value { text-align: right; font-weight: 600; }
+
+/* ---------- options ---------- */
+.options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.option {
+  border: 1.5px solid {{color.line}}; background: {{color.surface}}; color: {{color.ink}};
+  border-radius: 12px; padding: 12px 8px; font-weight: 600; font-size: 0.9em;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.option:hover { border-color: {{color.brand}}; }
+.option-on { background: {{state.chipOn.bg}}; color: {{state.chipOn.fg}}; border-color: {{color.brand}}; }
+
+/* ---------- availability: day strip + slots ---------- */
+.daystrip { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; }
+.day {
+  flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  min-width: 54px; min-height: 44px; justify-content: center;
+  border: 1.5px solid {{color.line}}; background: {{color.surface}}; color: {{color.inkSoft}};
+  border-radius: 14px; font-size: 0.78em; transition: border-color 0.15s ease, background 0.15s ease;
+}
+.day:hover { border-color: {{color.brand}}; }
+.day-n { font-weight: 700; font-size: 1.15em; color: {{color.ink}}; }
+.day-on { background: {{state.chipOn.bg}}; color: {{state.chipOn.fg}}; border-color: {{color.brand}}; }
+.day-on .day-n { color: {{state.chipOn.fg}}; }
+.day:focus-visible { outline: {{borders.focusRing.width}} solid {{color.brand}}; outline-offset: {{borders.focusRing.offset}}; }
+
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.slot {
+  border: {{borders.stepperWidth}} solid {{color.line}}; background: {{color.surface}}; color: {{color.ink}};
+  border-radius: 10px; min-height: 44px; padding: 10px 4px; font-weight: 600; font-size: 0.85em;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.slot-free:hover { border-color: {{color.brand}}; }
+.slot-selected { background: {{state.chipOn.bg}}; color: {{state.chipOn.fg}}; border-color: {{color.brand}}; }
+.slot-taken {
+  background: {{state.disabled.bg}}; color: {{state.disabled.fg}};
+  text-decoration: line-through; cursor: not-allowed; border-color: {{color.line}};
+}
+.slot:focus-visible { outline: {{borders.focusRing.width}} solid {{color.brand}}; outline-offset: {{borders.focusRing.offset}}; }
+
+/* ---------- committed records + cancellation ---------- */
+.cm-list { display: flex; flex-direction: column; gap: 12px; }
+.cm-item { background: {{color.surface}}; border: 1px solid {{color.line}}; border-radius: {{radius.card}}px; padding: 14px; }
+.cm-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.cm-ref { font-weight: 800; letter-spacing: 0.01em; }
+.cm-item .dl { border: 0; padding: 0; background: none; }
+.cancel-confirm { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.btn-cancel {
+  margin-top: 12px; color: {{color.error}}; font-weight: 700; font-size: 0.88em;
+  border: 1.5px solid {{color.error}}; border-radius: {{radius.pill}}px; padding: 10px 16px;
+  min-height: 44px;
+}
+.btn-danger {
+  background: {{color.error}}; color: {{color.onBrand}}; font-weight: 700; font-size: 0.88em;
+  border-radius: {{radius.pill}}px; padding: 11px 18px; min-height: 44px;
+}
+
+/* ---------- banner ---------- */
+.banner {
+  display: flex; flex-direction: column; gap: 2px;
+  background: {{state.badge.bg}}; color: {{state.badge.fg}};
+  border: 1px solid {{color.brand}}; border-radius: {{radius.card}}px; padding: 14px 16px;
+}
+.banner-label { font-size: 0.72em; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+.banner-main { font-weight: 700; color: {{color.ink}}; }
+
+
+/* ---------- typographic index (Mission 026) ---------- */
+/* A reading list: rules instead of cards, no chrome, no media, no initials. */
+.idx-list { display: block; }
+.idx-row {
+  display: block; padding: 18px 0; border-bottom: 1px solid {{color.line}};
+  cursor: pointer; background: none; border-radius: 0;
+}
+.idx-row:first-child { border-top: 1px solid {{color.line}}; }
+.idx-row:hover .idx-title { text-decoration: underline; text-underline-offset: 3px; }
+.idx-row:focus-visible { outline: {{borders.focusRing.width}} solid {{color.brand}}; outline-offset: 2px; }
+.idx-title {
+  font-family: {{font.display}}; font-size: 1.28em; line-height: 1.25;
+  margin: 0 0 6px; font-weight: 600; color: {{color.ink}};
+}
+.idx-standfirst { margin: 0 0 8px; color: {{color.inkSoft}}; line-height: 1.45; max-width: 54ch; }
+.idx-meta {
+  /* No text-transform: uppercasing rewrites the content itself, so the text a
+     reader — or innerText, or a screen reader — receives no longer matches the
+     brief. Hierarchy comes from size, colour and tracking instead. */
+  margin: 0; font-size: 0.8em; letter-spacing: 0.02em;
+  color: {{color.inkSoft}};
+}
+/* M037: an index leads with its first entry. A journal that gives every
+   story identical weight has no hierarchy; the lead entry takes the
+   display size, a fuller standfirst in full ink, and the brand rule. */
+.idx-lead { padding: 20px 0 24px; border-top: 2px solid {{color.brand}}; }
+.idx-lead .idx-title { font-size: calc({{scale.display}}px * 0.94); line-height: 1.14; margin-bottom: 8px; }
+.idx-lead .idx-standfirst { font-size: 1.07em; color: {{color.ink}}; max-width: 60ch; }
+
+/* ---------- MISSION 035: density policy ---------- */
+/* The policy must reach the surfaces it describes: until now it set only
+   --media-h, so a "compact" data table rendered the same ~44px rows as a
+   spacious one — the policy was recorded in the spec and ignored by the
+   densest surface in the system. --cell-pad-y is the table's share. */
+body[data-density="compact"]   { --media-h: 88px;  --cell-pad-y: 6px; }
+body[data-density="balanced"]  { --media-h: 96px;  --cell-pad-y: 9px; }
+body[data-density="spacious"]  { --media-h: 132px; --cell-pad-y: 12px; }
+/* legacy reference-profile vocabulary maps onto the policy */
+body[data-density="comfortable"] { --media-h: 96px;  --cell-pad-y: 9px; }
+body[data-density="airy"]        { --media-h: 132px; --cell-pad-y: 12px; }
+
+/* ---------- MISSION 024 primitives ---------- */
+/* Aggregates — M036: one quiet band, not a row of boxed tiles. The
+   references present key numbers as naked numerals with small labels
+   (a wallet balance, a security score); boxing every metric in its own
+   card is the dashboard-slop signature. Dividers do the separating. */
+.metrics {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-bottom: 18px;
+  background: {{color.surface}}; border: 1px solid {{color.line}}; border-radius: {{radius.card}}px; overflow: hidden;
+}
+.metric { padding: 13px 18px; display: flex; flex-direction: column; gap: 2px; border-top: 1px solid {{color.line}}; }
+.metric:nth-child(-n+2) { border-top: none; }
+.metric-label { color: {{color.inkSoft}}; font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.metric-value { font-size: 1.65em; font-weight: 800; font-variant-numeric: tabular-nums; color: {{color.ink}}; line-height: 1.15; }
+
+/* Dense table */
+.tableframe { position: relative; }
+.tablewrap {
+  overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: {{radius.card}}px;
+  scrollbar-width: thin;
+}
+.tablewrap:focus-visible { outline: {{borders.focusRing.width}} solid {{color.brand}}; outline-offset: 2px; }
+/* A visible affordance: the trailing edge fades only while there is more to see. */
+.table-fade {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 34px; pointer-events: none;
+  border-radius: 0 {{radius.card}}px {{radius.card}}px 0; opacity: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0), {{color.surface}} 78%);
+}
+.tableframe[data-overflow="true"] .table-fade { opacity: 1; }
+.table-hint {
+  margin: 6px 0 0; font-size: 0.72em; color: {{color.inkSoft}};
+  display: flex; align-items: center; gap: 4px;
+}
+.table-hint::before { content: "\2194"; font-size: 1.1em; }
+/* The row identity stays visible while the numbers scroll past it. */
+.datatable th:first-child, .datatable td:first-child {
+  position: sticky; left: 0; z-index: 2; background: {{color.surface}};
+  box-shadow: 1px 0 0 {{color.line}};
+}
+.datatable th:first-child { background: {{color.tint}}; z-index: 3; }
+/* border-collapse: separate — sticky cells do not stick inside a collapsed
+   table. No `overflow: hidden` either: it makes the table its own scroll
+   container, and a sticky cell then sticks to the table rather than to the
+   viewport, which defeats the whole point. The radius is applied to the corner
+   cells instead of clipping the table. */
+.datatable { width: 100%; min-width: 520px; border-collapse: separate; border-spacing: 0;
+  background: {{color.surface}}; border: 1px solid {{color.line}};
+  border-radius: {{radius.card}}px; }
+.datatable thead tr:first-child th:first-child { border-top-left-radius: {{radius.card}}px; }
+.datatable thead tr:first-child th:last-child { border-top-right-radius: {{radius.card}}px; }
+.datatable tbody tr:last-child td:first-child { border-bottom-left-radius: {{radius.card}}px; }
+.datatable tbody tr:last-child td:last-child { border-bottom-right-radius: {{radius.card}}px; }
+.datatable th {
+  text-align: left; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.05em;
+  /* Header text sits on tint, so it takes body ink: soft ink on tint was
+     never a gated pair and measured 3.89:1 in the field. Ink on tint is
+     gated (see lib/gate.mjs) and clears AA in every shipped palette. */
+  color: {{color.ink}}; padding: 10px 12px; border-bottom: 1px solid {{color.line}};
+  background: {{color.tint}}; font-weight: 700;
+}
+.datatable td { padding: var(--cell-pad-y, 11px) 12px; border-bottom: 1px solid {{color.line}}; }
+.datatable tbody tr:last-child td { border-bottom: 0; }
+.datatable tbody tr { cursor: pointer; }
+.datatable tbody tr:hover { background: {{color.tint}}; }
+.datatable tbody tr:focus-visible { outline: {{borders.focusRing.width}} solid {{color.brand}}; outline-offset: -2px; }
+.ta-r { text-align: right; }
+.num { font-variant-numeric: tabular-nums; }
+/* A code is one token: identifiers (the subtitle column — part codes, SKUs,
+   references) must never break mid-token at phone width. The table scrolls
+   horizontally by design; a wrapped code is the illegible outcome. */
+.datatable td.code { white-space: nowrap; letter-spacing: 0.01em; }
+
+/* Article */
+.article { max-width: 62ch; }
+.standfirst { font-size: 1.25em; line-height: 1.4; color: {{color.ink}}; margin: 0 0 14px; font-weight: 500; }
+.article-byline { color: {{color.inkSoft}}; font-size: 0.85em; margin: 0 0 20px; }
+.article-body { max-width: 62ch; }
+.article-body p { margin: 0 0 1.05em; line-height: {{density.lineHeight}}; }
+
+/* Multi-step flow */
+.steps { display: flex; gap: 8px; margin-bottom: 16px; }
+.step {
+  flex: 1; display: flex; align-items: center; gap: 6px; justify-content: center;
+  font-size: 0.76em; font-weight: 600; color: {{color.inkSoft}};
+  border-top: 3px solid {{color.line}}; padding-top: 8px; text-align: center;
+}
+.step-n {
+  width: 18px; height: 18px; border-radius: 50%; background: {{color.line}}; color: {{color.inkSoft}};
+  display: inline-grid; place-items: center; font-size: 0.9em; flex: 0 0 auto;
+}
+.step[data-state="current"] { color: {{color.brandDeep}}; border-top-color: {{color.brand}}; }
+.step[data-state="current"] .step-n { background: {{color.brand}}; color: {{color.onBrand}}; }
+.step[data-state="done"] { color: {{color.ink}}; border-top-color: {{color.brand}}; }
+.step[data-state="done"] .step-n { background: {{color.brand}}; color: {{color.onBrand}}; }
+.stepflow .panel { background: {{color.surface}}; border: 1px solid {{color.line}}; border-radius: {{radius.card}}px; padding: 16px; }
+.stepnav { display: flex; gap: 8px; margin-top: 14px; }
+.stepnav .cta { margin-top: 0; flex: 1; }
+
+@media (min-width: {{responsive.breakpoint}}px) {
+  .metrics { grid-template-columns: repeat(4, 1fr); }
+  .metric { border-top: none; border-left: 1px solid {{color.line}}; }
+  .metric:first-child { border-left: none; }
+}
+
+/* ---------- form ---------- */
+.form { display: block; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-weight: 600; font-size: 0.88em; margin-bottom: 6px; }
+.field input {
+  width: 100%; border: 1.5px solid {{color.line}}; background: {{color.surface}};
+  border-radius: 12px; padding: 12px 14px; color: {{color.ink}};
+}
+.field input::placeholder { color: {{color.inkSoft}}; }
+.field input[aria-invalid="true"] { border-color: {{color.error}}; }
+.err { color: {{color.error}}; font-size: 0.8em; font-weight: 600; margin: 6px 0 0; }
+
+/* ---------- primary action ---------- */
+.cta {
+  width: 100%; background: {{state.cta.bg}}; color: {{state.cta.fg}};
+  border-radius: {{radius.pill}}px; padding: 13px 24px; font-weight: 700; font-size: 0.97em;
+  transition: background 0.15s ease;
+}
+.cta:hover { background: {{state.cta.hoverBg}}; }
+.btn-quiet {
+  border-radius: {{radius.pill}}px; padding: 11px 20px; font-weight: 600;
+  color: {{color.inkSoft}}; border: 1.5px solid {{color.line}}; background: {{color.surface}};
+}
+
+/* ---------- confirmation ---------- */
+.confirm { text-align: center; padding-top: 44px; }
+.confirm-mark {
+  width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 50%;
+  background: {{color.success}}; color: {{color.onBrand}}; font-size: 1.8em;
+  display: grid; place-items: center;
+}
+.confirm-h { font-size: {{scale.section}}px; margin: 0 0 6px; }
+.confirm-ref { color: {{color.inkSoft}}; }
+.confirm-ref strong { color: {{color.ink}}; font-size: 1.05em; }
+.confirm .dl { text-align: left; max-width: 520px; margin: 18px auto; }
+.confirm-actions { max-width: 520px; margin: 0 auto; }
+
+/* ---------- empty ---------- */
+.empty {
+  background: {{color.surface}}; border: 1px dashed {{color.line}};
+  border-radius: {{radius.card}}px; padding: 40px 20px; text-align: center;
+}
+.empty p { color: {{color.inkSoft}}; margin: 0 0 14px; }
+
+/* ---------- tab bar ---------- */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; background: {{color.surface}}; border-top: 1px solid {{color.line}};
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; min-height: 44px; font-size: 0.8em; font-weight: 600;
+  color: {{state.tabIdle.fg}}; border-radius: 12px;
+}
+.tab-on { color: {{state.tabActive.fg}}; }
+
+/* body padding so the fixed tab bar never covers content */
+body[data-nav-pattern="tabbar"] .app-main { padding-bottom: 92px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cta, .search-btn, .chip, .option { transition: none; }
+}
+
+/* ---------- MISSION 037: composition (retained) ---------- */
+/* The detail renderer still groups a record's sections into a main
+   column and an action rail (.detail-cols/.col-main/.rail). In the
+   M038 app shell the wrappers stay transparent: the phone composition
+   is one deliberate column in plan order, and the action region's
+   navigation is pinned by the app frame instead (see below). */
+.detail-cols, .col-main, .rail { display: contents; }
+
+/* ---------- MISSION 038: the app shell ---------- */
+/* The engine's target is a mobile app. The generated build presents as
+   one on every screen: a phone-width column centred on a quiet
+   backdrop derived from the app's own world, a bottom tab bar, the
+   primary action as a floating button on browse screens, and a flow's
+   Continue/Confirm pinned in a bottom action bar (its buttons are
+   moved there by the runtime). Nothing here names a product; the
+   patterns are the ones the professional app references share. */
+body { background: color-mix(in srgb, {{color.ground}} 84%, {{color.ink}}); }
+.app-hdr, .app-main, .tabbar, .actionbar {
+  width: 100%; max-width: 480px; margin-inline: auto;
+}
+/* flow-root: the first section's top margin must not collapse through
+   the app column and expose the backdrop as a stray band. */
+.app-main { background: {{color.ground}}; min-height: 100dvh; display: flow-root; }
+@media (min-width: 520px) {
+  .app-hdr, .app-main { box-shadow: 0 0 48px rgb(0 0 0 / 0.10); }
+}
+.tabbar { left: 50%; right: auto; transform: translateX(-50%); }
+.tab-ic {
+  display: grid; place-items: center;
+  width: 46px; height: 27px; border-radius: 999px;
+}
+.tab-on { color: {{color.brand}}; }
+.tab-on .tab-ic { background: {{color.brand}}; color: {{color.onBrand}}; }
+.tab-lb { line-height: 1.1; }
+
+/* The pinned action bar: a surface strip at the column's foot holding
+   the flow's navigation while a form is open. */
+.actionbar {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; z-index: 11;
+  background: {{color.surface}}; border-top: 1px solid {{color.line}};
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+}
+.actionbar .stepnav { display: flex; gap: 10px; }
+.actionbar .stepnav .cta { flex: 1; }
+.actionbar .stepnav .btn-quiet { flex: 0 0 auto; }
+body.has-actionbar .tabbar { display: none; }
+body.has-actionbar .app-main { padding-bottom: 104px; }
+
+/* The browse screen's primary action floats, extended-FAB style, at
+   the column's bottom corner — above the tab bar when there is one. */
+.sect[data-section="entry-action"] {
+  position: fixed; z-index: 9; margin: 0;
+  right: max(16px, calc(50vw - 224px));
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
+body[data-nav-pattern="tabbar"] .sect[data-section="entry-action"] {
+  bottom: calc(84px + env(safe-area-inset-bottom));
+}
+body.has-actionbar .sect[data-section="entry-action"] { display: none; }
+.sect[data-section="entry-action"] .wrap { width: auto; margin: 0; }
+.sect[data-section="entry-action"] .cta {
+  white-space: nowrap; border-radius: 999px; padding-inline: 22px;
+  box-shadow: 0 10px 26px rgb(0 0 0 / 0.24);
+}
+body[data-nav-pattern="tabbar"] .app-main { padding-bottom: 128px; }
+
+/* An app's home header is compact: the tagline carries the pitch, the
+   supporting line is capped at three lines on the phone column. */
+.page-sub {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- MISSION 039: the bag ---------- */
+/* Line items the way the commerce boards draw them: a small media
+   thumb, name and unit price, a quiet stepper, the line total. */
+.bag-list { display: flex; flex-direction: column; gap: 10px; }
+.bag-item {
+  display: flex; align-items: center; gap: 12px;
+  background: {{color.surface}}; border: 1px solid {{color.line}};
+  border-radius: {{radius.card}}px; padding: 10px 12px;
+}
+.bag-media {
+  flex: none; width: 52px; height: 52px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg,
+    hsl(var(--media-hue) var(--media-sat) var(--media-light)),
+    hsl(calc(var(--media-hue) + 24) var(--media-sat) calc(var(--media-light) - 7%)));
+}
+.bag-media .media-mark { font-size: 0.95em; font-weight: 700; color: rgb(255 255 255 / 0.92); }
+.bag-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.bag-name { font-weight: 600; font-size: 0.95em; line-height: 1.25; }
+.bag-unit { color: {{color.inkSoft}}; font-size: 0.85em; }
+.stepper { display: flex; align-items: center; gap: 2px; flex: none; }
+.step-btn {
+  width: 30px; height: 30px; border-radius: 999px; flex: none;
+  border: 1px solid {{color.line}}; background: {{color.surface}};
+  font-size: 1.05em; font-weight: 700; color: {{color.brand}};
+  display: grid; place-items: center;
+}
+.step-qty { min-width: 22px; text-align: center; font-weight: 700; }
+.bag-line { flex: none; min-width: 56px; text-align: right; font-weight: 700; }
+.bag-totals .dl-total .dl-label, .bag-totals .dl-total .dl-value { font-weight: 800; color: {{color.ink}}; }
+.bag-add .bag-note { margin: 8px 0 0; color: {{color.inkSoft}}; font-size: 0.88em; text-align: center; }
+/* The card's add button: round, brand, at the media's foot — tapping
+   it must not trigger the card's open button, so it sits above it. */
+.card { position: relative; }
+.card-add {
+  position: absolute; right: 10px; bottom: 10px; z-index: 2;
+  width: 34px; height: 34px; border-radius: 999px;
+  background: {{color.brand}}; color: {{color.onBrand}};
+  font-size: 1.15em; font-weight: 700; line-height: 1;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.20);
+}
+.tab-ic { position: relative; }
+.tab-badge {
+  position: absolute; top: -5px; right: 2px;
+  min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px;
+  background: {{color.brand}}; color: {{color.onBrand}};
+  font-size: 0.62rem; font-weight: 800; line-height: 17px; text-align: center;
+}
+.tab-on .tab-badge { background: {{color.surface}}; color: {{color.brand}}; }
+
+/* ---------- MISSION 040: photography, brand zone, sheets ---------- */
+/* Real images sit over the substituted gradient; if the file fails,
+   the gradient and initials are what remains. */
+.card-media, .rec-media, .bag-media, .rel-media { position: relative; overflow: hidden; }
+.media-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* The home header is a brand zone: the app bar and the search sit on
+   the brand colour, the way the reference home screens open. */
+body.is-home .app-hdr { background: {{color.brand}}; border-bottom: none; }
+body.is-home .brand-name { color: {{color.onBrand}}; }
+body.is-home .hdr-ctx { color: {{color.onBrand}}; opacity: 0.78; }
+body.is-home .brand-mark { background: {{color.onBrand}}; color: {{color.brand}}; }
+body.is-home .back-btn { color: {{color.onBrand}}; }
+body.is-home .sect[data-section="heading"] { background: {{color.brand}}; margin-top: 0; padding-top: 18px; padding-bottom: 2px; }
+body.is-home .sect[data-section="heading"] .page-title { color: {{color.onBrand}}; }
+body.is-home .sect[data-section="heading"] .page-sub { color: {{color.onBrand}}; opacity: 0.85; }
+body.is-home .sect[data-section="search"] {
+  background: {{color.brand}}; border-radius: 0 0 26px 26px;
+  padding-bottom: 20px; margin-top: 0; margin-bottom: 6px;
+}
+body.is-home .sect[data-section="search"] .search { background: {{color.surface}}; }
+body.is-home .sect[data-section="search"] .search-btn { background: {{color.surface}}; color: {{color.brand}}; }
+
+/* The record page leads with its photo, full-bleed, and the identity
+   block sheets over it with rounded corners. */
+body.is-detail .sect[data-section="record"] .wrap { padding-inline: 0; }
+body.is-detail .rec-media { height: 238px; border-radius: 0; width: 100%; margin-top: 0; }
+body.is-detail .rec-head {
+  background: {{color.surface}}; margin: -26px 0 0; position: relative;
+  border-radius: 26px 26px 0 0; padding: 20px 20px 6px;
+  border-bottom: 1px solid {{color.line}};
+}
+body.is-detail .sect[data-section="record"] .save-btn.wide {
+  width: calc(100% - 40px); margin: 14px 20px 0;
+}
+
+/* A declared promo: text on the brand colour, photo on the right. */
+.promo {
+  display: flex; align-items: stretch; gap: 0; overflow: hidden;
+  background: {{color.brand}}; color: {{color.onBrand}};
+  border-radius: {{radius.card}}px; min-height: 118px;
+}
+.promo-txt { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 16px; justify-content: center; }
+.promo-title { font-family: {{font.display}}; font-size: 1.3em; font-weight: 700; line-height: 1.15; }
+.promo-sub { opacity: 0.85; font-size: 0.9em; }
+.promo-btn {
+  align-self: flex-start; margin-top: 8px; padding: 7px 14px; border-radius: 999px;
+  background: {{color.onBrand}}; color: {{color.brand}}; font-weight: 700; font-size: 0.88em;
+}
+.promo-media { flex: none; width: 42%; position: relative; }
+
+/* "You may also like": a horizontal rail of small relatives. */
+.related-head { margin: 6px 0 10px; }
+.related-title { font-family: {{font.display}}; font-size: 1.12em; font-weight: 700; }
+.related-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.related-row::-webkit-scrollbar { display: none; }
+.rel-card { position: relative; flex: none; width: 138px; }
+.rel-open { display: block; width: 100%; text-align: left; }
+.rel-media { display: block; height: 86px; border-radius: 14px; margin-bottom: 7px; }
+.rel-name { display: block; font-weight: 600; font-size: 0.9em; line-height: 1.25; }
+.rel-price { display: block; font-weight: 700; margin-top: 2px; }
+.rel-add { right: 6px; bottom: auto; top: 58px; width: 30px; height: 30px; font-size: 1em; }
+
+/* The order lifecycle on a placed order. */
+.track { display: flex; list-style: none; margin: 14px 0 2px; padding: 0; }
+.track-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; text-align: center; }
+.track-step::before {
+  content: ""; position: absolute; top: 5px; left: calc(-50% + 8px); right: calc(50% + 8px);
+  height: 2px; background: {{color.line}};
+}
+.track-step:first-child::before { display: none; }
+.track-step.is-done::before { background: {{color.brand}}; }
+.track-dot { width: 11px; height: 11px; border-radius: 999px; background: {{color.line}}; position: relative; z-index: 1; }
+.track-step.is-done .track-dot { background: {{color.brand}}; }
+.track-lb { font-size: 0.72em; font-weight: 600; color: {{color.inkSoft}}; }
+.track-step.is-done .track-lb { color: {{color.ink}}; }
+.track-at { font-size: 0.68em; color: {{color.inkSoft}}; }
+
+/* Text related rail (no photography in the collection). */
+.rel-list { display: flex; flex-direction: column; }
+.rel-row { display: block; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid {{color.line}}; padding: 13px 2px; cursor: pointer; font: inherit; color: inherit; }
+.rel-row .rel-name { display: block; font-weight: 700; }
+.rel-row .rel-meta { display: block; color: {{color.inkSoft}}; font-size: 0.85em; margin-top: 2px; }
+.rel-media .media-mark { font-size: 1.05em; }
+
+/* ============ MISSION 042 — THE GRAMMAR ============
+   Fifteen professional boards, one shared discipline. These rules are
+   the law the boards never break; worlds may tune palette and type
+   flavour inside them, never around them.
+   1. One accent works; everything else is ground, surface and grey.
+   2. A surface is lifted by shadow OR an outline, never both.
+   3. Search is a pill with its icon inside; there is no search button.
+   4. A card carries: media, a title, ONE meta line, a price row.
+   5. Chips are quiet tints until selected, then solid accent.
+   6. Working type is the UI sans, semibold over bold, sentence case;
+      display faces belong to editorial (index) compositions.
+   7. The primary action is a solid pill; nothing wears an outline
+      to do a filled button's job. */
+
+/* 2 — surfaces: shadow, not border + shadow. */
+.card { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.06); }
+.row { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.05); }
+.metrics { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.05); }
+.bag-item, .bag-totals { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.05); }
+.cm-item { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.05); }
+
+/* 3 — search: one pill, icon inside. */
+.search { border-radius: 999px; padding: 0 16px; gap: 8px; }
+.search-ic { flex: 0 0 auto; color: {{color.inkSoft}}; }
+.search-row { display: block; }
+body.is-home .sect[data-section="search"] .search-ic { color: {{color.inkSoft}}; }
+
+/* 4 — the card's information budget. */
+.card-body { padding: 10px 12px 12px; }
+.card-title { font-weight: 650; }
+.card-meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+/* 5 — quiet chips. */
+.chip { background: {{color.input}}; border: none; padding: 7px 13px; font-size: 0.88em; font-weight: 600; }
+.chip-on { background: {{color.brand}}; color: {{color.onBrand}}; }
+
+/* 6 — working type. */
+.page-title { font-family: {{font.ui}}; font-weight: 750; font-size: 27px; letter-spacing: -0.02em; }
+body.comp-index .page-title, body.comp-article .page-title { font-family: {{font.display}}; font-weight: 600; font-size: {{scale.display}}px; letter-spacing: -0.015em; }
+.rec-title { font-family: {{font.ui}}; font-weight: 750; letter-spacing: -0.015em; }
+body.comp-index .rec-title, body.comp-article .rec-title { font-family: {{font.display}}; font-weight: 600; }
+.metric-label { text-transform: none; letter-spacing: 0.01em; font-size: 0.78em; font-weight: 600; }
+.stat-label { text-transform: none; letter-spacing: 0.01em; }
+
+/* 7 — actions: filled or quiet, never outlined. */
+.save-btn.wide { background: {{color.input}}; border: none; color: {{color.ink}}; box-shadow: none; }
+.save-btn.wide.is-on { background: {{color.brand}}; color: {{color.onBrand}}; }
+.rec-media-wrap { position: relative; }
+.rec-media-wrap .save-btn { position: absolute; top: 12px; right: 12px; z-index: 2; }
+.btn-quiet { border: none; background: {{color.input}}; }
+
+/* Chrome quieting: separation by space and shadow, not lines. */
+.tabbar { border-top: none; box-shadow: 0 -6px 20px rgb(0 0 0 / 0.05); }
+.field input, .field select, .field textarea { border: 1px solid transparent; background: {{color.input}}; border-radius: 14px; }
+.dl { border: none; box-shadow: 0 6px 18px rgb(0 0 0 / 0.05); }
+.back-btn { border: none; background: {{color.input}}; }
+
+/* ============ MISSION 043 — COMPOSITION & DENSITY ============
+   The grammar (M042) governs components; this layer governs how much
+   room the chrome may take from the content. Content first: the brand
+   earns a compact zone, filters sit tight, the promo is a band not a
+   billboard, and the product grid starts inside the first viewport.
+   On the record page, facts join the identity sheet instead of
+   stacking as boxed modules down the page. */
+
+/* Browse: a compact brand zone. The headline keeps its voice at a
+   smaller step, the subline is rationed to two lines, and the search
+   section gives back its padding. */
+body.is-home .sect[data-section="heading"] { padding-top: 10px; }
+body.is-home .sect[data-section="heading"] .page-title { font-size: 24px; }
+body.is-home .sect[data-section="heading"] .page-sub {
+  font-size: 0.94em; line-height: 1.4; margin-top: 4px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+body.is-home .sect[data-section="search"] { padding-bottom: 13px; margin-bottom: 0; }
+
+/* Filters are tools, not sections: consecutive facet rows sit tight
+   under the search, and the promo and grid follow without ceremony. */
+.sect[data-section^="filter-"] { margin-top: 10px; }
+.sect[data-section^="filter-"] + .sect[data-section^="filter-"] { margin-top: 8px; }
+.sect[data-section="promo"] { margin-top: 14px; }
+.sect[data-section="collection"] { margin-top: 16px; }
+
+/* The promo becomes a slim band: sans title, two-line sub, less air. */
+.promo { min-height: 0; }
+.promo-txt { padding: 12px 14px; gap: 3px; }
+.promo-title { font-family: {{font.ui}}; font-size: 1.08em; font-weight: 700; }
+.promo-sub { font-size: 0.85em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.promo-btn { margin-top: 6px; padding: 6px 12px; }
+.promo-media { width: 38%; }
+
+/* Card meta: up to two lines, priority-ordered in the markup, so a
+   long line wraps instead of silently losing its tail. The price row
+   and title keep their own lines; rows in a grid stay comparable. */
+.card-meta {
+  white-space: normal; display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden; line-height: 1.35;
+}
+
+/* Record page: one identity region, not stacked boxes. The stat row
+   dissolves out of its card and reads as part of the head sheet's
+   facts; the detail list loses its box and becomes plain rows on the
+   ground; the related rail's heading joins the working type. */
+.sect[data-section="stats"] { margin-top: 2px; }
+.stats { background: none; border: none; box-shadow: none; border-radius: 0; padding: 6px 0 0; }
+.stats span { align-items: flex-start; }
+.stats span + span { border-left: none; }
+.stats small { font-size: 0.78em; }
+body.is-detail .dl { background: none; box-shadow: none; border-radius: 0; padding: 0; }
+body.is-detail .sect[data-section="details"] { margin-top: 14px; }
+.related-title { font-family: {{font.ui}}; font-weight: 700; font-size: 1.02em; }
+.sect[data-section="related"] { margin-top: 20px; }
+.chip-sep { flex: 0 0 auto; width: 1px; align-self: stretch; margin: 5px 3px; background: {{color.line}}; }

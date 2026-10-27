@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{brief.brand}} — Send and track parcels</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div data-view="home">
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <div class="brand"><span class="brand-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 21 3l-5.5 18-3.2-6.8L3 11.5z"/></svg></span><span>{{brief.brand}}</span></div>
+      <span class="location"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>{{brief.location}}</span>
+    </div>
+  </header>
+  <main class="wrap home-main">
+    <h1 class="page-title">{{brief.tagline}}</h1>
+    <p class="page-sub">Send a parcel, or track one you have already sent.</p>
+
+    <div class="track-row">
+      <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="track-input" data-testid="track-input" type="search" placeholder="Tracking reference, e.g. SG482910375" aria-label="Tracking reference"></label>
+      <button class="track-btn" data-testid="track-btn">Track</button>
+    </div>
+    <p class="error track-error" data-testid="track-error" hidden></p>
+
+    <button class="cta cta-wide" data-testid="send-open">Send a parcel</button>
+
+    <div id="active"></div>
+
+    <div class="section-head"><h2 class="section-title">Recent shipments</h2><span class="section-note">{{brief.location}}</span></div>
+    <div class="shipment-list" id="recent"></div>
+  </main>
+</div>
+
+<div data-view="detail" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back</span></button><span class="sub-title">Shipment</span></header>
+  <main class="wrap detail-main" id="detail-content"></main>
+</div>
+
+<div data-view="send" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-nav="home">←<span class="vh">Back</span></button><h1 class="sub-title">Send a parcel</h1></header>
+  <main class="wrap send-main">
+    <section class="block">
+      <h2 class="block-title">What are you sending?</h2>
+      <div class="pkg-grid" id="pkg-grid" role="group" aria-label="Package type"></div>
+    </section>
+
+    <section class="block">
+      <h2 class="block-title">How heavy is it?</h2>
+      <div class="stepper">
+        <button data-testid="weight-minus" aria-label="Lighter">−</button>
+        <span class="qty" data-testid="weight-value">1.5 kg</span>
+        <button data-testid="weight-plus" aria-label="Heavier">+</button>
+      </div>
+      <p class="hint">First {{brief.rates.includedKg}} kg included, then {{brief.currency}}{{brief.rates.perKg}} per kg.</p>
+    </section>
+
+    <section class="block">
+      <h2 class="block-title">Pickup &amp; drop</h2>
+      <label class="field"><span>Pickup address</span><input id="pickup" data-testid="pickup" type="text" placeholder="Home · Indiranagar" autocomplete="street-address"></label>
+      <label class="field"><span>Drop address</span><input id="drop" data-testid="drop" type="text" placeholder="Where is it going?" autocomplete="street-address"></label>
+      <p class="error" data-testid="error-drop" hidden></p>
+      <label class="field"><span>Receiver phone</span><input id="phone" data-testid="phone" type="tel" inputmode="numeric" placeholder="10-digit mobile" autocomplete="tel"></label>
+      <p class="error" data-testid="error-phone" hidden></p>
+    </section>
+
+    <section class="block">
+      <h2 class="block-title">How fast?</h2>
+      <div class="svc-row" id="svc-row" role="group" aria-label="Service level"></div>
+    </section>
+
+    <button class="cta cta-wide send-cta" data-testid="send-submit">Pay <span data-testid="quote-total">—</span></button>
+    <p class="form-note">Pickup today if you book before 6 PM.</p>
+  </main>
+</div>
+
+<div data-view="confirmation" hidden>
+  <main class="wrap confirm-main" id="confirm-content"></main>
+</div>
+
+<div data-view="shipments" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-nav="home">←<span class="vh">Back</span></button><h1 class="sub-title">My shipments</h1></header>
+  <main class="wrap all-main" id="shipments-content"></main>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <button class="tab tab-on" data-nav="home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5.5 9.5V21h13V9.5"/></svg>Home</button>
+  <button class="tab" data-nav="shipments" data-testid="shipments-open"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg>Shipments</button>
+  <button class="tab" data-nav="send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 21 3l-5.5 18-3.2-6.8L3 11.5z"/></svg>Send</button>
+</nav>
+
+<script>window.__DATA__ = {{productsJson}};</script>
+<script src="app.js"></script>
+</body>
+</html>

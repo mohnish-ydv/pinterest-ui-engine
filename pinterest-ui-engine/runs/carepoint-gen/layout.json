@@ -1,0 +1,406 @@
+{
+  "irVersion": 1,
+  "meta": {
+    "plannerVersion": "1.0.0",
+    "app": "CarePoint",
+    "domain": "booking",
+    "family": "clinic",
+    "density": "airy",
+    "densityBasis": "light share 86.1%, saturated share 3.88% — a near-white board reads airy",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "doctor",
+    "label": "Doctor",
+    "plural": "Doctors",
+    "media": false,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Doctor"
+      },
+      {
+        "id": "specialty",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Specialty"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "fee",
+        "type": "money",
+        "role": "price",
+        "label": "Fee"
+      },
+      {
+        "id": "experience",
+        "type": "number",
+        "role": "stat",
+        "label": "Years"
+      },
+      {
+        "id": "specialtyType",
+        "type": "enum",
+        "role": "facet",
+        "label": "Specialty",
+        "options": [
+          "General",
+          "Dentist",
+          "Dermatologist"
+        ]
+      },
+      {
+        "id": "about",
+        "type": "text",
+        "role": "detail",
+        "label": "About"
+      },
+      {
+        "id": "clinic",
+        "type": "text",
+        "role": "detail",
+        "label": "Clinic"
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "specialty"
+    ],
+    "placeholder": "Search doctors"
+  },
+  "filters": [
+    {
+      "id": "specialty",
+      "field": "specialtyType",
+      "label": "Specialty",
+      "control": "chips"
+    }
+  ],
+  "actions": [
+    {
+      "id": "book",
+      "label": "Book appointment",
+      "kind": "commit",
+      "form": [
+        {
+          "id": "patient",
+          "label": "Patient name",
+          "type": "text",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the patient's name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Phone number",
+          "type": "tel",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "options": {
+        "id": "slot",
+        "label": "Available slots",
+        "values": [
+          "10:00 AM",
+          "10:30 AM",
+          "11:00 AM",
+          "11:30 AM"
+        ],
+        "required": true
+      },
+      "result": {
+        "collection": "appointments",
+        "referencePrefix": "CP",
+        "title": "Appointment booked"
+      }
+    }
+  ],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "browse",
+      "purpose": "browse",
+      "title": "Find your doctor.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "CarePoint",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Find your doctor.",
+            "subtitle": "Book a visit in under a minute. No advance payment."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search doctors",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "doctor",
+            "fields": [
+              "name",
+              "specialty"
+            ]
+          }
+        },
+        {
+          "id": "filter-specialty",
+          "component": "filter-chips",
+          "props": {
+            "label": "Specialty",
+            "testid": "filter-specialty",
+            "allLabel": "All"
+          },
+          "binding": {
+            "entity": "doctor",
+            "filterId": "specialty",
+            "field": "specialtyType",
+            "options": [
+              "General",
+              "Dentist",
+              "Dermatologist"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "doctor-list",
+            "itemTestid": "doctor-card",
+            "openTestid": "doctor-open",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle"
+          },
+          "binding": {
+            "entity": "doctor",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:specialty"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Doctor",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "CarePoint",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle"
+          },
+          "binding": {
+            "entity": "doctor",
+            "title": "name",
+            "subtitle": "specialty",
+            "price": "fee"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "doctor",
+            "fields": [
+              "experience"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "doctor",
+            "fields": [
+              "rating",
+              "reviews",
+              "about",
+              "clinic"
+            ]
+          }
+        },
+        {
+          "id": "options",
+          "component": "option-grid",
+          "props": {
+            "label": "Available slots",
+            "testid": "option-slot",
+            "required": true
+          },
+          "binding": {
+            "entity": "doctor",
+            "field": "slot",
+            "options": [
+              "10:00 AM",
+              "10:30 AM",
+              "11:00 AM",
+              "11:30 AM"
+            ]
+          }
+        },
+        {
+          "id": "form",
+          "component": "form-fields",
+          "props": {
+            "testid": "form",
+            "submitLabel": "Book appointment"
+          },
+          "binding": {
+            "entity": "doctor",
+            "fields": [
+              {
+                "id": "patient",
+                "label": "Patient name",
+                "type": "text",
+                "required": true,
+                "minLength": 2,
+                "message": "Enter the patient's name (at least 2 characters)."
+              },
+              {
+                "id": "phone",
+                "label": "Phone number",
+                "type": "tel",
+                "required": true,
+                "pattern": "^\\d{10}$",
+                "message": "Enter a 10-digit mobile number."
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "component": "primary-action",
+          "props": {
+            "label": "Book appointment",
+            "testid": "primary-action",
+            "action": "book",
+            "showAmount": false
+          },
+          "binding": {
+            "entity": "doctor",
+            "amountField": "fee"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Appointment booked",
+            "testid": "confirm-ref",
+            "summaryTestid": "confirm-summary"
+          },
+          "binding": {
+            "entity": "doctor",
+            "referencePrefix": "CP"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "flows": [
+    {
+      "id": "browse-to-detail",
+      "from": "browse",
+      "action": "open",
+      "to": "detail"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "action": "book",
+      "to": "confirmation",
+      "validates": true,
+      "persists": true
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "design-family/1",
+  "family": "staynest",
+  "description": "StayNest — indigo rental marketplace derived from reference R09. Fourth family and a fourth app category. Sans-led, light grey canvas, indigo reserved for actions, selection and verification.",
+  "typography": {
+    "displayStrategy": "sans",
+    "displayStack": null,
+    "uiStack": "-apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "displayRoleNote": "R09 is sans throughout; hierarchy is carried by weight and colour rather than a display face."
+  },
+  "borders": {
+    "hairline": "palette:tint",
+    "stepperHairline": "palette:tint",
+    "hairlineWidth": "1px",
+    "stepperWidth": "1.5px",
+    "focusRing": { "width": "3px", "offset": "2px", "color": "brand" }
+  },
+  "shadows": {
+    "card": "0 6px 18px rgba(27, 31, 59, 0.07)",
+    "sheet": "0 -12px 32px rgba(27, 31, 59, 0.10)"
+  },
+  "surfaces": {
+    "groundSource": "spec",
+    "inputBg": "#EFF1F8",
+    "inputTextSource": "ink"
+  },
+  "semantic": {
+    "error": "spec",
+    "warning": null,
+    "success": "palette:cert"
+  },
+  "states": {
+    "hoverTarget": "brandDeep",
+    "disabled": { "bg": "#EDEFF6", "fg": "#5A6076" }
+  },
+  "density": { "lineHeight": 1.5, "bodyScale": 1 },
+  "space": [4, 8, 12, 16, 20, 24, 32],
+  "responsive": {
+    "breakpoint": 900,
+    "mobile": "Single column. Property cards stack with a media block on top. Fixed bottom tab bar (Browse / Saved).",
+    "desktop": "Two-column card grid. Tab bar hidden; navigation moves into the header."
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "image": "references/R15.jpg",
+  "profile": {
+    "measured": {
+      "sat_ge_0.25_pct": 3.88,
+      "sat_ge_0.03_pct": 14.27,
+      "modal_hue_bin_deg": 200,
+      "modal_hue_name": "blue",
+      "hue_family_share_of_coloured_pct": 62.4,
+      "weighted_luminance": 0.797,
+      "light_pixel_share_pct": 86.1,
+      "dark_pixel_share_pct": 1.7,
+      "clusters": [
+        {
+          "rgb": [
+            240,
+            240,
+            240
+          ],
+          "hex": "#F0F0F0",
+          "share_pct": 50.31
+        },
+        {
+          "rgb": [
+            224,
+            224,
+            224
+          ],
+          "hex": "#E0E0E0",
+          "share_pct": 31.59
+        },
+        {
+          "rgb": [
+            224,
+            224,
+            240
+          ],
+          "hex": "#E0E0F0",
+          "share_pct": 2.94
+        },
+        {
+          "rgb": [
+            96,
+            96,
+            112
+          ],
+          "hex": "#606070",
+          "share_pct": 1.65
+        },
+        {
+          "rgb": [
+            208,
+            208,
+            208
+          ],
+          "hex": "#D0D0D0",
+          "share_pct": 1.51
+        },
+        {
+          "rgb": [
+            224,
+            240,
+            240
+          ],
+          "hex": "#E0F0F0",
+          "share_pct": 1.27
+        },
+        {
+          "rgb": [
+            192,
+            192,
+            192
+          ],
+          "hex": "#C0C0C0",
+          "share_pct": 1
+        },
+        {
+          "rgb": [
+            48,
+            112,
+            208
+          ],
+          "hex": "#3070D0",
+          "share_pct": 0.72
+        }
+      ],
+      "sampled_px": 36240
+    },
+    "derived": {
+      "saturationRegime": {
+        "value": "neutral",
+        "evidence": "sat>=0.25 = 3.88% (committed>=25, neutral<8)",
+        "tag": "interpreted"
+      },
+      "hueDiscipline": {
+        "value": "single-hue",
+        "evidence": "62.4% of coloured pixels in the modal hue family (single-hue>=45%)",
+        "tag": "interpreted"
+      },
+      "groundValue": {
+        "value": "light",
+        "evidence": "86.1% of pixels above luminance 0.7 (light>=40%)",
+        "tag": "interpreted"
+      },
+      "colourAllocation": {
+        "value": {
+          "brand_share_pct": 3.88,
+          "neutral_share_pct": 85.7
+        },
+        "evidence": "saturated share vs near-neutral share of sampled pixels",
+        "tag": "measured"
+      },
+      "typography": {
+        "value": "unknown",
+        "evidence": "A typeface cannot be identified from pixels. Record the type ROLE (serif/sans, display/UI) in design-spec.json as interpretation.",
+        "tag": "unknown"
+      },
+      "density": {
+        "value": "requires interpretation",
+        "evidence": "A single presentation board does not reliably yield information density; it is a per-screen judgement. Record it in the spec.",
+        "tag": "unknown"
+      }
+    },
+    "paletteCandidates": {
+      "note": "Cluster centres over a board that includes photography and presentation background. Flat UI fields in the reference sit in a band around these, not exactly on them.",
+      "brand": {
+        "hex": "#3070D0",
+        "share_pct": 0.72,
+        "basis": "most saturated cluster weighted by share"
+      },
+      "ground": {
+        "hex": "#F0F0F0",
+        "share_pct": 50.31,
+        "basis": "most common cluster above luminance 0.7"
+      },
+      "ink": {
+        "hex": "#606070",
+        "share_pct": 1.65,
+        "basis": "darkest cluster"
+      }
+    }
+  },
+  "recommendation": {
+    "recommended": "neutral-gallery",
+    "ranked": [
+      {
+        "id": "neutral-gallery",
+        "score": 95,
+        "reasons": [
+          "the reference keeps its ground quiet and delegates colour to actions and state (saturation regime: neutral)",
+          "a light, near-neutral ground is the reference's own canvas"
+        ]
+      },
+      {
+        "id": "committed-field",
+        "score": 50,
+        "reasons": [
+          "the reference rations its hue (saturation regime: neutral) — a full field would overstate it",
+          "one hue family dominates, so a committed field has a single colour to commit",
+          "a light ground lets a committed field read as an accent plane rather than the whole app"
+        ]
+      },
+      {
+        "id": "dark-board",
+        "score": 10,
+        "reasons": [
+          "the reference canvas reads light, so inverting it to dark would not be faithful"
+        ]
+      }
+    ],
+    "note": "Scores rank the archetypes against measured properties only. They do not know the brief, the product category, or the client. A human may override — and the override must be recorded in directions.json."
+  },
+  "principles": [
+    {
+      "principle": "Hue is rationed: colour is reserved for actions, selection and state; surfaces stay neutral.",
+      "basis": "sat>=0.25 = 3.88% (committed>=25, neutral<8)",
+      "tag": "interpreted"
+    },
+    {
+      "principle": "One hue family does all the accent work, so \"this colour means tappable / current\" is learnable in one screen.",
+      "basis": "62.4% of coloured pixels in the modal hue family (single-hue>=45%)",
+      "tag": "interpreted"
+    },
+    {
+      "principle": "Ground is light: hierarchy starts from a light canvas.",
+      "basis": "86.1% of pixels above luminance 0.7 (light>=40%)",
+      "tag": "interpreted"
+    },
+    {
+      "principle": "Numeric and state grammar must be identical on every screen (prices, totals, timestamps, statuses).",
+      "basis": "forensics/EXECUTIVE_FINDINGS.md — cross-screen numeric/grammar consistency",
+      "tag": "interpreted"
+    }
+  ],
+  "notToCopy": [
+    "Marketing-only composition: a presentation board shows a hero and a few cards; it does not show empty, loading, error or long-list states. Those must be designed, not inferred.",
+    "Missing application states: several reference kits ship zero error states and zero empty states. Their absence is a gap in the reference, not a design decision to honour.",
+    "Photography as the quality carrier: if the reference leans on product photography, substituting illustrations caps the ceiling — declare the substitution instead of pretending it matches.",
+    "Screenshot-specific artefacts: off-screen steppers, clipped frames and placeholder personas in the source board are not design intent.",
+    "Layout copying: the reference shows one product's information architecture. Copying its layout imports its product decisions, which may contradict the brief."
+  ],
+  "note": "Derived by engine/reference_profile.mjs. `measured` values come from analyze_image.py; `derived` values are interpretations and say what evidence produced them."
+}

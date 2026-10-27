@@ -1,0 +1,306 @@
+{
+  "app": "CarePoint \u2014 clinic appointments, generated from a declarative brief (Mission 022)",
+  "brand": "CarePoint",
+  "tagline": "Find your doctor.",
+  "subtitle": "Book a visit in under a minute. No advance payment.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "booking",
+  "family": "clinic",
+  "views": [
+    "home",
+    "appointments"
+  ],
+  "navigation": {
+    "home": {
+      "label": "Home"
+    },
+    "appointments": {
+      "label": "Appointments",
+      "testid": "appts-open"
+    }
+  },
+  "entity": {
+    "id": "doctor",
+    "label": "Doctor",
+    "plural": "Doctors",
+    "media": false,
+    "titleClass": "detail-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "doctor-list",
+      "itemTestid": "doctor-card",
+      "openTestid": "doctor-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Doctor"
+      },
+      {
+        "id": "specialty",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Specialty",
+        "options": [
+          "Dentist",
+          "Dermatologist",
+          "General Physician",
+          "Gynecologist",
+          "Orthopedic",
+          "Pediatrician"
+        ]
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "fee",
+        "type": "money",
+        "role": "price",
+        "label": "Consultation fee"
+      },
+      {
+        "id": "exp",
+        "type": "number",
+        "role": "stat",
+        "label": "Years"
+      },
+      {
+        "id": "about",
+        "type": "text",
+        "role": "detail",
+        "label": "About"
+      }
+    ],
+    "records": [
+      {
+        "id": "ananya-rao",
+        "name": "Dr. Ananya Rao",
+        "specialty": "General Physician",
+        "rating": 4.9,
+        "reviews": 212,
+        "fee": 500,
+        "exp": 12,
+        "about": "Family physician for everyday illness, preventive screening and lifestyle care. Unhurried consults, clear follow-ups."
+      },
+      {
+        "id": "vikram-shah",
+        "name": "Dr. Vikram Shah",
+        "specialty": "Dentist",
+        "rating": 4.7,
+        "reviews": 148,
+        "fee": 700,
+        "exp": 9,
+        "about": "Restorative and cosmetic dentistry \u2014 implants, aligners and painless root canals."
+      },
+      {
+        "id": "meera-kapoor",
+        "name": "Dr. Meera Kapoor",
+        "specialty": "Dermatologist",
+        "rating": 4.8,
+        "reviews": 320,
+        "fee": 900,
+        "exp": 11,
+        "about": "Medical and cosmetic dermatology: acne, pigmentation and hair-loss treatment plans that fit real routines."
+      },
+      {
+        "id": "arjun-mehta",
+        "name": "Dr. Arjun Mehta",
+        "specialty": "Pediatrician",
+        "rating": 4.6,
+        "reviews": 96,
+        "fee": 600,
+        "exp": 8,
+        "about": "Gentle paediatric care from newborn checks to adolescent health; vaccination schedules explained, not rushed."
+      },
+      {
+        "id": "sara-thomas",
+        "name": "Dr. Sara Thomas",
+        "specialty": "Gynecologist",
+        "rating": 5,
+        "reviews": 87,
+        "fee": 850,
+        "exp": 14,
+        "about": "Obstetrics and gynaecology with a focus on preventive screening and pregnancy care."
+      },
+      {
+        "id": "rohan-verma",
+        "name": "Dr. Rohan Verma",
+        "specialty": "Orthopedic",
+        "rating": 4.5,
+        "reviews": 203,
+        "fee": 950,
+        "exp": 13,
+        "about": "Sports injuries, joint pain and post-surgery rehabilitation, with honest advice on when surgery is not needed."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "specialty"
+    ],
+    "placeholder": "Search doctors",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "specialty",
+      "field": "specialty",
+      "label": "Specialty",
+      "testid": "specialty-chip",
+      "dataAttr": "data-spec",
+      "allLabel": "All"
+    }
+  ],
+  "availability": {
+    "days": 7,
+    "slots": [
+      "9:00 AM",
+      "10:00 AM",
+      "11:00 AM",
+      "12:00 PM",
+      "3:00 PM",
+      "4:00 PM",
+      "5:00 PM",
+      "6:00 PM"
+    ],
+    "label": "Available slots",
+    "slotLabel": "Time",
+    "dayTestid": "day-chip",
+    "slotTestid": "slot",
+    "dayAttr": "data-day",
+    "slotAttr": "data-slot",
+    "errorTestid": "error-slot",
+    "required": true,
+    "blockOn": "appointments",
+    "message": "Choose a time slot.",
+    "rule": {
+      "kind": "modulo",
+      "modulus": 3,
+      "remainder": 0,
+      "inputs": [
+        "recordIndex",
+        "dayIndex",
+        "slotIndex"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "id": "book",
+      "label": "Book appointment",
+      "kind": "commit",
+      "testid": "book-btn",
+      "form": [
+        {
+          "id": "patient",
+          "label": "Patient name",
+          "type": "text",
+          "testid": "patient-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Please enter the patient's name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Phone number",
+          "type": "tel",
+          "testid": "patient-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a valid 10-digit phone number."
+        }
+      ],
+      "result": {
+        "collection": "appointments",
+        "referencePrefix": "CP",
+        "title": "Appointment Booked",
+        "referenceTestid": "appt-ref",
+        "summaryTestid": "confirm-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "appointments",
+      "view": "appointments",
+      "label": "My Appointments",
+      "listTestid": "appointments-list",
+      "itemTestid": "appt-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "id",
+        "slot",
+        "patient",
+        "phone"
+      ],
+      "emptyMessage": "No appointments yet.",
+      "cancel": {
+        "testid": "cancel-btn",
+        "confirmTestid": "cancel-confirm",
+        "label": "Cancel",
+        "confirmLabel": "Confirm cancel",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "upcoming",
+      "collection": "appointments",
+      "testid": "upcoming-card",
+      "label": "Next visit",
+      "fields": [
+        "id",
+        "slot"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "home",
+      "detail",
+      "confirmation",
+      "appointments"
+    ],
+    "testids": [
+      "doctor-card",
+      "doctor-open",
+      "specialty-chip",
+      "search",
+      "day-chip",
+      "slot",
+      "patient-name",
+      "patient-phone",
+      "error-name",
+      "error-phone",
+      "book-btn",
+      "appt-ref",
+      "appt-item",
+      "cancel-btn",
+      "cancel-confirm",
+      "appts-open",
+      "back-btn",
+      "upcoming-card"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "reference": "R11 Quickserve (media_library/image/3c/3c92c119….jpg)",
+  "family": "deskly",
+  "palette": {
+    "brand": "#9A1B1E",
+    "brandDeep": "#6E1013",
+    "ground": "#FAF5F0",
+    "surface": "#FFFFFF",
+    "board": "#2A1414",
+    "ink": "#241416",
+    "inkSoft": "#6B5A5C",
+    "tint": "#F7E4E1",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A02026"
+  },
+  "typography": {
+    "displayRole": "warm serif at display sizes; the reference commits its headline to a serif over a red field",
+    "uiRole": "grotesque sans for everything else; semibold for labels, bold for prices",
+    "scalePx": { "body": 15, "display": 30, "section": 18, "small": 12, "amount": 16 }
+  },
+  "shape": { "sheetRadius": 22, "cardRadius": 16, "controlRadius": 999, "addBtn": 36 },
+  "composition": {
+    "home": "Committed red hero field carrying the brand, headline and search; white content sheet below with the zone chips and the desk list.",
+    "detail": "Desk header with its day rate, a stat strip, a labelled detail list, the day strip and slot grid, the reservation form and one pinned action.",
+    "density": "Even and generous; rows are one repeated module and the hero field does the visual work."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill, white text.",
+    "selection": "Zone is a chip row; day and time are a day strip plus a slot grid with taken slots struck through.",
+    "numbers": "The day rate is identical on the row, the detail and the confirmation.",
+    "errors": "Inline under the field, in the error colour, with the field ringed.",
+    "tabs": "Two tabs: Desks / Bookings."
+  },
+  "imagery": {
+    "role": "R11 is a services app with photography; none is available offline, so desk rows use initial chips and the hero field carries the colour.",
+    "substitution": "No photography; committed field instead of imagery."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py on the original file: sat>=0.25 = 39.38%, modal hue bin 0deg (red), hue family share 89.8% of coloured pixels, 45.6% of pixels above luminance 0.7. Independently re-derived by engine/reference_profile.mjs, which recommends committed-field.",
+    "interpreted": "Composition and grammar are visual interpretation of the board. Font identity is NOT inferred — only the serif/sans roles.",
+    "uncertainty": [
+      "The brand hex is a representative deep red from the reference's family, not a sampled flat UI colour.",
+      "R11 ships no error states; the error grammar is engine-side invention and is labelled as such."
+    ]
+  },
+  "specVersion": 1
+}

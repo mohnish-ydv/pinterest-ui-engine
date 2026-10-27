@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{brief.brand}} — Book a doctor visit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div data-view="home">
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <div class="brand"><span class="brand-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12L16 12h5"/></svg></span><span>{{brief.brand}}</span></div>
+      <span class="location"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>{{brief.location}}</span>
+    </div>
+  </header>
+  <main class="wrap home-main">
+    <h1 class="page-title">Find your doctor</h1>
+    <p class="page-sub">Book a visit in under a minute. No advance payment.</p>
+    <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="search" data-testid="search" type="search" placeholder="Search doctors…" aria-label="Search doctors"></label>
+    <div class="specs" id="specs" role="group" aria-label="Specialties"></div>
+    <div id="upcoming"></div>
+    <div class="section-head"><h2 class="section-title">Top Doctors</h2><span class="section-note">{{brief.location}}</span></div>
+    <div class="doctors" id="doctors"></div>
+  </main>
+</div>
+
+<div data-view="detail" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to doctors</span></button><span class="sub-title">Doctor Details</span></header>
+  <main class="wrap detail-main" id="detail-content"></main>
+</div>
+
+<div data-view="confirmation" hidden>
+  <main class="wrap confirm-main" id="confirm-content"></main>
+</div>
+
+<div data-view="appointments" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to doctors</span></button><h1 class="sub-title">My Appointments</h1></header>
+  <main class="wrap appts-main" id="appts-content"></main>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <button class="tab tab-on" data-nav="home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5.5 9.5V21h13V9.5"/></svg>Home</button>
+  <button class="tab" data-nav="appointments" data-testid="appts-open"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Appointments <span class="appt-count" data-testid="appt-count" hidden>0</span></button>
+</nav>
+
+<script>window.__DATA__ = {{productsJson}};</script>
+<script src="app.js"></script>
+</body>
+</html>

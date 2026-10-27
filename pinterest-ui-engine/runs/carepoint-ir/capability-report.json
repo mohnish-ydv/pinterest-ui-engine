@@ -1,0 +1,654 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "carepoint-ir",
+  "app": "CarePoint",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 29,
+    "byCategory": {
+      "content": {
+        "total": 12,
+        "required": 12
+      },
+      "layout": {
+        "total": 3,
+        "required": 3
+      },
+      "interaction": {
+        "total": 6,
+        "required": 6
+      },
+      "navigation": {
+        "total": 2,
+        "required": 2
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 29,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "CAREPOINT-IR-C-name-list",
+    "CAREPOINT-IR-C-name-detail",
+    "CAREPOINT-IR-C-specialty-list",
+    "CAREPOINT-IR-C-specialty-detail",
+    "CAREPOINT-IR-C-rating-list",
+    "CAREPOINT-IR-C-rating-detail",
+    "CAREPOINT-IR-C-reviews-list",
+    "CAREPOINT-IR-C-reviews-detail",
+    "CAREPOINT-IR-C-fee-list",
+    "CAREPOINT-IR-C-fee-detail",
+    "CAREPOINT-IR-C-exp-list",
+    "CAREPOINT-IR-C-exp-detail",
+    "CAREPOINT-IR-L-collection",
+    "CAREPOINT-IR-L-detail",
+    "CAREPOINT-IR-L-nav",
+    "CAREPOINT-IR-I-search",
+    "CAREPOINT-IR-I-facet-specialty",
+    "CAREPOINT-IR-I-availability",
+    "CAREPOINT-IR-I-validate",
+    "CAREPOINT-IR-I-commit",
+    "CAREPOINT-IR-I-cancel-appointments",
+    "CAREPOINT-IR-N-view-home",
+    "CAREPOINT-IR-N-view-appointments",
+    "CAREPOINT-IR-R-narrow",
+    "CAREPOINT-IR-R-wide",
+    "CAREPOINT-IR-A-contrast",
+    "CAREPOINT-IR-A-labels",
+    "CAREPOINT-IR-A-heading",
+    "CAREPOINT-IR-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "carepoint-ir",
+    "app": "CarePoint",
+    "domain": "booking",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "CAREPOINT-IR-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Doctor\" (title) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Doctor\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-C-specialty-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Specialty\" (subtitle) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "specialty",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-specialty-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Specialty\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "specialty",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-C-rating-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rating\" (meta) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-rating-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rating\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-C-reviews-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reviews\" (meta) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-reviews-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reviews\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-C-fee-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Consultation fee\" (price) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "fee",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-fee-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Consultation fee\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "fee",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-C-exp-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Years\" (stat) is visible in the Doctors list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "home",
+          "where": "list",
+          "field": "exp",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-C-exp-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Years\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "exp",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 6 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "home",
+          "selector": "item",
+          "expected": 6
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "CAREPOINT-IR-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "CAREPOINT-IR-L-nav",
+        "category": "layout",
+        "required": true,
+        "expectation": "Navigation between 2 top-level destinations.",
+        "satisfiedBy": "tab bar",
+        "verification": {
+          "method": "dom-count",
+          "view": "home",
+          "selector": "nav-item",
+          "expected": 2
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "CAREPOINT-IR-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "CAREPOINT-IR-I-facet-specialty",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Specialty\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "specialty",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "CAREPOINT-IR-I-availability",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Days and time slots are selectable, and taken slots are not.",
+        "satisfiedBy": "availability-picker",
+        "verification": {
+          "method": "interaction",
+          "act": "availability",
+          "expect": "states"
+        },
+        "status": "supported",
+        "capability": "control.availability",
+        "component": "availability-picker"
+      },
+      {
+        "id": "CAREPOINT-IR-I-validate",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Invalid input is refused with a visible error and no commit.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "interaction",
+          "act": "validate",
+          "expect": "refused"
+        },
+        "status": "supported",
+        "capability": "form.fields",
+        "component": "form-fields"
+      },
+      {
+        "id": "CAREPOINT-IR-I-commit",
+        "category": "interaction",
+        "required": true,
+        "expectation": "A valid submission issues a CP-###### reference.",
+        "satisfiedBy": "primary-action",
+        "verification": {
+          "method": "interaction",
+          "act": "commit",
+          "expect": "reference"
+        },
+        "status": "supported",
+        "capability": "action.commit",
+        "component": "primary-action"
+      },
+      {
+        "id": "CAREPOINT-IR-I-cancel-appointments",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Cancelling requires a confirmation step and then removes the record.",
+        "satisfiedBy": "collection-manager",
+        "verification": {
+          "method": "interaction",
+          "act": "cancel",
+          "collection": "appointments",
+          "expect": "removed"
+        },
+        "status": "supported",
+        "capability": "collection.manage",
+        "component": "collection-manager"
+      },
+      {
+        "id": "CAREPOINT-IR-N-view-home",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"home\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "home",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "CAREPOINT-IR-N-view-appointments",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"appointments\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "appointments",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "CAREPOINT-IR-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "CAREPOINT-IR-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "CAREPOINT-IR-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "CAREPOINT-IR-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "CAREPOINT-IR-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "CAREPOINT-IR-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

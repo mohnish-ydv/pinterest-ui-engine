@@ -1,0 +1,211 @@
+{
+  "app": "CarePoint",
+  "entity": "doctor",
+  "recordCount": 3,
+  "derivedFrom": "layout IR v1 (planner 1.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the doctors list renders all 3 records",
+      "act": "count",
+      "sel": "[data-testid=\"doctor-card\"]",
+      "eq": 3
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"doctor-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "filtering by Specialty = General shows 1",
+      "act": "click",
+      "sel": "[data-testid=\"filter-specialty\"][data-value=\"General\"]"
+    },
+    {
+      "id": "T4",
+      "desc": "only 1 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"doctor-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T5",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"filter-specialty\"][data-value=\"General\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T6",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"filter-specialty\"][data-value=\"All\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"doctor-card\"]",
+      "eq": 3
+    },
+    {
+      "id": "T8",
+      "desc": "searching \"Dr. Ananya Rao\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Dr. Ananya Rao"
+    },
+    {
+      "id": "T9",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"doctor-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T10",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T11",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"doctor-card\"]",
+      "eq": 3
+    },
+    {
+      "id": "T12",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"doctor-card\"][data-id=\"ananya-rao\"]"
+    },
+    {
+      "id": "T13",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Dr. Ananya Rao"
+    },
+    {
+      "id": "T14",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T15",
+      "desc": "returning to the browse view",
+      "act": "goto",
+      "view": "browse"
+    },
+    {
+      "id": "T16",
+      "desc": "opening a record",
+      "act": "click",
+      "sel": "[data-testid=\"doctor-card\"][data-id=\"ananya-rao\"]"
+    },
+    {
+      "id": "T17",
+      "desc": "submitting an empty form is refused",
+      "act": "click",
+      "sel": "[data-testid=\"primary-action\"]"
+    },
+    {
+      "id": "T18",
+      "desc": "the required field shows an error",
+      "act": "visible",
+      "sel": "[data-testid=\"error-patient\"]",
+      "eq": true
+    },
+    {
+      "id": "T19",
+      "desc": "the app did not advance to confirmation",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T20",
+      "desc": "submitting without a choice is refused",
+      "act": "visible",
+      "sel": "[data-testid=\"error-slot\"]",
+      "eq": true
+    },
+    {
+      "id": "T21",
+      "desc": "choosing 10:00 AM",
+      "act": "click",
+      "sel": "[data-testid=\"option-slot\"][data-value=\"10:00 AM\"]"
+    },
+    {
+      "id": "T22",
+      "desc": "filling Patient name",
+      "act": "type",
+      "sel": "[data-testid=\"field-patient\"]",
+      "value": "Test Patient name"
+    },
+    {
+      "id": "T23",
+      "desc": "filling Phone number",
+      "act": "type",
+      "sel": "[data-testid=\"field-phone\"]",
+      "value": "9876543210"
+    },
+    {
+      "id": "T24",
+      "desc": "submitting a valid form reaches confirmation",
+      "act": "click",
+      "sel": "[data-testid=\"primary-action\"]"
+    },
+    {
+      "id": "T25",
+      "desc": "confirmation is shown",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "confirmation"
+    },
+    {
+      "id": "T26",
+      "desc": "a reference is issued in the declared format",
+      "act": "match",
+      "sel": "[data-testid=\"confirm-ref\"]",
+      "pattern": "^CP-\\d{6}$"
+    },
+    {
+      "id": "T27",
+      "desc": "the confirmation summarises the submission",
+      "act": "visible",
+      "sel": "[data-testid=\"confirm-summary\"]",
+      "eq": true
+    },
+    {
+      "id": "T28",
+      "desc": "the booking survives a reload",
+      "act": "reload"
+    },
+    {
+      "id": "T29",
+      "desc": "the app returns to a browsable state after reload",
+      "act": "visible",
+      "sel": "[data-testid=\"doctor-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T30",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "id": "desk-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"desk-card\"] .card-title, [data-testid=\"desk-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"desk-card\"] .card-sub, [data-testid=\"desk-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"zone-chip\"][data-zone=\"Window\"]"
+    },
+    {
+      "click": "[data-testid=\"zone-chip\"][data-zone=\"Window\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"zone-chip\"][data-zone=\"Window\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"zone-chip\"][data-zone=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"desk-card\"][data-id=\"d1\"]"
+    },
+    {
+      "click": "[data-testid=\"desk-card\"][data-id=\"d1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "measure": "daySelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"day-chip\"][aria-pressed=\"true\"]",
+      "sequence": [
+        "day 0 preselected"
+      ]
+    },
+    {
+      "measure": "slotTaken",
+      "kind": "disabled",
+      "selector": "[data-testid=\"slot\"][data-slot=\"11:00 AM\"]",
+      "sequence": [
+        "day 0"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"slot\"][data-slot=\"9:00 AM\"]"
+    },
+    {
+      "click": "[data-testid=\"slot\"][data-slot=\"9:00 AM\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "slotSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"slot\"][data-slot=\"9:00 AM\"]",
+      "sequence": [
+        "choose a slot"
+      ]
+    },
+    {
+      "measure": "ctaRest",
+      "kind": "rest",
+      "selector": "[data-testid=\"reserve-btn\"]",
+      "sequence": [
+        "detail view, pointer away"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"reserve-btn\"]"
+    },
+    {
+      "hover": "[data-testid=\"reserve-btn\"]",
+      "settleMs": 300
+    },
+    {
+      "measure": "ctaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"reserve-btn\"]",
+      "sequence": [
+        "hover the primary action"
+      ]
+    },
+    {
+      "click": "[data-testid=\"reserve-btn\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "errorText",
+      "kind": "error",
+      "selector": "[data-testid=\"error-guest\"]",
+      "sequence": [
+        "submit an empty form"
+      ]
+    },
+    {
+      "shot": "detail-errors-390"
+    },
+    {
+      "setValues": [
+        {
+          "selector": "[data-testid=\"guest-name\"]",
+          "value": "Test Your name"
+        },
+        {
+          "selector": "[data-testid=\"guest-team\"]",
+          "value": "Test Team (optional)"
+        },
+        {
+          "selector": "[data-testid=\"guest-phone\"]",
+          "value": "9876543210"
+        }
+      ]
+    },
+    {
+      "centre": "[data-testid=\"reserve-btn\"]"
+    },
+    {
+      "click": "[data-testid=\"reserve-btn\"]",
+      "settleMs": 450
+    },
+    {
+      "shot": "confirmation-390"
+    },
+    {
+      "measure": "confirmRef",
+      "kind": "post-action",
+      "selector": "[data-testid=\"booking-ref\"]",
+      "sequence": [
+        "complete a submission"
+      ]
+    },
+    {
+      "axe": "desks"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"desks\"], [data-act=\"go\"][data-view=\"desks\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"desk-card\"][data-id=\"d1\"]"
+    },
+    {
+      "click": "[data-testid=\"desk-card\"][data-id=\"d1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "about": "A small indoor-plant shop: browse the greenhouse shelf, build your crate, check out, and track your orders.",
+  "bagLabel": "Crate",
+  "collection": {
+    "items": [
+      {
+        "id": "p1",
+        "image": "assets/p1.jpg",
+        "light": "Bright",
+        "name": "Monstera Deliciosa",
+        "note": "Split leaves, fast grower. Water weekly, keep in bright indirect light.",
+        "price": 899,
+        "rating": 4.8,
+        "size": "2 ft, 8-inch pot",
+        "type": "Foliage"
+      },
+      {
+        "id": "p2",
+        "image": "assets/p2.jpg",
+        "light": "Low",
+        "name": "Snake Plant",
+        "note": "Nearly unkillable. Tolerates low light and missed waterings.",
+        "price": 499,
+        "rating": 4.7,
+        "size": "1.5 ft, 6-inch pot",
+        "type": "Foliage"
+      },
+      {
+        "id": "p3",
+        "image": "assets/p3.jpg",
+        "light": "Bright",
+        "name": "Fiddle Leaf Fig",
+        "note": "The statement tree. Wants a bright corner and a steady routine.",
+        "price": 1499,
+        "rating": 4.5,
+        "size": "3 ft, 10-inch pot",
+        "type": "Foliage"
+      },
+      {
+        "id": "p4",
+        "image": "assets/p4.jpg",
+        "light": "Medium",
+        "name": "Golden Pothos",
+        "note": "Trails beautifully off a shelf. Snip and propagate in water.",
+        "price": 349,
+        "rating": 4.6,
+        "size": "Trailing, 6-inch pot",
+        "type": "Foliage"
+      },
+      {
+        "id": "p5",
+        "image": "assets/p5.jpg",
+        "light": "Medium",
+        "name": "Peace Lily",
+        "note": "White blooms and glossy leaves. Droops politely when thirsty.",
+        "price": 649,
+        "rating": 4.4,
+        "size": "1.5 ft, 7-inch pot",
+        "type": "Flowering"
+      },
+      {
+        "id": "p6",
+        "image": "assets/p6.jpg",
+        "light": "Bright",
+        "name": "Areca Palm",
+        "note": "Soft, arching fronds that fill a corner. Pet-friendly.",
+        "price": 1199,
+        "rating": 4.7,
+        "size": "3.5 ft, 10-inch pot",
+        "type": "Palm"
+      }
+    ],
+    "label": "Plant",
+    "media": true,
+    "plural": "Plants"
+  },
+  "commitTitle": "Order placed",
+  "currency": "\u20b9",
+  "deliveryFee": 49,
+  "domain": "plant shop",
+  "fields": [
+    {
+      "id": "name",
+      "label": "Plant",
+      "type": "text"
+    },
+    {
+      "id": "type",
+      "label": "Type",
+      "options": [
+        "Foliage",
+        "Flowering",
+        "Palm"
+      ],
+      "type": "enum"
+    },
+    {
+      "id": "light",
+      "label": "Light",
+      "options": [
+        "Bright",
+        "Medium",
+        "Low"
+      ],
+      "type": "enum"
+    },
+    {
+      "id": "size",
+      "label": "Size",
+      "type": "text"
+    },
+    {
+      "id": "price",
+      "label": "Price",
+      "type": "money"
+    },
+    {
+      "id": "rating",
+      "label": "Rating",
+      "type": "number"
+    },
+    {
+      "id": "note",
+      "label": "Care",
+      "type": "text"
+    }
+  ],
+  "freeAbove": 999,
+  "location": "Indiranagar, Bengaluru",
+  "name": "Fern & Co",
+  "promo": {
+    "cta": "Shop the sale",
+    "image": "assets/promo.jpg",
+    "recordId": "p6",
+    "subtitle": "Flat 15% off palms, this week only.",
+    "title": "Monsoon Greens Sale"
+  },
+  "referencePrefix": "FC",
+  "requirements": [
+    "The home screen is a photo-led gallery of every plant on the shelf.",
+    "Customers can search plants by name.",
+    "Customers can filter plants by type.",
+    "Customers can filter plants by light.",
+    "A customer can save a plant to favourites with a heart toggle.",
+    "Customers add plants to a bag from the shelf and from each plant's page, and adjust quantities in the bag before ordering.",
+    "Opening a plant shows its care notes, price, rating and size.",
+    "A customer checks out from the bag and places an order in three steps: your name and phone, then your delivery address, then review.",
+    "A placed order ends with a confirmation showing a reference the customer can quote.",
+    "Customers can review their placed orders and cancel an order they no longer want."
+  ],
+  "submissionsLabel": "Your orders",
+  "tagline": "Plants that forgive beginners."
+}

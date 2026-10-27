@@ -1,0 +1,333 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.1.0",
+    "app": "Market",
+    "domain": "commerce",
+    "family": "market",
+    "density": "balanced",
+    "densityBasis": "composition=gallery → balanced: a gallery trades records-per-screen against the media it exists to show",
+    "referenceDensity": "airy",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "stall",
+    "label": "Stall",
+    "plural": "Stalls",
+    "media": true,
+    "fields": [
+      {
+        "id": "stall",
+        "label": "Stall",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived",
+        "requiredIn": "either",
+        "scopeSource": "Filter by grade and search by produce or stall."
+      },
+      {
+        "id": "produce",
+        "label": "Produce",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "A gallery of stalls where each card shows the produce, the rate with its unit an"
+      },
+      {
+        "id": "rate",
+        "label": "Rate",
+        "type": "money",
+        "role": "price",
+        "roleSource": "derived+unit-bound",
+        "unitField": "unit",
+        "requiredIn": "entry",
+        "scopeSource": "A gallery of stalls where each card shows the produce, the rate with its unit an"
+      },
+      {
+        "id": "unit",
+        "label": "Unit",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "A gallery of stalls where each card shows the produce, the rate with its unit an"
+      },
+      {
+        "id": "grade",
+        "label": "Grade",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "A",
+          "B"
+        ],
+        "requiredIn": "entry",
+        "scopeSource": "A gallery of stalls where each card shows the produce, the rate with its unit an"
+      },
+      {
+        "id": "note",
+        "label": "Note",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a stall shows its note."
+      }
+    ],
+    "titleClass": "stall-name"
+  },
+  "search": {
+    "fields": [
+      "stall",
+      "produce"
+    ],
+    "placeholder": "Search stalls",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "grade",
+      "field": "grade",
+      "label": "Grade",
+      "testid": "grade-chip",
+      "dataAttr": "data-grade",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "stalls",
+      "purpose": "browse",
+      "title": "Stalls, by weight.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Market",
+            "context": "Kochi",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Stalls, by weight.",
+            "subtitle": "Produce sold by the kilo from six stalls."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search stalls",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "stall",
+            "fields": [
+              "stall",
+              "produce"
+            ]
+          }
+        },
+        {
+          "id": "filter-grade",
+          "component": "filter-chips",
+          "props": {
+            "label": "Grade",
+            "testid": "grade-chip",
+            "allLabel": "All",
+            "valueAttr": "data-grade"
+          },
+          "binding": {
+            "entity": "stall",
+            "filterId": "grade",
+            "field": "grade",
+            "options": [
+              "A",
+              "B"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "stall-list",
+            "itemTestid": "stall-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showChip": true,
+            "entryExtra": [
+              "unit"
+            ],
+            "forbiddenRoles": [],
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "stall-open"
+          },
+          "binding": {
+            "entity": "stall",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:grade"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Stall",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Market",
+            "context": "Kochi",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": true,
+            "showChip": true,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "stall-name"
+          },
+          "binding": {
+            "entity": "stall",
+            "title": "stall",
+            "subtitle": "produce",
+            "price": "rate"
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "stall",
+            "fields": [
+              "unit",
+              "note"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "stalls",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "stalls",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "airy",
+      "basis": "light share 79.9%, saturated share 5.3% — a near-white board reads airy",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "gallery",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "card",
+      "basis": "the entity declares media, so records lead with an image",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"airy\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

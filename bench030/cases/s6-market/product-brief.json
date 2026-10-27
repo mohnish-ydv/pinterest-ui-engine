@@ -1,0 +1,112 @@
+{
+  "name": "Market",
+  "tagline": "Stalls, by weight.",
+  "about": "Produce sold by the kilo from six stalls.",
+  "location": "Kochi",
+  "currency": "\u20b9",
+  "domain": "commerce",
+  "collection": {
+    "label": "Stall",
+    "plural": "Stalls",
+    "media": true,
+    "items": [
+      {
+        "id": "k1",
+        "stall": "Kochi greens",
+        "produce": "Spinach",
+        "rate": 40,
+        "unit": "kg",
+        "grade": "A",
+        "note": "Cut this morning."
+      },
+      {
+        "id": "k2",
+        "stall": "Kochi greens",
+        "produce": "Drumstick",
+        "rate": 90,
+        "unit": "kg",
+        "grade": "A",
+        "note": "Tender only."
+      },
+      {
+        "id": "k3",
+        "stall": "Fort produce",
+        "produce": "Banana",
+        "rate": 55,
+        "unit": "kg",
+        "grade": "B",
+        "note": "Ripe today."
+      },
+      {
+        "id": "k4",
+        "stall": "Fort produce",
+        "produce": "Coconut",
+        "rate": 35,
+        "unit": "piece",
+        "grade": "A",
+        "note": "Dry, for oil."
+      },
+      {
+        "id": "k5",
+        "stall": "Harbour stall",
+        "produce": "Tomato",
+        "rate": 60,
+        "unit": "kg",
+        "grade": "B",
+        "note": "Firm."
+      },
+      {
+        "id": "k6",
+        "stall": "Harbour stall",
+        "produce": "Ginger",
+        "rate": 140,
+        "unit": "kg",
+        "grade": "A",
+        "note": "New season."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "stall",
+      "label": "Stall",
+      "type": "text"
+    },
+    {
+      "id": "produce",
+      "label": "Produce",
+      "type": "text"
+    },
+    {
+      "id": "rate",
+      "label": "Rate",
+      "type": "money"
+    },
+    {
+      "id": "unit",
+      "label": "Unit",
+      "type": "text"
+    },
+    {
+      "id": "grade",
+      "label": "Grade",
+      "type": "enum"
+    },
+    {
+      "id": "note",
+      "label": "Note",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A gallery of stalls where each card shows the produce, the rate with its unit and the grade.",
+    "Filter by grade and search by produce or stall.",
+    "Opening a stall shows its note."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Browse the stalls",
+    "Filter to A",
+    "Open a stall"
+  ]
+}

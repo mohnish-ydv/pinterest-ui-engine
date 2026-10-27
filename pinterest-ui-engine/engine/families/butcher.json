@@ -1,0 +1,63 @@
+{
+  "$schema": "design-family/1",
+  "family": "butcher",
+  "description": "Marble Meats \u2014 saturated, serif-led food commerce derived from reference R02 (Beefy). Reproduces the Mission 017 design decisions exactly; every constant that used to be baked into the token compiler now lives here.",
+  "typography": {
+    "displayStrategy": "serif",
+    "displayStack": "\"Playfair Display\", \"Didot\", Georgia, \"Times New Roman\", serif",
+    "uiStack": "-apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "displayRoleNote": "High-contrast serif for display, product names and section anchors. The reference's own type is a high-contrast serif at display sizes; identity of the face is NOT inferred, only the role."
+  },
+  "borders": {
+    "hairline": "#EADBD4",
+    "stepperHairline": "#D8C4BC",
+    "hairlineWidth": "1px",
+    "stepperWidth": "1.5px",
+    "focusRing": {
+      "width": "3px",
+      "offset": "2px",
+      "color": "brand"
+    }
+  },
+  "shadows": {
+    "card": "0 10px 24px rgba(59, 16, 18, 0.10)",
+    "sheet": "0 -12px 32px rgba(59, 16, 18, 0.12)",
+    "search": "0 6px 18px rgba(59, 16, 18, 0.18)",
+    "chip": "0 4px 12px rgba(59, 16, 18, 0.10)"
+  },
+  "surfaces": {
+    "groundSource": "spec",
+    "inputBg": null,
+    "inputTextSource": "ink"
+  },
+  "semantic": {
+    "error": "#A02026",
+    "warning": "#8A5A00",
+    "success": "palette:cert"
+  },
+  "states": {
+    "hoverTarget": "brandDeep",
+    "disabled": {
+      "bg": "#F1E7E2",
+      "fg": "#6E5A5E"
+    }
+  },
+  "density": {
+    "lineHeight": 1.45,
+    "bodyScale": 1
+  },
+  "space": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32
+  ],
+  "responsive": {
+    "breakpoint": 900,
+    "mobile": "Single column. Product grid 2-up. Fixed bottom tab bar (Home / Bag). Hero field full-bleed with the content sheet overlapping it.",
+    "desktop": "Product grid 4-up. Tab bar hidden; bag action moves inline into the hero brand row. Sheet and detail sheet drop the bottom padding reserved for the tab bar."
+  }
+}

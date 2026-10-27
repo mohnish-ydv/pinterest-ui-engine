@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CarePoint — Book a doctor visit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div data-view="home">
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <div class="brand"><span class="brand-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12L16 12h5"/></svg></span><span>CarePoint</span></div>
+      <span class="location"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Bengaluru</span>
+    </div>
+  </header>
+  <main class="wrap home-main">
+    <h1 class="page-title">Find your doctor</h1>
+    <p class="page-sub">Book a visit in under a minute. No advance payment.</p>
+    <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="search" data-testid="search" type="search" placeholder="Search doctors…" aria-label="Search doctors"></label>
+    <div class="specs" id="specs" role="group" aria-label="Specialties"></div>
+    <div id="upcoming"></div>
+    <div class="section-head"><h2 class="section-title">Top Doctors</h2><span class="section-note">Bengaluru</span></div>
+    <div class="doctors" id="doctors"></div>
+  </main>
+</div>
+
+<div data-view="detail" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to doctors</span></button><span class="sub-title">Doctor Details</span></header>
+  <main class="wrap detail-main" id="detail-content"></main>
+</div>
+
+<div data-view="confirmation" hidden>
+  <main class="wrap confirm-main" id="confirm-content"></main>
+</div>
+
+<div data-view="appointments" hidden>
+  <header class="sub-bar wrap"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to doctors</span></button><h1 class="sub-title">My Appointments</h1></header>
+  <main class="wrap appts-main" id="appts-content"></main>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <button class="tab tab-on" data-nav="home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5.5 9.5V21h13V9.5"/></svg>Home</button>
+  <button class="tab" data-nav="appointments" data-testid="appts-open"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Appointments <span class="appt-count" data-testid="appt-count" hidden>0</span></button>
+</nav>
+
+<script>window.__DATA__ = {"app":"CarePoint — clinic appointment booking (Mission 018 brief). The brief defines product requirements only; visual design comes from the reference via the pipeline.","brand":"CarePoint","doctors":[{"about":"Family physician for everyday illness, preventive screening and lifestyle care. Unhurried consults, clear follow-ups.","exp":12,"fee":500,"id":"ananya-rao","name":"Dr. Ananya Rao","rating":4.9,"reviews":212,"specialty":"General Physician"},{"about":"Restorative and cosmetic dentistry — implants, aligners and painless root canals.","exp":9,"fee":700,"id":"vikram-shah","name":"Dr. Vikram Shah","rating":4.7,"reviews":148,"specialty":"Dentist"},{"about":"Medical and cosmetic dermatology: acne, pigmentation and hair-loss treatment plans that fit real routines.","exp":11,"fee":900,"id":"meera-kapoor","name":"Dr. Meera Kapoor","rating":4.8,"reviews":320,"specialty":"Dermatologist"},{"about":"Gentle paediatric care from newborn checks to adolescent health; vaccination schedules explained, not rushed.","exp":8,"fee":600,"id":"arjun-mehta","name":"Dr. Arjun Mehta","rating":4.6,"reviews":96,"specialty":"Pediatrician"},{"about":"Obstetrics and gynaecology with a focus on preventive screening and pregnancy care.","exp":14,"fee":850,"id":"sara-thomas","name":"Dr. Sara Thomas","rating":5,"reviews":87,"specialty":"Gynecologist"},{"about":"Sports injuries, joint pain and post-surgery rehabilitation, with honest advice on when surgery is not needed.","exp":13,"fee":950,"id":"rohan-verma","name":"Dr. Rohan Verma","rating":4.5,"reviews":203,"specialty":"Orthopedic"}],"functionalContract":{"storageKey":"carepoint-appts-v1","testids":["doctor-card","doctor-open","specialty-chip","search","day-chip","slot","patient-name","patient-phone","error-name","error-phone","book-btn","appt-ref","appt-item","cancel-btn","cancel-confirm","appts-open","back-btn","upcoming-card"],"views":["home","detail","confirmation","appointments"]},"journeys":["Find a doctor: browse the list, filter by specialty chips, search by name.","Book: open a doctor, pick a day from the 7-day strip, pick an available time slot, enter patient name + 10-digit phone, see inline validation errors for invalid input, confirm.","Confirmation shows an appointment reference and the booked summary (doctor, day, time, fee).","My Appointments lists bookings (persisted across reload), each cancellable via an inline confirm; cancelling frees the slot."],"location":"Bengaluru","rules":{"days":"7 days starting today, computed at runtime","phone":"exactly 10 digits after stripping spaces","slots":["9:00 AM","10:00 AM","11:00 AM","12:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"],"takenRule":"slot is taken iff (doctorIndex + dayIndex + slotIndex) % 3 === 0, or it is already booked in a stored appointment","validation":"name must be >= 2 characters; errors render inline (error-name / error-phone) and booking does not proceed"}};</script>
+<script src="app.js"></script>
+</body>
+</html>

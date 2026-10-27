@@ -1,0 +1,141 @@
+{
+  "fulfilVersion": "1.0.0",
+  "outcomes": [
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/card renders \"subtitle\" natively",
+      "id": "SR-001-field",
+      "subject": "produce",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"each card\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/card renders \"price\" natively",
+      "id": "SR-002-field",
+      "subject": "rate",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"each card\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "entity-collection/card hosts it as an extra region, and the plan wires it",
+      "id": "SR-003-field",
+      "subject": "unit",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"each card\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/card renders \"facet\" natively",
+      "id": "SR-004-field",
+      "subject": "grade",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"each card\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-005-field",
+      "subject": "stall",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-006-field",
+      "subject": "produce",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-007-field",
+      "subject": "grade",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "record-header renders \"title\"",
+      "id": "SR-008-field",
+      "subject": "stall",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "detail-list renders \"detail\"",
+      "id": "SR-009-field",
+      "subject": "note",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    }
+  ],
+  "counts": {
+    "satisfied": 9
+  },
+  "total": 9,
+  "passes": 9,
+  "blocking": [],
+  "resolutionCounts": {
+    "A": 8,
+    "B": 1
+  }
+}
