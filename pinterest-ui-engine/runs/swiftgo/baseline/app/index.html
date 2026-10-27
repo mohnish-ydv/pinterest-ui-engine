@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SwiftGo — Send and track parcels</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div data-view="home">
+  <header class="hdr">
+    <div class="hdr-in">
+      <div class="logo">SwiftGo</div>
+      <div class="loc">Bengaluru</div>
+    </div>
+  </header>
+  <main class="main">
+    <section class="hero">
+      <h1>Your packages, our priority.</h1>
+      <p>Send a parcel, or track one you have already sent.</p>
+      <div class="track">
+        <input id="track-input" data-testid="track-input" type="search" placeholder="Tracking reference">
+        <button class="btn-primary" data-testid="track-btn">Track</button>
+      </div>
+      <p class="err" data-testid="track-error" hidden></p>
+      <button class="btn-primary wide" data-testid="send-open">Send a parcel</button>
+    </section>
+
+    <div id="active"></div>
+
+    <h2 class="h2">Recent shipments</h2>
+    <div class="list" id="recent"></div>
+  </main>
+</div>
+
+<div data-view="detail" hidden>
+  <header class="sub"><button class="back" data-testid="back-btn">← Back</button></header>
+  <main class="main" id="detail-content"></main>
+</div>
+
+<div data-view="send" hidden>
+  <header class="sub"><button class="back" data-nav="home">← Back</button><span class="sub-t">Send a parcel</span></header>
+  <main class="main">
+    <h2 class="h2">What are you sending?</h2>
+    <div class="pkgs" id="pkg-grid"></div>
+
+    <h2 class="h2">How heavy is it?</h2>
+    <div class="stepper">
+      <button data-testid="weight-minus">-</button>
+      <span data-testid="weight-value">1.5 kg</span>
+      <button data-testid="weight-plus">+</button>
+    </div>
+
+    <h2 class="h2">Pickup &amp; drop</h2>
+    <label class="fld"><span>Pickup address</span><input id="pickup" data-testid="pickup" placeholder="Home · Indiranagar"></label>
+    <label class="fld"><span>Drop address</span><input id="drop" data-testid="drop" placeholder="Where is it going?"></label>
+    <p class="err" data-testid="error-drop" hidden></p>
+    <label class="fld"><span>Receiver phone</span><input id="phone" data-testid="phone" placeholder="10-digit mobile"></label>
+    <p class="err" data-testid="error-phone" hidden></p>
+
+    <h2 class="h2">How fast?</h2>
+    <div class="svcs" id="svc-row"></div>
+
+    <button class="btn-primary wide" data-testid="send-submit">Pay <span data-testid="quote-total">—</span></button>
+  </main>
+</div>
+
+<div data-view="confirmation" hidden>
+  <main class="main confirm" id="confirm-content"></main>
+</div>
+
+<div data-view="shipments" hidden>
+  <header class="sub"><button class="back" data-nav="home">← Back</button><span class="sub-t">My shipments</span></header>
+  <main class="main" id="shipments-content"></main>
+</div>
+
+<nav class="tabs">
+  <button class="tab on" data-nav="home">Home</button>
+  <button class="tab" data-nav="shipments" data-testid="shipments-open">Shipments</button>
+  <button class="tab" data-nav="send">Send</button>
+</nav>
+
+<script>window.__DATA__ = {
+  "app": "SwiftGo — parcel delivery and live tracking (Mission 020 example app)",
+  "brand": "SwiftGo",
+  "tagline": "Your packages, our priority.",
+  "location": "Bengaluru",
+  "currency": "₹",
+  "unit": "kg",
+  "features": ["Same-day pickup", "Live tracking", "Insured up to ₹10,000"],
+  "services": [
+    { "id": "standard", "name": "Standard", "note": "2–3 business days", "multiplier": 1 },
+    { "id": "express", "name": "Express", "note": "Same day by 8 PM", "multiplier": 1.5 }
+  ],
+  "packages": [
+    { "id": "document", "name": "Document", "base": 40, "note": "Papers, tickets" },
+    { "id": "small", "name": "Small", "base": 60, "note": "Up to 30 cm" },
+    { "id": "medium", "name": "Medium", "base": 90, "note": "Up to 60 cm" },
+    { "id": "large", "name": "Large", "base": 140, "note": "Up to 90 cm" }
+  ],
+  "rates": { "perKg": 18, "includedKg": 1, "weightStep": 0.5, "minWeight": 0.5, "maxWeight": 25 },
+  "functionalContract": {
+    "views": ["home", "detail", "send", "confirmation", "shipments"],
+    "testids": [
+      "shipment-card", "shipment-open", "shipment-item", "status-pill",
+      "track-input", "track-btn", "track-error",
+      "send-open", "shipments-open",
+      "timeline-step", "eta",
+      "package-type", "weight-minus", "weight-plus", "weight-value", "quote-total",
+      "service-type", "pickup", "drop", "phone", "send-submit",
+      "error-drop", "error-phone",
+      "confirm-ref", "cancel-btn", "cancel-confirm",
+      "empty-shipments", "back-btn"
+    ]
+  },
+  "seedShipments": [
+    {
+      "ref": "SG482910375",
+      "from": "Home · Indiranagar",
+      "to": "Office · Koramangala",
+      "pkg": "small",
+      "weight": 1.5,
+      "service": "express",
+      "stage": 2,
+      "eta": "Today, 2:30 PM – 4:30 PM",
+      "placed": "Today, 9:15 AM"
+    },
+    {
+      "ref": "SG482901122",
+      "from": "Warehouse · Peenya",
+      "to": "Client · Whitefield",
+      "pkg": "medium",
+      "weight": 4,
+      "service": "standard",
+      "stage": 4,
+      "eta": "Delivered 11:05 AM",
+      "placed": "Yesterday, 6:40 PM"
+    }
+  ]
+}
+;</script>
+<script src="app.js"></script>
+</body>
+</html>

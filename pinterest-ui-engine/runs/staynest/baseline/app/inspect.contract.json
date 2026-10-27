@@ -1,0 +1,187 @@
+{
+  "id": "listing-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v1 (planner 1.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"listing-card\"] .card-title, [data-testid=\"listing-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"listing-card\"] .card-sub, [data-testid=\"listing-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"filter-type\"][data-value=\"Apartment\"]"
+    },
+    {
+      "click": "[data-testid=\"filter-type\"][data-value=\"Apartment\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"filter-type\"][data-value=\"Apartment\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"filter-type\"][data-value=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"listing-card\"][data-id=\"p1\"]"
+    },
+    {
+      "click": "[data-testid=\"listing-card\"][data-id=\"p1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"option-slot\"][data-value=\"Sat 10:00 AM\"]"
+    },
+    {
+      "click": "[data-testid=\"option-slot\"][data-value=\"Sat 10:00 AM\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "optionSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"option-slot\"][data-value=\"Sat 10:00 AM\"]",
+      "sequence": [
+        "choose an option"
+      ]
+    },
+    {
+      "measure": "ctaRest",
+      "kind": "rest",
+      "selector": "[data-testid=\"primary-action\"]",
+      "sequence": [
+        "detail view, pointer away"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"primary-action\"]"
+    },
+    {
+      "hover": "[data-testid=\"primary-action\"]",
+      "settleMs": 300
+    },
+    {
+      "measure": "ctaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"primary-action\"]",
+      "sequence": [
+        "hover the primary action"
+      ]
+    },
+    {
+      "click": "[data-testid=\"primary-action\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "errorText",
+      "kind": "error",
+      "selector": "[data-testid=\"error-visitor\"]",
+      "sequence": [
+        "submit an empty form"
+      ]
+    },
+    {
+      "shot": "detail-errors-390"
+    },
+    {
+      "setValues": [
+        {
+          "selector": "[data-testid=\"field-visitor\"]",
+          "value": "Test Your name"
+        },
+        {
+          "selector": "[data-testid=\"field-phone\"]",
+          "value": "9876543210"
+        }
+      ]
+    },
+    {
+      "centre": "[data-testid=\"primary-action\"]"
+    },
+    {
+      "click": "[data-testid=\"primary-action\"]",
+      "settleMs": 450
+    },
+    {
+      "shot": "confirmation-390"
+    },
+    {
+      "measure": "confirmRef",
+      "kind": "post-action",
+      "selector": "[data-testid=\"confirm-ref\"]",
+      "sequence": [
+        "complete a submission"
+      ]
+    },
+    {
+      "axe": "browse"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"browse\"], [data-act=\"go\"][data-view=\"browse\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"listing-card\"][data-id=\"p1\"]"
+    },
+    {
+      "click": "[data-testid=\"listing-card\"][data-id=\"p1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

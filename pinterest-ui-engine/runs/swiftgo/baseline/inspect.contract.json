@@ -1,0 +1,196 @@
+{
+  "id": "swiftgo-baseline",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "steps": [
+    {
+      "shot": "home-390"
+    },
+    {
+      "measure": "activeStatusPill",
+      "kind": "rest",
+      "selector": "[data-view=\"home\"] [data-testid=\"shipment-open\"] [data-testid=\"status-pill\"]",
+      "sequence": [
+        "initial render (seeded active shipment)"
+      ]
+    },
+    {
+      "measure": "sendCta",
+      "kind": "rest",
+      "selector": "[data-testid=\"send-open\"]",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"send-open\"]"
+    },
+    {
+      "hover": "[data-testid=\"send-open\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "sendCtaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"send-open\"]",
+      "sequence": [
+        "hover Send a parcel"
+      ]
+    },
+    {
+      "click": "[data-testid=\"send-open\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "send-390"
+    },
+    {
+      "measure": "pkgSelected",
+      "kind": "selected",
+      "selector": "[data-view=\"send\"] [data-testid=\"package-type\"][data-pkg=\"small\"] .pkg-n",
+      "sequence": [
+        "open send",
+        "Small preselected"
+      ]
+    },
+    {
+      "measure": "quoteInCta",
+      "kind": "rest",
+      "selector": "[data-testid=\"quote-total\"]",
+      "sequence": [
+        "open send"
+      ]
+    },
+    {
+      "click": "[data-testid=\"send-submit\"]",
+      "settleMs": 300
+    },
+    {
+      "measure": "errorDrop",
+      "kind": "error",
+      "selector": "[data-testid=\"error-drop\"]",
+      "sequence": [
+        "submit empty send form"
+      ]
+    },
+    {
+      "shot": "send-errors-390"
+    },
+    {
+      "setValues": [
+        {
+          "selector": "[data-testid=\"pickup\"]",
+          "value": "Home \u00b7 Indiranagar"
+        },
+        {
+          "selector": "[data-testid=\"drop\"]",
+          "value": "Hostel \u00b7 Jayanagar"
+        },
+        {
+          "selector": "[data-testid=\"phone\"]",
+          "value": "9876543210"
+        }
+      ]
+    },
+    {
+      "click": "[data-testid=\"send-submit\"]",
+      "settleMs": 450
+    },
+    {
+      "shot": "confirmation-390"
+    },
+    {
+      "measure": "confirmRef",
+      "kind": "post-action",
+      "selector": "[data-testid=\"confirm-ref\"]",
+      "sequence": [
+        "complete a booking"
+      ]
+    },
+    {
+      "click": "[data-view=\"confirmation\"] [data-nav=\"home\"]",
+      "settleMs": 350
+    },
+    {
+      "click": "[data-testid=\"shipments-open\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "shipments-390"
+    },
+    {
+      "measure": "shipmentRow",
+      "kind": "post-action",
+      "selector": "[data-view=\"shipments\"] [data-testid=\"shipment-item\"] .row-sub",
+      "sequence": [
+        "after booking",
+        "open shipments"
+      ]
+    },
+    {
+      "axe": "shipments"
+    },
+    {
+      "click": "[data-testid=\"shipments-open\"]",
+      "settleMs": 100
+    },
+    {
+      "click": "[data-view=\"shipments\"] [data-nav=\"home\"]",
+      "settleMs": 300
+    },
+    {
+      "axe": "home"
+    },
+    {
+      "click": "[data-testid=\"send-open\"]",
+      "settleMs": 300
+    },
+    {
+      "axe": "send"
+    },
+    {
+      "click": "[data-view=\"send\"] [data-nav=\"home\"]",
+      "settleMs": 300
+    },
+    {
+      "centre": "[data-view=\"home\"] [data-testid=\"shipment-open\"]"
+    },
+    {
+      "click": "[data-view=\"home\"] [data-testid=\"shipment-open\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "axe": "detail"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-testid=\"back-btn\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "home-1440"
+    },
+    {
+      "click": "[data-testid=\"send-open\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "send-1440"
+    }
+  ]
+}

@@ -1,0 +1,581 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "StayNest",
+    "domain": "marketplace",
+    "family": null,
+    "density": "comfortable",
+    "densityBasis": "light share 76.1%, saturated share 9.49%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "listing",
+    "label": "Property",
+    "plural": "Properties",
+    "media": true,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Property"
+      },
+      {
+        "id": "area",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Area"
+      },
+      {
+        "id": "price",
+        "type": "money",
+        "role": "price",
+        "label": "Rent",
+        "suffix": "/month"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "type",
+        "type": "enum",
+        "role": "facet",
+        "label": "Type",
+        "options": [
+          "Apartment",
+          "Studio",
+          "Villa"
+        ]
+      },
+      {
+        "id": "verified",
+        "type": "bool",
+        "role": "badge",
+        "label": "Verified",
+        "trueLabel": "Verified"
+      },
+      {
+        "id": "bedrooms",
+        "type": "number",
+        "role": "stat",
+        "label": "Bedrooms"
+      },
+      {
+        "id": "bathrooms",
+        "type": "number",
+        "role": "stat",
+        "label": "Bathrooms"
+      },
+      {
+        "id": "furnished",
+        "type": "enum",
+        "role": "detail",
+        "label": "Furnishing"
+      },
+      {
+        "id": "deposit",
+        "type": "money",
+        "role": "detail",
+        "label": "Deposit"
+      },
+      {
+        "id": "amenities",
+        "type": "list",
+        "role": "tags",
+        "label": "Amenities"
+      }
+    ],
+    "titleClass": null
+  },
+  "search": {
+    "fields": [
+      "name",
+      "area"
+    ],
+    "placeholder": "Search by area or property"
+  },
+  "filters": [
+    {
+      "id": "type",
+      "field": "type",
+      "label": "Property type",
+      "control": "chips"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "save",
+      "label": "Save",
+      "kind": "toggle",
+      "field": "saved"
+    },
+    {
+      "id": "book",
+      "label": "Book a visit",
+      "kind": "commit",
+      "form": [
+        {
+          "id": "visitor",
+          "label": "Your name",
+          "type": "text",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Phone number",
+          "type": "tel",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "options": {
+        "id": "slot",
+        "label": "Preferred visit slot",
+        "values": [
+          "Sat 10:00 AM",
+          "Sat 12:00 PM",
+          "Sun 4:00 PM"
+        ],
+        "required": true
+      },
+      "result": {
+        "collection": "visits",
+        "referencePrefix": "BV",
+        "title": "Visit booked"
+      }
+    }
+  ],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-browse",
+        "label": "Browse",
+        "view": "browse",
+        "icon": "grid",
+        "dataNav": "browse"
+      },
+      {
+        "id": "nav-saved",
+        "label": "Saved",
+        "view": "saved",
+        "icon": "heart",
+        "dataNav": "saved"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "browse",
+      "purpose": "browse",
+      "title": "Find your perfect place.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "StayNest",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Find your perfect place.",
+            "subtitle": "Verified homes, trusted landlords. Book a visit in two taps."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search by area or property",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "listing",
+            "fields": [
+              "name",
+              "area"
+            ]
+          }
+        },
+        {
+          "id": "filter-type",
+          "component": "filter-chips",
+          "props": {
+            "label": "Property type",
+            "testid": "filter-type",
+            "allLabel": "All",
+            "valueAttr": "data-value"
+          },
+          "binding": {
+            "entity": "listing",
+            "filterId": "type",
+            "field": "type",
+            "options": [
+              "Apartment",
+              "Studio",
+              "Villa"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "listing-list",
+            "itemTestid": "listing-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "openTestid": null
+          },
+          "binding": {
+            "entity": "listing",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:type"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "saved",
+      "purpose": "collection",
+      "title": "Saved",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "StayNest",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Saved",
+            "subtitle": "Your shortlisted properties."
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "listing-list",
+            "itemTestid": "listing-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle"
+          },
+          "binding": {
+            "entity": "listing",
+            "source": "saved"
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing saved yet. Tap the heart on something you like."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Property",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "StayNest",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "titleClass": null
+          },
+          "binding": {
+            "entity": "listing",
+            "title": "name",
+            "subtitle": "area",
+            "price": "price"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "listing",
+            "fields": [
+              "bedrooms",
+              "bathrooms"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "listing",
+            "fields": [
+              "rating",
+              "reviews",
+              "furnished",
+              "deposit",
+              "amenities"
+            ]
+          }
+        },
+        {
+          "id": "options",
+          "component": "option-grid",
+          "props": {
+            "label": "Preferred visit slot",
+            "testid": "option-slot",
+            "required": true
+          },
+          "binding": {
+            "entity": "listing",
+            "field": "slot",
+            "options": [
+              "Sat 10:00 AM",
+              "Sat 12:00 PM",
+              "Sun 4:00 PM"
+            ]
+          }
+        },
+        {
+          "id": "form",
+          "component": "form-fields",
+          "props": {
+            "testid": "form",
+            "submitLabel": "Book a visit"
+          },
+          "binding": {
+            "entity": "listing",
+            "fields": [
+              {
+                "id": "visitor",
+                "label": "Your name",
+                "type": "text",
+                "required": true,
+                "minLength": 2,
+                "message": "Enter your name (at least 2 characters)."
+              },
+              {
+                "id": "phone",
+                "label": "Phone number",
+                "type": "tel",
+                "required": true,
+                "pattern": "^\\d{10}$",
+                "message": "Enter a 10-digit mobile number."
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "component": "primary-action",
+          "props": {
+            "label": "Book a visit",
+            "testid": "primary-action",
+            "action": "book",
+            "showAmount": false
+          },
+          "binding": {
+            "entity": "listing",
+            "amountField": "price"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Visit booked",
+            "testid": "confirm-ref",
+            "summaryTestid": "confirm-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "listing",
+            "referencePrefix": "BV"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "browse",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "browse",
+      "trigger": "back"
+    },
+    {
+      "id": "toggle-save",
+      "from": "detail",
+      "trigger": "toggle",
+      "collection": "saved",
+      "persists": true
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "book",
+      "creates": "visits",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "light share 76.1%, saturated share 9.49%",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "tabbar",
+      "basis": "2 top-level destinations, mobile-first",
+      "source": "rule"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "card",
+      "basis": "the entity declares media, so records lead with an image",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "commitShape",
+      "value": "form+primary-action",
+      "basis": "a single-step commit is declared",
+      "source": "brief"
+    },
+    {
+      "id": "timeSelection",
+      "value": "option-grid",
+      "basis": "a static option list is declared",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

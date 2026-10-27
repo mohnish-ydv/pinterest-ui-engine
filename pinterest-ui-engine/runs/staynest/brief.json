@@ -1,0 +1,67 @@
+{
+  "app": "StayNest — rental marketplace for tenants (Mission 021 generated app)",
+  "brand": "StayNest",
+  "tagline": "Find your perfect place.",
+  "subtitle": "Verified homes, trusted landlords. Book a visit in two taps.",
+  "location": "Bengaluru",
+  "currency": "₹",
+  "unit": "",
+  "domain": "marketplace",
+  "views": ["browse", "saved"],
+  "entity": {
+    "id": "listing",
+    "label": "Property",
+    "plural": "Properties",
+    "media": true,
+    "fields": [
+      { "id": "name", "type": "text", "role": "title", "label": "Property" },
+      { "id": "area", "type": "text", "role": "subtitle", "label": "Area" },
+      { "id": "price", "type": "money", "role": "price", "label": "Rent", "suffix": "/month" },
+      { "id": "rating", "type": "rating", "role": "meta", "label": "Rating" },
+      { "id": "reviews", "type": "number", "role": "meta", "label": "Reviews", "suffix": " reviews" },
+      { "id": "type", "type": "enum", "role": "facet", "label": "Type", "options": ["Apartment", "Studio", "Villa"] },
+      { "id": "verified", "type": "bool", "role": "badge", "label": "Verified", "trueLabel": "Verified" },
+      { "id": "bedrooms", "type": "number", "role": "stat", "label": "Bedrooms" },
+      { "id": "bathrooms", "type": "number", "role": "stat", "label": "Bathrooms" },
+      { "id": "furnished", "type": "enum", "role": "detail", "label": "Furnishing" },
+      { "id": "deposit", "type": "money", "role": "detail", "label": "Deposit" },
+      { "id": "amenities", "type": "list", "role": "tags", "label": "Amenities" }
+    ],
+    "records": [
+      { "id": "p1", "name": "Sunlit 2BHK in Indiranagar", "area": "Indiranagar, Bengaluru", "price": 32000, "rating": 4.8, "reviews": 42, "type": "Apartment", "verified": true, "bedrooms": 2, "bathrooms": 2, "furnished": "Semi-furnished", "deposit": 96000, "amenities": ["Lift", "Parking", "Power backup"] },
+      { "id": "p2", "name": "Studio near Koramangala", "area": "Koramangala, Bengaluru", "price": 18500, "rating": 4.5, "reviews": 28, "type": "Studio", "verified": true, "bedrooms": 1, "bathrooms": 1, "furnished": "Furnished", "deposit": 37000, "amenities": ["Wi-Fi", "Gym"] },
+      { "id": "p3", "name": "Garden villa in Whitefield", "area": "Whitefield, Bengaluru", "price": 64000, "rating": 4.9, "reviews": 61, "type": "Villa", "verified": true, "bedrooms": 4, "bathrooms": 4, "furnished": "Unfurnished", "deposit": 192000, "amenities": ["Garden", "Parking", "Servant room"] },
+      { "id": "p4", "name": "Compact 1BHK in Jayanagar", "area": "Jayanagar, Bengaluru", "price": 21000, "rating": 4.3, "reviews": 19, "type": "Apartment", "verified": false, "bedrooms": 1, "bathrooms": 1, "furnished": "Semi-furnished", "deposit": 42000, "amenities": ["Lift", "Water 24x7"] },
+      { "id": "p5", "name": "Loft studio in HSR Layout", "area": "HSR Layout, Bengaluru", "price": 24000, "rating": 4.6, "reviews": 33, "type": "Studio", "verified": true, "bedrooms": 1, "bathrooms": 1, "furnished": "Furnished", "deposit": 48000, "amenities": ["Wi-Fi", "Parking"] },
+      { "id": "p6", "name": "Family 3BHK in Hebbal", "area": "Hebbal, Bengaluru", "price": 45000, "rating": 4.7, "reviews": 50, "type": "Apartment", "verified": true, "bedrooms": 3, "bathrooms": 3, "furnished": "Semi-furnished", "deposit": 90000, "amenities": ["Lift", "Parking", "Play area"] }
+    ]
+  },
+  "search": { "fields": ["name", "area"], "placeholder": "Search by area or property" },
+  "filters": [
+    { "id": "type", "field": "type", "label": "Property type", "control": "chips" }
+  ],
+  "actions": [
+    { "id": "save", "label": "Save", "kind": "toggle", "field": "saved" },
+    {
+      "id": "book", "label": "Book a visit", "kind": "commit",
+      "form": [
+        { "id": "visitor", "label": "Your name", "type": "text", "required": true, "minLength": 2, "message": "Enter your name (at least 2 characters)." },
+        { "id": "phone", "label": "Phone number", "type": "tel", "required": true, "pattern": "^\\d{10}$", "message": "Enter a 10-digit mobile number." }
+      ],
+      "options": { "id": "slot", "label": "Preferred visit slot", "values": ["Sat 10:00 AM", "Sat 12:00 PM", "Sun 4:00 PM"], "required": true },
+      "result": { "collection": "visits", "referencePrefix": "BV", "title": "Visit booked" }
+    }
+  ],
+  "functionalContract": {
+    "views": ["browse", "saved", "detail", "confirmation"],
+    "testids": [
+      "app-header", "search", "search-btn", "filter-type",
+      "listing-list", "listing-card", "save-toggle",
+      "detail-title", "detail-price", "stat-strip", "detail-list",
+      "option-slot", "form", "field-visitor", "field-phone",
+      "error-visitor", "error-phone", "primary-action",
+      "confirm-ref", "confirm-summary", "empty-state",
+      "back-btn", "nav-browse", "nav-saved"
+    ]
+  }
+}

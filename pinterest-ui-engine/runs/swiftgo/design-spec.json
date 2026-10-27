@@ -1,0 +1,51 @@
+{
+  "reference": "R12 SwiftGo (media_library/image/29/293503c7….jpg)",
+  "family": "swiftgo",
+  "palette": {
+    "brand": "#C2410C",
+    "brandDeep": "#9A3B08",
+    "ground": "#FBF6EF",
+    "surface": "#FFFFFF",
+    "board": "#2A1F18",
+    "ink": "#1F1A17",
+    "inkSoft": "#6B625B",
+    "tint": "#FDEBD7",
+    "star": "#E8A33D",
+    "cert": "#1E7B4D",
+    "error": "#B3261E"
+  },
+  "typography": {
+    "displayRole": "none — the reference is sans-led at every level and spends nothing on type personality; hierarchy is carried by weight and colour (orange vs near-black vs warm grey), not by a display face",
+    "uiRole": "one humanist grotesque for everything; semibold for labels and field names, bold for headings and the amount inside the CTA",
+    "scalePx": { "body": 14, "display": 26, "section": 17, "small": 12, "amount": 15, "ref": 16 }
+  },
+  "shape": { "sheetRadius": 20, "cardRadius": 16, "controlRadius": 999, "addBtn": 34 },
+  "composition": {
+    "home": "Quiet cream header (brand, location), greeting, a tracking field with the search action attached to it, one primary 'Send a parcel' action, then the active shipment card with its status answered before anything else, then recent shipments as one repeated row module.",
+    "detail": "Status first, proof second, detail third — the reference's tracking read order: status card with ETA, then the route panel, then address, then the vertical timeline. Identifiers are bold but not the headline.",
+    "send": "Single column, one decision group per block (package type, weight, addresses, service), one full-width CTA pinned at the bottom of the flow with the live amount inside it.",
+    "density": "Moderate and even. Form rows are tall; list rows are one repeated module (tint icon chip left, two-line text, chevron right)."
+  },
+  "grammar": {
+    "cta": "One pill shape, brand fill, white text, and the price disclosed inside the button at the decision point.",
+    "selection": "Package type and service are card/pill selections marked by brand outline plus brand fill; weight is a stepper.",
+    "numbers": "The quote equals base + per-kg above the included weight, times the service multiplier, and must agree on the form, the confirmation and the shipments list.",
+    "status": "Five-stage timeline. Completed = filled brand node with a check; current = filled brand node; upcoming = hollow grey. Terminal 'Delivered' gets a distinct glyph, and 'Cancelled' replaces the timeline with a plain status.",
+    "errors": "Inline, under the field, in the error colour, with the field ringed. No modal interruptions.",
+    "tabs": "Three tabs: Home / Shipments / Send."
+  },
+  "imagery": {
+    "role": "The reference leads its tracking screens with a map. No map service is available offline, so a stylised route panel stands in: a dark board with an orange-to-ink route line, origin pin, destination pin and vehicle marker. Declared substitution — it encodes progress in the line itself, as the reference does, but it is not a map.",
+    "substitution": "Stylised SVG route panel replaces the live map. No photography is used anywhere."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py on the original file: sat>=0.25 = 15.03%, sat>=0.03 = 94.27%, modal hue bin 20deg (orange), hue family share 97.6% of coloured pixels, ~57% of pixels above luminance 0.7. Independently re-derived by engine/reference_profile.mjs, which recommends neutral-gallery.",
+    "interpreted": "Composition, grammar and role assignments are visual interpretation of the full-resolution board (forensics/phase1/R12-swiftgo.md). Font identity is NOT inferred — only the sans role. The five-stage status grammar is taken from the reference's own stepper/timeline screens.",
+    "uncertainty": [
+      "The brand hex is a deliberate darkening of the reference's #F97316-class orange. White text on #F97316 measures 2.80:1, which fails AA; #C2410C measures 5.18:1. The hue is faithful, the lightness is not — recorded here rather than hidden.",
+      "The reference ships no error states; the error grammar is extrapolated from its form grammar and is engine-side invention, not reference fidelity.",
+      "The map is a stylised substitute, so the reference's most distinctive tracking asset is only partially reproduced."
+    ]
+  },
+  "specVersion": 1
+}

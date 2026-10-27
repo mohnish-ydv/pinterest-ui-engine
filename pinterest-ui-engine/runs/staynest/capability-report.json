@@ -1,0 +1,733 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "staynest",
+  "app": "StayNest",
+  "variant": "card",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "badge",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 33,
+    "byCategory": {
+      "content": {
+        "total": 16,
+        "required": 16
+      },
+      "layout": {
+        "total": 3,
+        "required": 3
+      },
+      "interaction": {
+        "total": 6,
+        "required": 6
+      },
+      "navigation": {
+        "total": 2,
+        "required": 2
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 33,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "STAYNEST-C-name-list",
+    "STAYNEST-C-name-detail",
+    "STAYNEST-C-area-list",
+    "STAYNEST-C-area-detail",
+    "STAYNEST-C-price-list",
+    "STAYNEST-C-price-detail",
+    "STAYNEST-C-rating-list",
+    "STAYNEST-C-rating-detail",
+    "STAYNEST-C-reviews-list",
+    "STAYNEST-C-reviews-detail",
+    "STAYNEST-C-verified-list",
+    "STAYNEST-C-verified-detail",
+    "STAYNEST-C-bedrooms-list",
+    "STAYNEST-C-bedrooms-detail",
+    "STAYNEST-C-bathrooms-list",
+    "STAYNEST-C-bathrooms-detail",
+    "STAYNEST-L-collection",
+    "STAYNEST-L-detail",
+    "STAYNEST-L-nav",
+    "STAYNEST-I-search",
+    "STAYNEST-I-facet-type",
+    "STAYNEST-I-choice",
+    "STAYNEST-I-validate",
+    "STAYNEST-I-commit",
+    "STAYNEST-I-save",
+    "STAYNEST-N-view-browse",
+    "STAYNEST-N-view-saved",
+    "STAYNEST-R-narrow",
+    "STAYNEST-R-wide",
+    "STAYNEST-A-contrast",
+    "STAYNEST-A-labels",
+    "STAYNEST-A-heading",
+    "STAYNEST-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [
+    "The entity is declared media-led but no record carries an image; media is substituted with a brand-derived gradient."
+  ],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "staynest",
+    "app": "StayNest",
+    "domain": "marketplace",
+    "variant": "card",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "badge",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "STAYNEST-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Property\" (title) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Property\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-area-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Area\" (subtitle) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "area",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-area-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Area\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "area",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-price-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rent\" (price) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-price-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rent\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-rating-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rating\" (meta) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-rating-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rating\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-reviews-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reviews\" (meta) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-reviews-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reviews\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-verified-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Verified\" (badge) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "verified",
+          "role": "badge",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-verified-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Verified\" (badge) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "verified",
+          "role": "badge",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-bedrooms-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Bedrooms\" (stat) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "bedrooms",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-bedrooms-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Bedrooms\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "bedrooms",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-C-bathrooms-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Bathrooms\" (stat) is visible in the Properties list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "browse",
+          "where": "list",
+          "field": "bathrooms",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-C-bathrooms-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Bathrooms\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "bathrooms",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 6 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "browse",
+          "selector": "item",
+          "expected": 6
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "STAYNEST-L-nav",
+        "category": "layout",
+        "required": true,
+        "expectation": "Navigation between 2 top-level destinations.",
+        "satisfiedBy": "tab bar",
+        "verification": {
+          "method": "dom-count",
+          "view": "browse",
+          "selector": "nav-item",
+          "expected": 2
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "STAYNEST-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "STAYNEST-I-facet-type",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Property type\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "type",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "STAYNEST-I-choice",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Choosing a Preferred visit slot is required before committing.",
+        "satisfiedBy": "option-grid",
+        "verification": {
+          "method": "interaction",
+          "act": "choice",
+          "expect": "required"
+        },
+        "status": "supported",
+        "capability": "control.choice",
+        "component": "option-grid"
+      },
+      {
+        "id": "STAYNEST-I-validate",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Invalid input is refused with a visible error and no commit.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "interaction",
+          "act": "validate",
+          "expect": "refused"
+        },
+        "status": "supported",
+        "capability": "form.fields",
+        "component": "form-fields"
+      },
+      {
+        "id": "STAYNEST-I-commit",
+        "category": "interaction",
+        "required": true,
+        "expectation": "A valid submission issues a BV-###### reference.",
+        "satisfiedBy": "primary-action",
+        "verification": {
+          "method": "interaction",
+          "act": "commit",
+          "expect": "reference"
+        },
+        "status": "supported",
+        "capability": "action.commit",
+        "component": "primary-action"
+      },
+      {
+        "id": "STAYNEST-I-save",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Saving persists across a reload and appears in the saved view.",
+        "satisfiedBy": "entity-collection (save toggle)",
+        "verification": {
+          "method": "interaction",
+          "act": "save",
+          "expect": "persisted"
+        },
+        "status": "supported",
+        "capability": "toggle.save",
+        "component": "entity-collection"
+      },
+      {
+        "id": "STAYNEST-N-view-browse",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"browse\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "browse",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "STAYNEST-N-view-saved",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"saved\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "saved",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "STAYNEST-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "STAYNEST-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "STAYNEST-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "STAYNEST-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "STAYNEST-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "STAYNEST-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

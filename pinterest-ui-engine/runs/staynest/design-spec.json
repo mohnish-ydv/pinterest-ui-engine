@@ -1,0 +1,50 @@
+{
+  "reference": "R09 StayNest (media_library/image/34/34002a76….jpg)",
+  "family": "staynest",
+  "palette": {
+    "brand": "#4F46E5",
+    "brandDeep": "#3730A3",
+    "ground": "#F7F8FC",
+    "surface": "#FFFFFF",
+    "board": "#1E1B4B",
+    "ink": "#1B1F3B",
+    "inkSoft": "#5A6076",
+    "tint": "#E8EAFB",
+    "star": "#E8A33D",
+    "cert": "#1E7B4D",
+    "error": "#B3261E"
+  },
+  "typography": {
+    "displayRole": "none — R09 is sans-led at every level; hierarchy comes from weight, size and colour rather than a display face",
+    "uiRole": "one geometric-humanist grotesque for everything; bold for property names and headings, semibold for prices and actions",
+    "scalePx": { "body": 14, "display": 26, "section": 17, "small": 12, "amount": 15 }
+  },
+  "shape": { "sheetRadius": 20, "cardRadius": 16, "controlRadius": 999, "addBtn": 36 },
+  "composition": {
+    "home": "Greeting-scale heading, a search field, a single row of property-type chips, then a card grid with one large media block per card and the rent as the last read in the card body.",
+    "detail": "Media header, property name, area, meta line, rent, then a stat trio (bedrooms / bathrooms / verified), a labelled detail list, the visit-slot choice, the visitor form, and one pinned primary action.",
+    "density": "Moderate and even. Cards carry one media block and four text lines; the detail view is a stack of white panels on a light grey canvas."
+  },
+  "grammar": {
+    "cta": "One pill shape, indigo fill, white text, full width on mobile.",
+    "selection": "Property type is a chip row; visit slots are a two-up option grid marked by indigo fill. Saved is a heart toggle on the card and on the detail header.",
+    "numbers": "Rent is identical on the card, the detail and the confirmation; deposit is shown as a detail row, never as a second price in the card.",
+    "status": "Verified is a tint pill on the card; unverified properties simply omit it rather than showing a negative badge.",
+    "errors": "Inline under the field, in the error colour, with the field ringed.",
+    "tabs": "Two tabs: Browse / Saved."
+  },
+  "imagery": {
+    "role": "R09 leads with photography. No images are available offline, so each card carries a deterministic gradient block with the property's initials. Declared substitution — it preserves the media slot and the card rhythm but not the photographic quality.",
+    "substitution": "Deterministic gradient + initials replaces property photography."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py on the original file: sat>=0.25 = 9.49%, sat>=0.03 = 78.2%, modal hue bin 240deg (indigo-blue), hue family share 42.3% of coloured pixels, 76.1% of pixels above luminance 0.7. Independently re-derived by engine/reference_profile.mjs, which recommends neutral-gallery.",
+    "interpreted": "Composition, grammar and role assignments are visual interpretation of the board (forensics/phase1/R09-staynest.md). Font identity is NOT inferred — only the sans role.",
+    "uncertainty": [
+      "The brand hex is a representative indigo from the reference's family, not a sampled flat UI colour; the board is a 36-screen collage with photographic content.",
+      "R09 ships no error states and no empty states; both are engine-side invention and are labelled as such.",
+      "Photography is the reference's main quality carrier and it is substituted, which caps the visual ceiling."
+    ]
+  },
+  "specVersion": 1
+}

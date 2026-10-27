@@ -1,0 +1,137 @@
+{
+  "id": "marble-meats",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "errorStateWaiver": "The Marble Meats app has no error state: the brief's functional contract (brief.json) defines no validation, and the template renders no error UI. Error-state contrast is therefore not measurable for this app, and is recorded as a gap rather than estimated. The engine's error ROLE is still compiled and gated (tokens.color.error), so a family that adds error UI inherits a validated colour.",
+  "steps": [
+    {
+      "shot": "home-390"
+    },
+    {
+      "click": "[data-testid=\"category-chip\"][data-cat=\"Steaks\"]",
+      "settleMs": 400
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"category-chip\"][data-cat=\"Steaks\"] .chip-dot",
+      "sequence": [
+        "click Steaks category chip"
+      ]
+    },
+    {
+      "shot": "home-chip-selected-390"
+    },
+    {
+      "click": "[data-testid=\"category-chip\"][data-cat=\"All\"]",
+      "settleMs": 300
+    },
+    {
+      "centre": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]"
+    },
+    {
+      "click": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]",
+      "settleMs": 400
+    },
+    {
+      "measure": "ctaRest",
+      "kind": "rest",
+      "selector": "[data-testid=\"add-to-bag\"]",
+      "sequence": [
+        "open Ribeye detail"
+      ]
+    },
+    {
+      "hover": "[data-testid=\"add-to-bag\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "ctaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"add-to-bag\"]",
+      "sequence": [
+        "open Ribeye detail",
+        "hover Add to Bag"
+      ]
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "centre": "[data-testid=\"add-to-bag\"]"
+    },
+    {
+      "click": "[data-testid=\"add-to-bag\"]",
+      "settleMs": 400
+    },
+    {
+      "shot": "bag-390"
+    },
+    {
+      "measure": "bagTotalAfterAdd",
+      "kind": "post-action",
+      "selector": "[data-testid=\"bag-total\"]",
+      "sequence": [
+        "open Ribeye detail",
+        "add to bag",
+        "land on bag view"
+      ]
+    },
+    {
+      "click": "[data-testid=\"back-btn\"]",
+      "settleMs": 300,
+      "within": "[data-view=\"bag\"]"
+    },
+    {
+      "axe": "home"
+    },
+    {
+      "centre": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]"
+    },
+    {
+      "click": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]",
+      "settleMs": 300
+    },
+    {
+      "axe": "detail"
+    },
+    {
+      "click": ".tabbar [data-testid=\"bag-open\"]",
+      "settleMs": 300
+    },
+    {
+      "axe": "bag"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-testid=\"back-btn\"]",
+      "settleMs": 300,
+      "within": "[data-view=\"bag\"]"
+    },
+    {
+      "shot": "home-1440"
+    },
+    {
+      "centre": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]"
+    },
+    {
+      "click": "#grid [data-testid=\"product-card\"][data-id=\"ribeye\"] [data-testid=\"product-open\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marble Meats — Fresh cuts. Better meals.</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div data-view="home">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand-row">
+        <div class="brand"><span class="brand-mark">M</span><span class="brand-name">Marble Meats</span></div>
+        <div class="hero-actions">
+          <span class="location"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg> Bengaluru</span>
+          <button class="bag-btn desktop-only" data-nav="bag" data-testid="bag-open">Bag <span class="bag-count" data-testid="bag-count" hidden>0</span></button>
+        </div>
+      </div>
+      <h1 class="tagline">Good Meat,<br>Brighter Days.</h1>
+      <p class="tagline-sub">Premium cuts, sourced responsibly — trimmed fresh, delivered chilled.</p>
+      <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg><input id="search" data-testid="search" type="search" placeholder="Search for cuts…" aria-label="Search for cuts"></label>
+    </div>
+  </header>
+  <main class="sheet home-sheet">
+    <div class="sheet-inner">
+      <div class="cats" id="cats" role="group" aria-label="Categories"></div>
+      <section class="promo">
+        <div class="promo-visual" id="promo-visual"></div>
+        <div class="promo-text">
+          <h2>Premium Cuts, Naturally Better</h2>
+          <p>Weekend boards, trimmed to order.</p>
+          <span class="promo-badge">100% Halal</span>
+        </div>
+      </section>
+      <div class="section-head"><h2 class="section-title">Best Sellers</h2><span class="section-note">Cut fresh this morning</span></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </main>
+</div>
+
+<div data-view="detail" hidden>
+  <header class="sub-bar"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to home</span></button><h1 class="sub-title">Marble Meats</h1></header>
+  <main id="detail-content"></main>
+</div>
+
+<div data-view="bag" hidden>
+  <header class="sub-bar"><button class="back-btn" data-testid="back-btn">←<span class="vh">Back to home</span></button><h1 class="sub-title">Your Bag</h1></header>
+  <main class="bag-main" id="bag-content"></main>
+</div>
+
+<div data-view="confirmation" hidden>
+  <main class="confirm-main" id="confirm-content"></main>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <button class="tab tab-on" data-nav="home"><span class="tab-ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5.5 9.5V21h13V9.5"/></svg></span>Home</button>
+  <button class="tab" data-nav="bag" data-testid="bag-open"><span class="tab-ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3L5 8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg></span>Bag <span class="bag-count" data-testid="bag-count" hidden>0</span></button>
+</nav>
+
+<script>window.__DATA__ = {"app":"Marble Meats — premium butcher delivery (demo brief for Mission 017)","brand":"Marble Meats","categories":["Steaks","Curry Cuts","Mince","Roasts"],"currency":"₹","delivery":{"fee":49,"freeAbove":999},"features":["Freshly cut","Halal certified","Chilled delivery"],"functionalContract":{"testids":["product-card","category-chip","product-open","add-btn","bag-count","detail-name","weight-stepper","qty-minus","qty-plus","qty-value","add-to-bag","bag-open","bag-item","bag-subtotal","bag-delivery","bag-total","checkout-btn","order-ref","back-btn","empty-bag"],"views":["home","detail","bag","confirmation"]},"location":"Bengaluru","products":[{"badge":"Best Seller","blurb":"Rich marbling, tender texture, bold flavour — built for pan-searing and steakhouse-style grilling.","category":"Steaks","cut":"ribeye","id":"ribeye","name":"Ribeye Steak","price":1450,"rating":4.8,"reviews":320},{"badge":null,"blurb":"Lean, beefy and firm — the everyday steak that rewards a hot pan and a short rest.","category":"Steaks","cut":"sirloin","id":"sirloin","name":"Sirloin Steak","price":1190,"rating":4.7,"reviews":268},{"badge":"Premium","blurb":"The most tender cut on the animal. Butter-soft centre, cut thick for a proper crust.","category":"Steaks","cut":"fillet","id":"tenderloin","name":"Tenderloin Fillet","price":1890,"rating":4.9,"reviews":190},{"badge":null,"blurb":"Bone-in and deeply marbled — made for slow braises and rich, falling-apart curries.","category":"Curry Cuts","cut":"ribs","id":"short-ribs","name":"Short Ribs","price":980,"rating":4.8,"reviews":154},{"badge":null,"blurb":"Even, bone-in pieces trimmed for the pot. The bone does the flavour work.","category":"Curry Cuts","cut":"chunks","id":"curry-cut","name":"Curry Cut, Bone-In","price":720,"rating":4.6,"reviews":402},{"badge":"Best Seller","blurb":"Ground fresh every morning, 85/15 lean-to-fat — kebabs, keema and burgers hold together.","category":"Mince","cut":"mince","id":"mince","name":"Beef Mince","price":640,"rating":4.6,"reviews":512},{"badge":null,"blurb":"A hardworking shoulder roast that turns silky after three slow hours.","category":"Roasts","cut":"roast","id":"chuck","name":"Chuck Roast","price":890,"rating":4.5,"reviews":121},{"badge":null,"blurb":"The smoker's cut. Long grain, deep flavour, worth every hour of the low-and-slow.","category":"Roasts","cut":"brisket","id":"brisket","name":"Brisket","price":1050,"rating":4.7,"reviews":98}],"tagline":"Fresh cuts. Better meals.","unit":"kg"};</script>
+<script src="app.js"></script>
+</body>
+</html>
