@@ -1,0 +1,125 @@
+{
+  "name": "Shelf",
+  "tagline": "What the team is reading.",
+  "about": "Internal notes and links, kept for the next person.",
+  "location": "Remote",
+  "currency": "",
+  "domain": "knowledge",
+  "collection": {
+    "label": "Note",
+    "plural": "Notes",
+    "items": [
+      {
+        "id": "s1",
+        "title": "Why we stopped using a queue",
+        "author": "Ravi",
+        "minutes": 8,
+        "topic": "Architecture",
+        "summary": "The retry semantics were doing more harm than the throughput helped.",
+        "body": [
+          "We removed the queue in March.",
+          "Nothing broke, which was the interesting part.",
+          "The retries had been hiding a slow downstream for a year."
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "Reading a flame graph",
+        "author": "Nadia",
+        "minutes": 12,
+        "topic": "Tooling",
+        "summary": "A short guide for people who have only seen one and nodded.",
+        "body": [
+          "A flame graph is a stack trace with ambition.",
+          "Width is time, height is depth, and colour means nothing at all.",
+          "Start at the widest box and work down."
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "The migration that took four years",
+        "author": "Ravi",
+        "minutes": 15,
+        "topic": "Architecture",
+        "summary": "What we would do differently, mostly nothing.",
+        "body": [
+          "It started as a weekend project.",
+          "It ended as a department.",
+          "The database is fine. The process was the problem."
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "Notes on writing runbooks",
+        "author": "Priya",
+        "minutes": 6,
+        "topic": "Practice",
+        "summary": "A runbook nobody reads is a document nobody wrote.",
+        "body": [
+          "Write the runbook during the incident, not after.",
+          "The person who needs it is tired and has eleven minutes.",
+          "Put the command first and the explanation second."
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "What a postmortem is for",
+        "author": "Nadia",
+        "minutes": 9,
+        "topic": "Practice",
+        "summary": "Not blame, and not closure either.",
+        "body": [
+          "A postmortem is a change to the system.",
+          "If nothing changed, it was a story.",
+          "The story is the least useful artefact."
+        ]
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "title",
+      "label": "Title",
+      "type": "text"
+    },
+    {
+      "id": "author",
+      "label": "Author",
+      "type": "text"
+    },
+    {
+      "id": "minutes",
+      "label": "Reading time",
+      "type": "number"
+    },
+    {
+      "id": "topic",
+      "label": "Topic",
+      "type": "enum"
+    },
+    {
+      "id": "summary",
+      "label": "Summary",
+      "type": "text"
+    },
+    {
+      "id": "body",
+      "label": "Body",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A reading list of notes. Each entry shows the title, the summary, the author and the reading time.",
+    "Filter by topic and search by title or author.",
+    "Opening a note shows the full text with a comfortable line length."
+  ],
+  "prohibited": [
+    "cards",
+    "images"
+  ],
+  "journeys": [
+    "Scan the list",
+    "Filter to Practice",
+    "Read a note"
+  ]
+}

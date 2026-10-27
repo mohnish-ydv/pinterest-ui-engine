@@ -1,0 +1,101 @@
+{
+  "name": "Studio",
+  "tagline": "Work we have made.",
+  "about": "A portfolio of commissioned photography.",
+  "location": "Mumbai",
+  "currency": "\u20b9",
+  "domain": "portfolio",
+  "collection": {
+    "label": "Project",
+    "plural": "Projects",
+    "media": true,
+    "items": [
+      {
+        "id": "p1",
+        "project": "Salt harvest",
+        "client": "Coastal Co.",
+        "year": "2024",
+        "discipline": "Documentary",
+        "brief": "Three weeks on the flats at dawn."
+      },
+      {
+        "id": "p2",
+        "project": "Kitchen table",
+        "client": "Slow Food",
+        "year": "2024",
+        "discipline": "Still life",
+        "brief": "Twelve households, one recipe each."
+      },
+      {
+        "id": "p3",
+        "project": "Night buses",
+        "client": "CityLab",
+        "year": "2023",
+        "discipline": "Documentary",
+        "brief": "The last route out of the depot."
+      },
+      {
+        "id": "p4",
+        "project": "Warehouse light",
+        "client": "Logis",
+        "year": "2023",
+        "discipline": "Architectural",
+        "brief": "Skylights through a working floor."
+      },
+      {
+        "id": "p5",
+        "project": "Portraits, twelve",
+        "client": "Herald",
+        "year": "2022",
+        "discipline": "Portrait",
+        "brief": "A year of people who kept the market open."
+      },
+      {
+        "id": "p6",
+        "project": "Monsoon doors",
+        "client": "Coastal Co.",
+        "year": "2022",
+        "discipline": "Still life",
+        "brief": "Paint on wood after the rains."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "project",
+      "label": "Project",
+      "type": "text"
+    },
+    {
+      "id": "client",
+      "label": "Client",
+      "type": "text"
+    },
+    {
+      "id": "year",
+      "label": "Year",
+      "type": "text"
+    },
+    {
+      "id": "discipline",
+      "label": "Discipline",
+      "type": "enum"
+    },
+    {
+      "id": "brief",
+      "label": "Brief",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A gallery of projects where the photograph leads and the project name sits underneath.",
+    "Filter by discipline and search by project or client.",
+    "Opening a project shows its brief."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Browse the portfolio",
+    "Filter to Documentary",
+    "Open a project"
+  ]
+}

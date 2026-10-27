@@ -1,0 +1,112 @@
+{
+  "app": "Studio",
+  "entity": "project",
+  "entryView": "projects",
+  "recordCount": 6,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the projects list renders all 6 records",
+      "act": "count",
+      "sel": "[data-testid=\"project-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"project-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "filtering by Discipline = Documentary shows 2",
+      "act": "click",
+      "sel": "[data-testid=\"discipline-chip\"][data-discipline=\"Documentary\"]"
+    },
+    {
+      "id": "T4",
+      "desc": "only 2 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"project-card\"]",
+      "eq": 2
+    },
+    {
+      "id": "T5",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"discipline-chip\"][data-discipline=\"Documentary\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T6",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"discipline-chip\"][data-discipline=\"All\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"project-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T8",
+      "desc": "searching \"Salt harvest\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Salt harvest"
+    },
+    {
+      "id": "T9",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"project-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T10",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T11",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"project-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T12",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"project-card\"][data-id=\"p1\"]"
+    },
+    {
+      "id": "T13",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Salt harvest"
+    },
+    {
+      "id": "T14",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T15",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

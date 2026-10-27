@@ -1,0 +1,93 @@
+{
+  "name": "Field",
+  "tagline": "Survey responses, as they land.",
+  "about": "Household water survey across three wards.",
+  "location": "Jaipur",
+  "currency": "",
+  "domain": "research",
+  "collection": {
+    "label": "Response",
+    "plural": "Responses",
+    "items": [
+      {
+        "id": "f1",
+        "respondent": "H-014",
+        "ward": "Ward 3",
+        "hours": 3,
+        "source": "Piped",
+        "comment": "Supply is reliable except in June."
+      },
+      {
+        "id": "f2",
+        "respondent": "H-027",
+        "ward": "Ward 3",
+        "hours": 1,
+        "source": "Tanker",
+        "comment": "Two tankers a week at 400 rupees each."
+      },
+      {
+        "id": "f3",
+        "respondent": "H-041",
+        "ward": "Ward 5",
+        "hours": 5,
+        "source": "Piped",
+        "comment": "No complaints, but the pressure drops at night."
+      },
+      {
+        "id": "f4",
+        "respondent": "H-058",
+        "ward": "Ward 5",
+        "hours": 2,
+        "source": "Well",
+        "comment": "The well is shared between four houses."
+      },
+      {
+        "id": "f5",
+        "respondent": "H-063",
+        "ward": "Ward 7",
+        "hours": 0,
+        "source": "None",
+        "comment": "Bought from a neighbour."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "respondent",
+      "label": "Household",
+      "type": "text"
+    },
+    {
+      "id": "ward",
+      "label": "Ward",
+      "type": "enum"
+    },
+    {
+      "id": "hours",
+      "label": "Hours per day",
+      "type": "number",
+      "suffix": " h"
+    },
+    {
+      "id": "source",
+      "label": "Source",
+      "type": "enum"
+    },
+    {
+      "id": "comment",
+      "label": "Comment",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "Show the survey responses.",
+    "Filter by ward and search by household.",
+    "Opening a response shows the comment."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Look at the responses",
+    "Filter to Ward 5",
+    "Open a response"
+  ]
+}

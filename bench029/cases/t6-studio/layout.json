@@ -1,0 +1,311 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Studio",
+    "domain": "portfolio",
+    "family": "studio",
+    "density": "comfortable",
+    "densityBasis": "light share 49.9%, saturated share 3.73%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "project",
+    "label": "Project",
+    "plural": "Projects",
+    "media": true,
+    "fields": [
+      {
+        "id": "project",
+        "label": "Project",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "client",
+        "label": "Client",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      },
+      {
+        "id": "year",
+        "label": "Year",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived"
+      },
+      {
+        "id": "discipline",
+        "label": "Discipline",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Documentary",
+          "Still life",
+          "Architectural",
+          "Portrait"
+        ]
+      },
+      {
+        "id": "brief",
+        "label": "Brief",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived"
+      }
+    ],
+    "titleClass": "project-name"
+  },
+  "search": {
+    "fields": [
+      "project",
+      "client"
+    ],
+    "placeholder": "Search projects",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "discipline",
+      "field": "discipline",
+      "label": "Discipline",
+      "testid": "discipline-chip",
+      "dataAttr": "data-discipline",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "projects",
+      "purpose": "browse",
+      "title": "Work we have made.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Studio",
+            "context": "Mumbai",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Work we have made.",
+            "subtitle": "A portfolio of commissioned photography."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search projects",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "project",
+            "fields": [
+              "project",
+              "client"
+            ]
+          }
+        },
+        {
+          "id": "filter-discipline",
+          "component": "filter-chips",
+          "props": {
+            "label": "Discipline",
+            "testid": "discipline-chip",
+            "allLabel": "All",
+            "valueAttr": "data-discipline"
+          },
+          "binding": {
+            "entity": "project",
+            "filterId": "discipline",
+            "field": "discipline",
+            "options": [
+              "Documentary",
+              "Still life",
+              "Architectural",
+              "Portrait"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "project-list",
+            "itemTestid": "project-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showChip": true,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "project-open"
+          },
+          "binding": {
+            "entity": "project",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:discipline"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Project",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Studio",
+            "context": "Mumbai",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": true,
+            "showChip": true,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "project-name"
+          },
+          "binding": {
+            "entity": "project",
+            "title": "project",
+            "subtitle": "client"
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "project",
+            "fields": [
+              "year",
+              "brief"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "projects",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "projects",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "light share 49.9%, saturated share 3.73%",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "gallery",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "card",
+      "basis": "the entity declares media, so records lead with an image",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

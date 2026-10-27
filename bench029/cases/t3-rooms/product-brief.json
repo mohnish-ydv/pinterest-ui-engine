@@ -1,0 +1,93 @@
+{
+  "name": "Rooms",
+  "tagline": "Find a room, book it.",
+  "about": "Eight meeting rooms across two floors.",
+  "location": "Bengaluru",
+  "currency": "",
+  "domain": "workplace",
+  "collection": {
+    "label": "Room",
+    "plural": "Rooms",
+    "items": [
+      {
+        "id": "r1",
+        "room": "Cauvery",
+        "floor": "2",
+        "seats": 8,
+        "screen": "Yes",
+        "status": "Free"
+      },
+      {
+        "id": "r2",
+        "room": "Tungabhadra",
+        "floor": "2",
+        "seats": 4,
+        "screen": "Yes",
+        "status": "Booked"
+      },
+      {
+        "id": "r3",
+        "room": "Krishna",
+        "floor": "3",
+        "seats": 12,
+        "screen": "Yes",
+        "status": "Free"
+      },
+      {
+        "id": "r4",
+        "room": "Narmada",
+        "floor": "3",
+        "seats": 6,
+        "screen": "No",
+        "status": "Free"
+      },
+      {
+        "id": "r5",
+        "room": "Godavari",
+        "floor": "3",
+        "seats": 20,
+        "screen": "Yes",
+        "status": "Booked"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "room",
+      "label": "Room",
+      "type": "text"
+    },
+    {
+      "id": "floor",
+      "label": "Floor",
+      "type": "text"
+    },
+    {
+      "id": "seats",
+      "label": "Seats",
+      "type": "number"
+    },
+    {
+      "id": "screen",
+      "label": "Screen",
+      "type": "enum"
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "type": "enum"
+    }
+  ],
+  "requirements": [
+    "A simple list of rooms, one per row.",
+    "Each row shows the room, its floor, how many it seats and whether it is free.",
+    "Filter by status and search by room.",
+    "Opening a room shows its detail."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Scan the list",
+    "Filter to Free",
+    "Open a room"
+  ]
+}

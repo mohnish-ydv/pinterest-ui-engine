@@ -1,0 +1,104 @@
+{
+  "id": "room-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"room-card\"] .card-title, [data-testid=\"room-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"room-card\"] .card-sub, [data-testid=\"room-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"screen-chip\"][data-screen=\"Yes\"]"
+    },
+    {
+      "click": "[data-testid=\"screen-chip\"][data-screen=\"Yes\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"screen-chip\"][data-screen=\"Yes\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"screen-chip\"][data-screen=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"room-card\"][data-id=\"r1\"]"
+    },
+    {
+      "click": "[data-testid=\"room-card\"][data-id=\"r1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "rooms"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"rooms\"], [data-act=\"go\"][data-view=\"rooms\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"room-card\"][data-id=\"r1\"]"
+    },
+    {
+      "click": "[data-testid=\"room-card\"][data-id=\"r1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

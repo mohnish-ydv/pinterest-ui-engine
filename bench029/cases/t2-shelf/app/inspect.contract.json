@@ -1,0 +1,104 @@
+{
+  "id": "note-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.1.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"note-card\"] .card-title, [data-testid=\"note-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"note-card\"] .card-sub, [data-testid=\"note-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"topic-chip\"][data-topic=\"Architecture\"]"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"Architecture\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"topic-chip\"][data-topic=\"Architecture\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"note-card\"][data-id=\"s1\"]"
+    },
+    {
+      "click": "[data-testid=\"note-card\"][data-id=\"s1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "notes"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"notes\"], [data-act=\"go\"][data-view=\"notes\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"note-card\"][data-id=\"s1\"]"
+    },
+    {
+      "click": "[data-testid=\"note-card\"][data-id=\"s1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

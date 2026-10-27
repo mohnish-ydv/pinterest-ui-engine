@@ -1,0 +1,105 @@
+{
+  "name": "Lane",
+  "tagline": "Delivery slots, one column.",
+  "about": "Pickup windows for the week.",
+  "location": "Kochi",
+  "currency": "\u20b9",
+  "domain": "logistics",
+  "collection": {
+    "label": "Slot",
+    "plural": "Slots",
+    "media": true,
+    "items": [
+      {
+        "id": "l1",
+        "window": "Mon 09:00\u201311:00",
+        "driver": "Anil",
+        "capacity": 12,
+        "area": "North",
+        "note": "Tight loading bay."
+      },
+      {
+        "id": "l2",
+        "window": "Mon 14:00\u201316:00",
+        "driver": "Bina",
+        "capacity": 8,
+        "area": "South",
+        "note": "School run at 15:30."
+      },
+      {
+        "id": "l3",
+        "window": "Tue 09:00\u201311:00",
+        "driver": "Anil",
+        "capacity": 15,
+        "area": "North",
+        "note": "\u2014"
+      },
+      {
+        "id": "l4",
+        "window": "Tue 14:00\u201316:00",
+        "driver": "Chetan",
+        "capacity": 10,
+        "area": "East",
+        "note": "Market traffic."
+      },
+      {
+        "id": "l5",
+        "window": "Wed 09:00\u201311:00",
+        "driver": "Bina",
+        "capacity": 12,
+        "area": "South",
+        "note": "\u2014"
+      },
+      {
+        "id": "l6",
+        "window": "Wed 14:00\u201316:00",
+        "driver": "Chetan",
+        "capacity": 9,
+        "area": "East",
+        "note": "Half-day at the depot."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "window",
+      "label": "Window",
+      "type": "text"
+    },
+    {
+      "id": "driver",
+      "label": "Driver",
+      "type": "text"
+    },
+    {
+      "id": "capacity",
+      "label": "Capacity",
+      "type": "number"
+    },
+    {
+      "id": "area",
+      "label": "Area",
+      "type": "enum"
+    },
+    {
+      "id": "note",
+      "label": "Note",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A single-column list of slots, one per row. Do not use a grid or cards, whatever the reference shows.",
+    "Each row shows the window, the driver and the capacity.",
+    "Filter by area and search by window or driver.",
+    "Opening a slot shows its note."
+  ],
+  "prohibited": [
+    "cards",
+    "grid"
+  ],
+  "journeys": [
+    "Scan the week",
+    "Filter to North",
+    "Open a slot"
+  ]
+}

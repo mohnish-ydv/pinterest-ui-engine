@@ -1,0 +1,338 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Rooms",
+    "domain": "workplace",
+    "family": "rooms",
+    "density": "airy",
+    "densityBasis": "light share 76.4%, saturated share 0.55% — a near-white board reads airy",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "room",
+    "label": "Room",
+    "plural": "Rooms",
+    "media": false,
+    "fields": [
+      {
+        "id": "room",
+        "label": "Room",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "floor",
+        "label": "Floor",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      },
+      {
+        "id": "seats",
+        "label": "Seats",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived"
+      },
+      {
+        "id": "screen",
+        "label": "Screen",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Yes",
+          "No"
+        ]
+      },
+      {
+        "id": "status",
+        "label": "Status",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Free",
+          "Booked"
+        ]
+      }
+    ],
+    "titleClass": "room-name"
+  },
+  "search": {
+    "fields": [
+      "room",
+      "floor"
+    ],
+    "placeholder": "Search rooms",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "screen",
+      "field": "screen",
+      "label": "Screen",
+      "testid": "screen-chip",
+      "dataAttr": "data-screen",
+      "allLabel": "All"
+    },
+    {
+      "id": "status",
+      "field": "status",
+      "label": "Status",
+      "testid": "status-chip",
+      "dataAttr": "data-status",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "rooms",
+      "purpose": "browse",
+      "title": "Find a room, book it.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Rooms",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Find a room, book it.",
+            "subtitle": "Eight meeting rooms across two floors."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search rooms",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "room",
+            "fields": [
+              "room",
+              "floor"
+            ]
+          }
+        },
+        {
+          "id": "filter-screen",
+          "component": "filter-chips",
+          "props": {
+            "label": "Screen",
+            "testid": "screen-chip",
+            "allLabel": "All",
+            "valueAttr": "data-screen"
+          },
+          "binding": {
+            "entity": "room",
+            "filterId": "screen",
+            "field": "screen",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          }
+        },
+        {
+          "id": "filter-status",
+          "component": "filter-chips",
+          "props": {
+            "label": "Status",
+            "testid": "status-chip",
+            "allLabel": "All",
+            "valueAttr": "data-status"
+          },
+          "binding": {
+            "entity": "room",
+            "filterId": "status",
+            "field": "status",
+            "options": [
+              "Free",
+              "Booked"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "room-list",
+            "itemTestid": "room-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showChip": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "room-open"
+          },
+          "binding": {
+            "entity": "room",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:screen",
+            "filter:status"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Room",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Rooms",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showChip": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "room-name"
+          },
+          "binding": {
+            "entity": "room",
+            "title": "room",
+            "subtitle": "floor"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "room",
+            "fields": [
+              "seats"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "rooms",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "rooms",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "airy",
+      "basis": "light share 76.4%, saturated share 0.55% — a near-white board reads airy",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "table",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"airy\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

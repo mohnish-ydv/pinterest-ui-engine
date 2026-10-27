@@ -1,0 +1,113 @@
+{
+  "fulfilVersion": "1.0.0",
+  "outcomes": [
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/row renders \"title\" natively",
+      "id": "SR-001-field",
+      "subject": "title",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/row renders \"subtitle\" natively",
+      "id": "SR-002-field",
+      "subject": "author",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/row renders \"stat\" natively",
+      "id": "SR-003-field",
+      "subject": "minutes",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "entity-collection/row hosts it as an extra region, and the plan wires it",
+      "id": "SR-004-field",
+      "subject": "summary",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-005-field",
+      "subject": "title",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-006-field",
+      "subject": "author",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-007-field",
+      "subject": "topic",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    }
+  ],
+  "counts": {
+    "satisfied": 7
+  },
+  "total": 7,
+  "passes": 7,
+  "blocking": [],
+  "resolutionCounts": {
+    "A": 6,
+    "B": 1
+  }
+}

@@ -1,0 +1,355 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.1.0",
+    "app": "Shelf",
+    "domain": "knowledge",
+    "family": "shelf",
+    "density": "balanced",
+    "densityBasis": "composition=editorial → spacious: prose is read, not scanned — line length and leading matter more than count; textFields=4 → spacious: few records with much prose — room improves reading; viewport=390 → balanced: below 420px the spacious scale pushes content below the fold without improving reading",
+    "referenceDensity": "airy",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "note",
+    "label": "Note",
+    "plural": "Notes",
+    "media": false,
+    "fields": [
+      {
+        "id": "title",
+        "label": "Title",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "Each entry shows the title, the summary, the author and the reading time."
+      },
+      {
+        "id": "author",
+        "label": "Author",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "Each entry shows the title, the summary, the author and the reading time."
+      },
+      {
+        "id": "minutes",
+        "label": "Reading time",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "Each entry shows the title, the summary, the author and the reading time."
+      },
+      {
+        "id": "topic",
+        "label": "Topic",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Architecture",
+          "Tooling",
+          "Practice"
+        ],
+        "requiredIn": "either",
+        "scopeSource": "Filter by topic and search by title or author."
+      },
+      {
+        "id": "summary",
+        "label": "Summary",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "entry",
+        "scopeSource": "Each entry shows the title, the summary, the author and the reading time."
+      },
+      {
+        "id": "body",
+        "label": "Body",
+        "type": "text",
+        "role": "body",
+        "roleSource": "derived",
+        "requiredIn": "either"
+      }
+    ],
+    "titleClass": "note-name"
+  },
+  "search": {
+    "fields": [
+      "title",
+      "author"
+    ],
+    "placeholder": "Search notes",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "topic",
+      "field": "topic",
+      "label": "Topic",
+      "testid": "topic-chip",
+      "dataAttr": "data-topic",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "notes",
+      "purpose": "browse",
+      "title": "What the team is reading.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Shelf",
+            "context": "Remote",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "What the team is reading.",
+            "subtitle": "Internal notes and links, kept for the next person."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search notes",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "note",
+            "fields": [
+              "title",
+              "author"
+            ]
+          }
+        },
+        {
+          "id": "filter-topic",
+          "component": "filter-chips",
+          "props": {
+            "label": "Topic",
+            "testid": "topic-chip",
+            "allLabel": "All",
+            "valueAttr": "data-topic"
+          },
+          "binding": {
+            "entity": "note",
+            "filterId": "topic",
+            "field": "topic",
+            "options": [
+              "Architecture",
+              "Tooling",
+              "Practice"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "note-list",
+            "itemTestid": "note-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showChip": false,
+            "entryExtra": [
+              "summary"
+            ],
+            "forbiddenRoles": [],
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "note-open"
+          },
+          "binding": {
+            "entity": "note",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:topic"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Note",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Shelf",
+            "context": "Remote",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showChip": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "note-name"
+          },
+          "binding": {
+            "entity": "note",
+            "title": "title",
+            "subtitle": "author"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "note",
+            "fields": [
+              "minutes"
+            ]
+          }
+        },
+        {
+          "id": "article",
+          "component": "article",
+          "props": {
+            "testid": "article"
+          },
+          "binding": {
+            "entity": "note",
+            "article": {
+              "body": "body",
+              "standfirst": "summary",
+              "byline": null
+            }
+          },
+          "states": [
+            "populated"
+          ]
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "notes",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "notes",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "airy",
+      "basis": "light share 79.9%, saturated share 5.3% — a near-white board reads airy",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "editorial",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"airy\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "recordBody",
+      "value": "article",
+      "basis": "an article is declared, so prose replaces the label/value list",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

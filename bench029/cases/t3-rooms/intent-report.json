@@ -1,0 +1,57 @@
+{
+  "constraints": [
+    {
+      "hardness": "hard",
+      "source": "stated",
+      "evidence": "brief.intent.composition (stated)",
+      "irField": "views[0].sections[collection].variant",
+      "enforce": {
+        "stage": "plan",
+        "mechanism": "the planner selects the collection variant from the composition"
+      },
+      "test": "constraint.test.mjs — stated composition selects the matching variant",
+      "failureMessage": "composition \"table\" was declared but the planner produced a different surface",
+      "kind": "composition",
+      "value": "table",
+      "statement": "The collection must use the \"table\" composition.",
+      "id": "CI-001-composition"
+    },
+    {
+      "hardness": "hard",
+      "source": "inferred",
+      "evidence": "imagery.role: \"None.\" (stated in the spec, compiled to a prohibition)",
+      "irField": "rendered .card-media / .rec-media",
+      "enforce": {
+        "stage": "both",
+        "mechanism": "the card variant is not selected; the renderer is checked"
+      },
+      "test": "constraint.test.mjs",
+      "failureMessage": "media appears although imagery.role is None",
+      "kind": "prohibited",
+      "element": "media",
+      "confidence": "high",
+      "statement": "The spec declares no imagery role, so no media block may be rendered.",
+      "id": "CI-002-prohibited"
+    },
+    {
+      "hardness": "soft",
+      "source": "inferred",
+      "evidence": "inferred from the responsive requirement: a table wider than the viewport must be discoverable",
+      "irField": "data-table wrapper attributes",
+      "enforce": {
+        "stage": "both",
+        "mechanism": "the renderer emits the affordance; the critique checks it is discoverable"
+      },
+      "test": "responsive.test.mjs — affordance present, keyboard-reachable, no lost columns",
+      "failureMessage": "a table overflows the viewport with no discoverable affordance",
+      "kind": "mobile",
+      "value": "scroll-affordance",
+      "confidence": "high",
+      "statement": "At mobile widths a table that overflows must expose a discoverable scroll affordance and stay keyboard-reachable.",
+      "id": "CI-003-mobile"
+    }
+  ],
+  "uncompiled": [],
+  "conflicts": [],
+  "composition": "table"
+}

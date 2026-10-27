@@ -1,0 +1,101 @@
+{
+  "name": "Kiln",
+  "tagline": "Pots, by the maker.",
+  "about": "Small-batch ceramics from four studios.",
+  "location": "Pune",
+  "currency": "\u20b9",
+  "domain": "commerce",
+  "collection": {
+    "label": "Piece",
+    "plural": "Pieces",
+    "media": true,
+    "items": [
+      {
+        "id": "k1",
+        "piece": "Serving bowl",
+        "studio": "Kiln & Co.",
+        "price": 1850,
+        "glaze": "Ash",
+        "note": "Wide rim, holds a family salad."
+      },
+      {
+        "id": "k2",
+        "piece": "Tumbler (set of 2)",
+        "studio": "Kiln & Co.",
+        "price": 1200,
+        "glaze": "Celadon",
+        "note": "Thin lip, stackable."
+      },
+      {
+        "id": "k3",
+        "piece": "Platter",
+        "studio": "Loom House",
+        "price": 2600,
+        "glaze": "Tenmoku",
+        "note": "Long, for a whole fish."
+      },
+      {
+        "id": "k4",
+        "piece": "Mug",
+        "studio": "Loom House",
+        "price": 780,
+        "glaze": "Ash",
+        "note": "Holds 250 ml comfortably."
+      },
+      {
+        "id": "k5",
+        "piece": "Vase",
+        "studio": "Studio Nine",
+        "price": 3200,
+        "glaze": "Celadon",
+        "note": "Narrow neck, for a single stem."
+      },
+      {
+        "id": "k6",
+        "piece": "Oil cruet",
+        "studio": "Studio Nine",
+        "price": 990,
+        "glaze": "Tenmoku",
+        "note": "Drip-free spout."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "piece",
+      "label": "Piece",
+      "type": "text"
+    },
+    {
+      "id": "studio",
+      "label": "Studio",
+      "type": "text"
+    },
+    {
+      "id": "price",
+      "label": "Price",
+      "type": "money"
+    },
+    {
+      "id": "glaze",
+      "label": "Glaze",
+      "type": "enum"
+    },
+    {
+      "id": "note",
+      "label": "Note",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A gallery of pieces where the photograph leads and the price sits underneath.",
+    "Filter by glaze and search by piece or studio.",
+    "Opening a piece shows its note and price."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Browse the gallery",
+    "Filter to Ash",
+    "Open a piece"
+  ]
+}
