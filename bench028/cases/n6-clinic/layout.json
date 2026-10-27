@@ -1,0 +1,567 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Clinic",
+    "domain": "health",
+    "family": "clinic",
+    "density": "comfortable",
+    "densityBasis": "no reference profile supplied — default",
+    "generatedFrom": [
+      "brief.json",
+      "(no profile)"
+    ]
+  },
+  "entity": {
+    "id": "clinic",
+    "label": "Clinic",
+    "plural": "Clinics",
+    "media": false,
+    "fields": [
+      {
+        "id": "clinic",
+        "label": "Clinic",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "area",
+        "label": "Area",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "North",
+          "South",
+          "East"
+        ]
+      },
+      {
+        "id": "doctor",
+        "label": "Doctor",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      },
+      {
+        "id": "fee",
+        "label": "Fee",
+        "type": "money",
+        "role": "price",
+        "roleSource": "derived"
+      },
+      {
+        "id": "wait",
+        "label": "Wait",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived"
+      },
+      {
+        "id": "kind",
+        "label": "Type",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "General",
+          "Paediatric",
+          "Dental"
+        ]
+      }
+    ],
+    "titleClass": "clinic-name"
+  },
+  "search": {
+    "fields": [
+      "clinic",
+      "doctor"
+    ],
+    "placeholder": "Search clinics",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "area",
+      "field": "area",
+      "label": "Area",
+      "testid": "area-chip",
+      "dataAttr": "data-area",
+      "allLabel": "All"
+    },
+    {
+      "id": "kind",
+      "field": "kind",
+      "label": "Type",
+      "testid": "kind-chip",
+      "dataAttr": "data-kind",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "commit",
+      "label": "Confirm",
+      "kind": "commit",
+      "testid": "confirm-btn",
+      "form": [
+        {
+          "id": "fullName",
+          "label": "Your name",
+          "type": "text",
+          "testid": "field-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "field-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        },
+        {
+          "id": "email",
+          "label": "Email",
+          "type": "text",
+          "testid": "field-email",
+          "errorTestid": "error-email",
+          "required": true,
+          "pattern": "^[^@\\s]+@[^@\\s]+\\.[a-z]{2,}$",
+          "message": "Enter a valid email address."
+        }
+      ],
+      "result": {
+        "collection": "submissions",
+        "referencePrefix": "RF",
+        "title": "Confirmed",
+        "referenceTestid": "confirm-ref",
+        "summaryTestid": "confirm-summary"
+      },
+      "steps": [
+        {
+          "id": "details",
+          "label": "Details",
+          "fields": [
+            "fullName"
+          ]
+        },
+        {
+          "id": "contact",
+          "label": "Contact",
+          "fields": [
+            "phone",
+            "email"
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "fields": [],
+          "review": true
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "id": "submissions",
+      "view": "submissions",
+      "label": "Your submissions",
+      "listTestid": "submission-list",
+      "itemTestid": "submission-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "fullName"
+      ],
+      "emptyMessage": "Nothing here yet."
+    }
+  ],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "clinics",
+      "purpose": "browse",
+      "title": "Book a slot, skip the phone.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Clinic",
+            "context": "Kolkata",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Book a slot, skip the phone.",
+            "subtitle": "Appointments at three neighbourhood clinics."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search clinics",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "clinic",
+            "fields": [
+              "clinic",
+              "doctor"
+            ]
+          }
+        },
+        {
+          "id": "filter-area",
+          "component": "filter-chips",
+          "props": {
+            "label": "Area",
+            "testid": "area-chip",
+            "allLabel": "All",
+            "valueAttr": "data-area"
+          },
+          "binding": {
+            "entity": "clinic",
+            "filterId": "area",
+            "field": "area",
+            "options": [
+              "North",
+              "South",
+              "East"
+            ]
+          }
+        },
+        {
+          "id": "filter-kind",
+          "component": "filter-chips",
+          "props": {
+            "label": "Type",
+            "testid": "kind-chip",
+            "allLabel": "All",
+            "valueAttr": "data-kind"
+          },
+          "binding": {
+            "entity": "clinic",
+            "filterId": "kind",
+            "field": "kind",
+            "options": [
+              "General",
+              "Paediatric",
+              "Dental"
+            ]
+          }
+        },
+        {
+          "id": "entry-action",
+          "component": "primary-action",
+          "props": {
+            "label": "Start",
+            "testid": "start-action",
+            "action": "commit",
+            "act": "start-create"
+          },
+          "binding": {
+            "entity": "clinic",
+            "amountField": null
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "clinic-list",
+            "itemTestid": "clinic-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "clinic-open"
+          },
+          "binding": {
+            "entity": "clinic",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:area",
+            "filter:kind"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "submissions",
+      "purpose": "collection",
+      "title": "Your submissions",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Clinic",
+            "context": "Kolkata",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "Your submissions",
+            "testid": "submission-list",
+            "itemTestid": "submission-item",
+            "cancelTestid": "cancel-btn",
+            "confirmTestid": "cancel-confirm",
+            "confirmLabel": "Confirm cancel",
+            "keepLabel": "Keep",
+            "cancelLabel": "Cancel"
+          },
+          "binding": {
+            "collection": "submissions",
+            "fields": [
+              "ref",
+              "fullName"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing here yet."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Clinic",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Clinic",
+            "context": "Kolkata",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "clinic-name"
+          },
+          "binding": {
+            "entity": "clinic",
+            "title": "clinic",
+            "subtitle": "doctor",
+            "price": "fee"
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "clinic",
+            "fields": [
+              "wait"
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "step-flow",
+          "props": {
+            "testid": "stepflow",
+            "commitTestid": "confirm-btn",
+            "commitLabel": "Confirm"
+          },
+          "binding": {
+            "entity": "clinic",
+            "steps": [
+              {
+                "id": "details",
+                "label": "Details",
+                "fields": [
+                  "fullName"
+                ]
+              },
+              {
+                "id": "contact",
+                "label": "Contact",
+                "fields": [
+                  "phone",
+                  "email"
+                ]
+              },
+              {
+                "id": "review",
+                "label": "Review",
+                "fields": [],
+                "review": true
+              }
+            ]
+          },
+          "states": [
+            "current",
+            "done",
+            "todo",
+            "error"
+          ]
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Confirmed",
+            "testid": "confirm-ref",
+            "summaryTestid": "confirm-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "clinic",
+            "referencePrefix": "RF"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "clinics",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "clinics",
+      "trigger": "back"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "commit",
+      "creates": "submissions",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "no reference profile supplied — default",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "commitShape",
+      "value": "step-flow",
+      "basis": "3 declared steps replace a single form",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> filter-chips -> primary-action -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

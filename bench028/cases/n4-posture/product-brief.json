@@ -1,0 +1,106 @@
+{
+  "name": "Posture",
+  "tagline": "Fleet, at a glance.",
+  "about": "Utilisation and maintenance across the delivery fleet.",
+  "location": "Delhi",
+  "currency": "\u20b9",
+  "domain": "analytics",
+  "collection": {
+    "label": "Vehicle",
+    "plural": "Vehicles",
+    "items": [
+      {
+        "id": "v1",
+        "plate": "DL-01-AA-1201",
+        "depot": "North",
+        "km": 41200,
+        "trips": 980,
+        "service": "Due",
+        "driver": "Ramesh"
+      },
+      {
+        "id": "v2",
+        "plate": "DL-01-AA-3388",
+        "depot": "South",
+        "km": 18700,
+        "trips": 640,
+        "service": "Ok",
+        "driver": "Sunita"
+      },
+      {
+        "id": "v3",
+        "plate": "DL-01-AA-7742",
+        "depot": "North",
+        "km": 65300,
+        "trips": 1420,
+        "service": "Overdue",
+        "driver": "Imran"
+      },
+      {
+        "id": "v4",
+        "plate": "DL-01-AA-0915",
+        "depot": "East",
+        "km": 9800,
+        "trips": 310,
+        "service": "Ok",
+        "driver": "Priya"
+      },
+      {
+        "id": "v5",
+        "plate": "DL-01-AA-5560",
+        "depot": "South",
+        "km": 33400,
+        "trips": 870,
+        "service": "Due",
+        "driver": "Ramesh"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "plate",
+      "label": "Registration",
+      "type": "text"
+    },
+    {
+      "id": "depot",
+      "label": "Depot",
+      "type": "enum"
+    },
+    {
+      "id": "km",
+      "label": "Distance",
+      "type": "number",
+      "suffix": " km"
+    },
+    {
+      "id": "trips",
+      "label": "Trips",
+      "type": "number"
+    },
+    {
+      "id": "service",
+      "label": "Service",
+      "type": "enum"
+    },
+    {
+      "id": "driver",
+      "label": "Driver",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "A dashboard that opens with summary numbers for the fleet.",
+    "A table of every vehicle with distance, trips and service state.",
+    "Filter by depot and search by registration.",
+    "Opening a vehicle shows its detail.",
+    "Everything readable on a phone."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Read the summary",
+    "Scan the table",
+    "Filter to North",
+    "Open a vehicle"
+  ]
+}

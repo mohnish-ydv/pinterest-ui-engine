@@ -1,0 +1,465 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "n2-larder-b",
+  "app": "Larder",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 18,
+    "byCategory": {
+      "content": {
+        "total": 8,
+        "required": 8
+      },
+      "layout": {
+        "total": 2,
+        "required": 2
+      },
+      "interaction": {
+        "total": 1,
+        "required": 1
+      },
+      "navigation": {
+        "total": 1,
+        "required": 1
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 18,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "N2-LARDER-B-C-item-list",
+    "N2-LARDER-B-C-item-detail",
+    "N2-LARDER-B-C-shelf-list",
+    "N2-LARDER-B-C-shelf-detail",
+    "N2-LARDER-B-C-qty-list",
+    "N2-LARDER-B-C-qty-detail",
+    "N2-LARDER-B-C-unit-list",
+    "N2-LARDER-B-C-unit-detail",
+    "N2-LARDER-B-L-collection",
+    "N2-LARDER-B-L-detail",
+    "N2-LARDER-B-I-search",
+    "N2-LARDER-B-N-view-items",
+    "N2-LARDER-B-R-narrow",
+    "N2-LARDER-B-R-wide",
+    "N2-LARDER-B-A-contrast",
+    "N2-LARDER-B-A-labels",
+    "N2-LARDER-B-A-heading",
+    "N2-LARDER-B-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "n2-larder-b",
+    "app": "Larder",
+    "domain": "inventory",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "N2-LARDER-B-C-item-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Item\" (title) is visible in the Items list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "items",
+          "where": "list",
+          "field": "item",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "N2-LARDER-B-C-item-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Item\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "item",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "N2-LARDER-B-C-shelf-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Shelf\" (subtitle) is visible in the Items list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "items",
+          "where": "list",
+          "field": "shelf",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "N2-LARDER-B-C-shelf-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Shelf\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "shelf",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "N2-LARDER-B-C-qty-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Quantity\" (stat) is visible in the Items list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "items",
+          "where": "list",
+          "field": "qty",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "N2-LARDER-B-C-qty-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Quantity\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "qty",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "N2-LARDER-B-C-unit-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Unit\" (subtitle) is visible in the Items list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "items",
+          "where": "list",
+          "field": "unit",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "N2-LARDER-B-C-unit-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Unit\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "unit",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "N2-LARDER-B-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 6 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "items",
+          "selector": "item",
+          "expected": 6
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "N2-LARDER-B-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "N2-LARDER-B-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "N2-LARDER-B-N-view-items",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"items\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "items",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "N2-LARDER-B-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "N2-LARDER-B-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "N2-LARDER-B-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "N2-LARDER-B-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "N2-LARDER-B-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "N2-LARDER-B-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

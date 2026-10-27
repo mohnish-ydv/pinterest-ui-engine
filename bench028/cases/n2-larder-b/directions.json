@@ -1,0 +1,70 @@
+{
+  "reference": "derived from reference evidence",
+  "candidates": [
+    {
+      "id": "committed-field",
+      "name": "Committed field (reference-faithful)",
+      "sketch": {
+        "ground": "#F0F0F0",
+        "field": "#1F4E4A",
+        "fieldText": "#FFFFFF",
+        "surface": "#FFFFFF",
+        "ink": "#141414",
+        "sheetOverlap": true,
+        "promoBoard": "#121212"
+      },
+      "principles": [
+        "Brand hue owns a real field (hero), not just buttons",
+        "Content sheet overlaps the field — the overlap is the brand gesture",
+        "Product visuals lead; chrome stays quiet"
+      ],
+      "tradeoffs": "Highest fidelity when the reference commits its hue to large fields. The field colour must carry white text at >=4.5:1, which constrains the brand shade.",
+      "recommendedWhen": "saturationRegime is committed (sat>=0.25 over ~25% of the board): the reference spends its hue on fields, so the app should too."
+    },
+    {
+      "id": "neutral-gallery",
+      "name": "Neutral gallery",
+      "sketch": {
+        "ground": "#F0F0F0",
+        "field": null,
+        "fieldText": null,
+        "surface": "#FFFFFF",
+        "ink": "#141414",
+        "sheetOverlap": false,
+        "promoBoard": "#121212"
+      },
+      "principles": [
+        "Ground stays neutral; colour delegated to product visuals",
+        "Brand appears only on actions and selection",
+        "Hierarchy from typography and spacing alone"
+      ],
+      "tradeoffs": "Safest and cleanest, and the right reading when the reference rations its hue to actions and state. Risks reading as generic if the brand accent is weak.",
+      "recommendedWhen": "saturationRegime is neutral or mixed: the reference keeps its ground quiet and delegates colour to actions, selection and state."
+    },
+    {
+      "id": "dark-board",
+      "name": "Dark board (photo-board-led)",
+      "sketch": {
+        "ground": "#121212",
+        "field": "#183D3A",
+        "fieldText": "#FFFFFF",
+        "surface": "#3A2A2E",
+        "ink": "#F6ECE8",
+        "sheetOverlap": true,
+        "promoBoard": "#1F4E4A"
+      },
+      "principles": [
+        "The reference's dark photo boards become the ground",
+        "Brand hue becomes the accent rather than the field",
+        "Maximum mood; product visuals glow against the dark"
+      ],
+      "tradeoffs": "Distinctive, but inverts a light reference into a dark app and taxes body-text contrast everywhere. Only defensible when the reference's own ground is dark.",
+      "recommendedWhen": "groundValue is dark: the reference's canvas itself is dark, not merely accented."
+    }
+  ],
+  "selection": {
+    "id": "neutral-gallery",
+    "rationale": "profile",
+    "selectedAt": "2026-10-27"
+  }
+}

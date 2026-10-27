@@ -1,0 +1,99 @@
+{
+  "name": "Larder",
+  "tagline": "What is in the kitchen.",
+  "about": "A running inventory of the pantry, kept by whoever last cooked.",
+  "location": "Pune",
+  "currency": "\u20b9",
+  "domain": "inventory",
+  "collection": {
+    "label": "Item",
+    "plural": "Items",
+    "items": [
+      {
+        "id": "n1",
+        "item": "Toor dal",
+        "shelf": "Dry goods",
+        "qty": 2,
+        "unit": "kg",
+        "note": "Bought in the March run."
+      },
+      {
+        "id": "n2",
+        "item": "Coconut oil",
+        "shelf": "Oils",
+        "qty": 1,
+        "unit": "litre",
+        "note": "Cold pressed, unopened."
+      },
+      {
+        "id": "n3",
+        "item": "Basmati rice",
+        "shelf": "Dry goods",
+        "qty": 5,
+        "unit": "kg",
+        "note": "The good bag."
+      },
+      {
+        "id": "n4",
+        "item": "Curry leaf",
+        "shelf": "Fresh",
+        "qty": 1,
+        "unit": "bunch",
+        "note": "Use within the week."
+      },
+      {
+        "id": "n5",
+        "item": "Tamarind",
+        "shelf": "Dry goods",
+        "qty": 1,
+        "unit": "block",
+        "note": "Seedless."
+      },
+      {
+        "id": "n6",
+        "item": "Ghee",
+        "shelf": "Fresh",
+        "qty": 2,
+        "unit": "jar",
+        "note": "Made at home in January."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "item",
+      "label": "Item",
+      "type": "text"
+    },
+    {
+      "id": "shelf",
+      "label": "Shelf",
+      "type": "enum"
+    },
+    {
+      "id": "qty",
+      "label": "Quantity",
+      "type": "number"
+    },
+    {
+      "id": "unit",
+      "label": "Unit",
+      "type": "text"
+    },
+    {
+      "id": "note",
+      "label": "Note",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "Show what is in the pantry.",
+    "Let me search by item.",
+    "Opening an item shows its note."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Look at what is in stock",
+    "Open an item"
+  ]
+}

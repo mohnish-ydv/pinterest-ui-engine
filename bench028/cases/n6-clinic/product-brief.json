@@ -1,0 +1,95 @@
+{
+  "name": "Clinic",
+  "tagline": "Book a slot, skip the phone.",
+  "about": "Appointments at three neighbourhood clinics.",
+  "location": "Kolkata",
+  "currency": "\u20b9",
+  "domain": "health",
+  "collection": {
+    "label": "Clinic",
+    "plural": "Clinics",
+    "items": [
+      {
+        "id": "c1",
+        "clinic": "Baghbazar Clinic",
+        "area": "North",
+        "doctor": "Dr. Sen",
+        "fee": 400,
+        "wait": "10 min",
+        "kind": "General"
+      },
+      {
+        "id": "c2",
+        "clinic": "Lake Clinic",
+        "area": "South",
+        "doctor": "Dr. Rao",
+        "fee": 600,
+        "wait": "25 min",
+        "kind": "Paediatric"
+      },
+      {
+        "id": "c3",
+        "clinic": "Salt Lake Clinic",
+        "area": "East",
+        "doctor": "Dr. Bose",
+        "fee": 500,
+        "wait": "15 min",
+        "kind": "General"
+      },
+      {
+        "id": "c4",
+        "clinic": "Baghbazar Clinic",
+        "area": "North",
+        "doctor": "Dr. Nair",
+        "fee": 700,
+        "wait": "30 min",
+        "kind": "Dental"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "clinic",
+      "label": "Clinic",
+      "type": "text"
+    },
+    {
+      "id": "area",
+      "label": "Area",
+      "type": "enum"
+    },
+    {
+      "id": "doctor",
+      "label": "Doctor",
+      "type": "text"
+    },
+    {
+      "id": "fee",
+      "label": "Fee",
+      "type": "money"
+    },
+    {
+      "id": "wait",
+      "label": "Wait",
+      "type": "text"
+    },
+    {
+      "id": "kind",
+      "label": "Type",
+      "type": "enum"
+    }
+  ],
+  "requirements": [
+    "Patients browse clinics and filter by area.",
+    "Search by clinic or doctor.",
+    "Booking takes three steps: patient name and mobile, then email, then review.",
+    "The patient confirms and receives a booking reference.",
+    "Bookings appear in a list the patient can revisit."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Pick a clinic",
+    "Book in three steps",
+    "Receive a reference"
+  ]
+}

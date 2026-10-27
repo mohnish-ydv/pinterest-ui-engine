@@ -1,0 +1,103 @@
+{
+  "name": "Belt",
+  "tagline": "Conveyor faults, live.",
+  "about": "Faults reported on the sortation line, oldest first.",
+  "location": "Chennai",
+  "currency": "\u20b9",
+  "domain": "operations",
+  "collection": {
+    "label": "Fault",
+    "plural": "Faults",
+    "items": [
+      {
+        "id": "f1",
+        "code": "BT-9001",
+        "issue": "Belt tension alarm",
+        "severity": "Critical",
+        "open": 3,
+        "station": "S4",
+        "owner": "Naveen"
+      },
+      {
+        "id": "f2",
+        "code": "BT-9002",
+        "issue": "Photo-eye blocked",
+        "severity": "Minor",
+        "open": 11,
+        "station": "S1",
+        "owner": "Deepa"
+      },
+      {
+        "id": "f3",
+        "code": "BT-9003",
+        "issue": "Diverter sticking",
+        "severity": "Major",
+        "open": 27,
+        "station": "S2",
+        "owner": "Naveen"
+      },
+      {
+        "id": "f4",
+        "code": "BT-9004",
+        "issue": "Label head misaligned",
+        "severity": "Minor",
+        "open": 44,
+        "station": "S3",
+        "owner": "Arif"
+      },
+      {
+        "id": "f5",
+        "code": "BT-9005",
+        "issue": "Motor overheating",
+        "severity": "Critical",
+        "open": 58,
+        "station": "S4",
+        "owner": "Deepa"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "code",
+      "label": "Fault",
+      "type": "text"
+    },
+    {
+      "id": "issue",
+      "label": "Issue",
+      "type": "text"
+    },
+    {
+      "id": "severity",
+      "label": "Severity",
+      "type": "enum"
+    },
+    {
+      "id": "open",
+      "label": "Open (hours)",
+      "type": "number"
+    },
+    {
+      "id": "station",
+      "label": "Station",
+      "type": "text"
+    },
+    {
+      "id": "owner",
+      "label": "Owner",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "An operations table of open faults with their age and owner.",
+    "Filter by severity and search by fault code or issue.",
+    "Opening a fault shows its detail.",
+    "The table must stay usable on a phone without hiding any column."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Scan the queue",
+    "Filter to Critical",
+    "Open a fault"
+  ]
+}

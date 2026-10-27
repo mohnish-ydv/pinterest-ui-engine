@@ -1,0 +1,88 @@
+{
+  "id": "fault-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "centre": "[data-testid=\"severity-chip\"][data-severity=\"Critical\"]"
+    },
+    {
+      "click": "[data-testid=\"severity-chip\"][data-severity=\"Critical\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"severity-chip\"][data-severity=\"Critical\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"severity-chip\"][data-severity=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"fault-card\"][data-id=\"f1\"]"
+    },
+    {
+      "click": "[data-testid=\"fault-card\"][data-id=\"f1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "faults"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"faults\"], [data-act=\"go\"][data-view=\"faults\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"fault-card\"][data-id=\"f1\"]"
+    },
+    {
+      "click": "[data-testid=\"fault-card\"][data-id=\"f1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

@@ -1,0 +1,406 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Posture",
+    "domain": "analytics",
+    "family": "posture",
+    "density": "comfortable",
+    "densityBasis": "no reference profile supplied — default",
+    "generatedFrom": [
+      "brief.json",
+      "(no profile)"
+    ]
+  },
+  "entity": {
+    "id": "vehicle",
+    "label": "Vehicle",
+    "plural": "Vehicles",
+    "media": false,
+    "fields": [
+      {
+        "id": "plate",
+        "label": "Registration",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "depot",
+        "label": "Depot",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "North",
+          "South",
+          "East"
+        ]
+      },
+      {
+        "id": "km",
+        "label": "Distance",
+        "type": "number",
+        "suffix": " km",
+        "role": "stat",
+        "roleSource": "derived"
+      },
+      {
+        "id": "trips",
+        "label": "Trips",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived"
+      },
+      {
+        "id": "service",
+        "label": "Service",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Due",
+          "Ok",
+          "Overdue"
+        ]
+      },
+      {
+        "id": "driver",
+        "label": "Driver",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      }
+    ],
+    "titleClass": "vehicle-name"
+  },
+  "search": {
+    "fields": [
+      "plate",
+      "driver"
+    ],
+    "placeholder": "Search vehicles",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "depot",
+      "field": "depot",
+      "label": "Depot",
+      "testid": "depot-chip",
+      "dataAttr": "data-depot",
+      "allLabel": "All"
+    },
+    {
+      "id": "service",
+      "field": "service",
+      "label": "Service",
+      "testid": "service-chip",
+      "dataAttr": "data-service",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "vehicles",
+      "purpose": "browse",
+      "title": "Fleet, at a glance.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Posture",
+            "context": "Delhi",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Fleet, at a glance.",
+            "subtitle": "Utilisation and maintenance across the delivery fleet."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search vehicles",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "fields": [
+              "plate",
+              "driver"
+            ]
+          }
+        },
+        {
+          "id": "filter-depot",
+          "component": "filter-chips",
+          "props": {
+            "label": "Depot",
+            "testid": "depot-chip",
+            "allLabel": "All",
+            "valueAttr": "data-depot"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "filterId": "depot",
+            "field": "depot",
+            "options": [
+              "North",
+              "South",
+              "East"
+            ]
+          }
+        },
+        {
+          "id": "filter-service",
+          "component": "filter-chips",
+          "props": {
+            "label": "Service",
+            "testid": "service-chip",
+            "allLabel": "All",
+            "valueAttr": "data-service"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "filterId": "service",
+            "field": "service",
+            "options": [
+              "Due",
+              "Ok",
+              "Overdue"
+            ]
+          }
+        },
+        {
+          "id": "aggregates",
+          "component": "metric-row",
+          "props": {
+            "testid": "metrics",
+            "tileTestid": "kpi-tile",
+            "valueTestid": "kpi-value"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "aggregates": [
+              {
+                "id": "km",
+                "label": "Total Distance",
+                "op": "sum",
+                "field": "km",
+                "format": "plain"
+              },
+              {
+                "id": "trips",
+                "label": "Total Trips",
+                "op": "sum",
+                "field": "trips",
+                "format": "plain"
+              },
+              {
+                "id": "count",
+                "label": "Vehicles",
+                "op": "count",
+                "format": "plain"
+              }
+            ]
+          },
+          "states": [
+            "populated"
+          ]
+        },
+        {
+          "id": "collection",
+          "component": "data-table",
+          "props": {
+            "testid": "vehicle-list",
+            "itemTestid": "vehicle-card",
+            "label": "Vehicle table"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "source": "records",
+            "columns": [
+              {
+                "field": "plate",
+                "label": "Registration"
+              },
+              {
+                "field": "depot",
+                "label": "Depot"
+              },
+              {
+                "field": "km",
+                "label": "Distance",
+                "align": "right"
+              },
+              {
+                "field": "trips",
+                "label": "Trips",
+                "align": "right"
+              },
+              {
+                "field": "service",
+                "label": "Service"
+              }
+            ]
+          },
+          "controls": [
+            "search",
+            "filter:depot",
+            "filter:service"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Vehicle",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Posture",
+            "context": "Delhi",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "vehicle-name"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "title": "plate",
+            "subtitle": "driver"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "vehicle",
+            "fields": [
+              "km",
+              "trips"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "vehicles",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "vehicles",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "no reference profile supplied — default",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "dashboard",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "data-table",
+      "basis": "5 declared table columns cannot be shown as a list",
+      "source": "brief"
+    },
+    {
+      "id": "aggregates",
+      "value": "metric-row",
+      "basis": "3 declared aggregates shown above the collection",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> filter-chips -> metric-row -> data-table",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Herald",
+    "domain": "editorial",
+    "family": "herald",
+    "density": "comfortable",
+    "densityBasis": "no reference profile supplied — default",
+    "generatedFrom": [
+      "brief.json",
+      "(no profile)"
+    ]
+  },
+  "entity": {
+    "id": "dispatch",
+    "label": "Dispatch",
+    "plural": "Dispatches",
+    "media": false,
+    "fields": [
+      {
+        "id": "headline",
+        "label": "Headline",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "reporter",
+        "label": "Reporter",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      },
+      {
+        "id": "minutes",
+        "label": "Reading time",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived"
+      },
+      {
+        "id": "section",
+        "label": "Section",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Water",
+          "Labour"
+        ]
+      },
+      {
+        "id": "summary",
+        "label": "Summary",
+        "type": "text",
+        "role": "body",
+        "roleSource": "derived"
+      },
+      {
+        "id": "copy",
+        "label": "Body",
+        "type": "text",
+        "role": "body",
+        "roleSource": "derived"
+      }
+    ],
+    "titleClass": "dispatch-name"
+  },
+  "search": {
+    "fields": [
+      "headline",
+      "reporter"
+    ],
+    "placeholder": "Search dispatches",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "section",
+      "field": "section",
+      "label": "Section",
+      "testid": "section-chip",
+      "dataAttr": "data-section",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "dispatches",
+      "purpose": "browse",
+      "title": "Dispatches, kept slow.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Herald",
+            "context": "Chennai",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Dispatches, kept slow.",
+            "subtitle": "Reported pieces on labour, water and the city."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search dispatches",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "fields": [
+              "headline",
+              "reporter"
+            ]
+          }
+        },
+        {
+          "id": "filter-section",
+          "component": "filter-chips",
+          "props": {
+            "label": "Section",
+            "testid": "section-chip",
+            "allLabel": "All",
+            "valueAttr": "data-section"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "filterId": "section",
+            "field": "section",
+            "options": [
+              "Water",
+              "Labour"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "index",
+          "props": {
+            "testid": "dispatch-list",
+            "itemTestid": "dispatch-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "dispatch-open"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "source": "records",
+            "standfirstField": "summary"
+          },
+          "controls": [
+            "search",
+            "filter:section"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Dispatch",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Herald",
+            "context": "Chennai",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "dispatch-name"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "title": "headline",
+            "subtitle": "reporter"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "fields": [
+              "minutes"
+            ]
+          }
+        },
+        {
+          "id": "article",
+          "component": "article",
+          "props": {
+            "testid": "article"
+          },
+          "binding": {
+            "entity": "dispatch",
+            "article": {
+              "body": "summary",
+              "standfirst": "summary",
+              "byline": null
+            }
+          },
+          "states": [
+            "populated"
+          ]
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "dispatches",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "dispatches",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "no reference profile supplied — default",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "index",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "index",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "recordBody",
+      "value": "article",
+      "basis": "an article is declared, so prose replaces the label/value list",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

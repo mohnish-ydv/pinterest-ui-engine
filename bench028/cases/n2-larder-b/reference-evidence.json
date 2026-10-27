@@ -1,0 +1,396 @@
+{
+  "evidenceVersion": "1.0.0",
+  "image": "references/R07.jpg",
+  "canvas": {
+    "w": 735,
+    "h": 773,
+    "aspect": 0.951
+  },
+  "observed": {
+    "note": "Measured from pixels. These are facts about the image.",
+    "bandCount": 38,
+    "segmentationConfidence": "high",
+    "bands": [
+      {
+        "y0": 18,
+        "y1": 22,
+        "heightPct": 0.5,
+        "edgeColumns": 127
+      },
+      {
+        "y0": 39,
+        "y1": 46,
+        "heightPct": 0.9,
+        "edgeColumns": 114
+      },
+      {
+        "y0": 86,
+        "y1": 91,
+        "heightPct": 0.6,
+        "edgeColumns": 149
+      },
+      {
+        "y0": 105,
+        "y1": 111,
+        "heightPct": 0.8,
+        "edgeColumns": 159
+      },
+      {
+        "y0": 113,
+        "y1": 128,
+        "heightPct": 1.9,
+        "edgeColumns": 213
+      },
+      {
+        "y0": 132,
+        "y1": 137,
+        "heightPct": 0.6,
+        "edgeColumns": 156
+      },
+      {
+        "y0": 141,
+        "y1": 145,
+        "heightPct": 0.5,
+        "edgeColumns": 160
+      },
+      {
+        "y0": 147,
+        "y1": 176,
+        "heightPct": 3.8,
+        "edgeColumns": 233
+      },
+      {
+        "y0": 188,
+        "y1": 197,
+        "heightPct": 1.2,
+        "edgeColumns": 151
+      },
+      {
+        "y0": 200,
+        "y1": 215,
+        "heightPct": 1.9,
+        "edgeColumns": 160
+      },
+      {
+        "y0": 224,
+        "y1": 230,
+        "heightPct": 0.8,
+        "edgeColumns": 212
+      },
+      {
+        "y0": 234,
+        "y1": 239,
+        "heightPct": 0.6,
+        "edgeColumns": 172
+      },
+      {
+        "y0": 240,
+        "y1": 250,
+        "heightPct": 1.3,
+        "edgeColumns": 185
+      },
+      {
+        "y0": 256,
+        "y1": 265,
+        "heightPct": 1.2,
+        "edgeColumns": 196
+      },
+      {
+        "y0": 271,
+        "y1": 284,
+        "heightPct": 1.7,
+        "edgeColumns": 186
+      },
+      {
+        "y0": 295,
+        "y1": 299,
+        "heightPct": 0.5,
+        "edgeColumns": 118
+      },
+      {
+        "y0": 313,
+        "y1": 318,
+        "heightPct": 0.6,
+        "edgeColumns": 157
+      },
+      {
+        "y0": 324,
+        "y1": 330,
+        "heightPct": 0.8,
+        "edgeColumns": 247
+      },
+      {
+        "y0": 337,
+        "y1": 341,
+        "heightPct": 0.5,
+        "edgeColumns": 78
+      },
+      {
+        "y0": 345,
+        "y1": 350,
+        "heightPct": 0.6,
+        "edgeColumns": 227
+      },
+      {
+        "y0": 402,
+        "y1": 407,
+        "heightPct": 0.6,
+        "edgeColumns": 142
+      },
+      {
+        "y0": 422,
+        "y1": 431,
+        "heightPct": 1.2,
+        "edgeColumns": 185
+      },
+      {
+        "y0": 450,
+        "y1": 461,
+        "heightPct": 1.4,
+        "edgeColumns": 161
+      },
+      {
+        "y0": 464,
+        "y1": 469,
+        "heightPct": 0.6,
+        "edgeColumns": 171
+      },
+      {
+        "y0": 470,
+        "y1": 481,
+        "heightPct": 1.4,
+        "edgeColumns": 211
+      },
+      {
+        "y0": 489,
+        "y1": 498,
+        "heightPct": 1.2,
+        "edgeColumns": 224
+      },
+      {
+        "y0": 502,
+        "y1": 507,
+        "heightPct": 0.6,
+        "edgeColumns": 171
+      },
+      {
+        "y0": 520,
+        "y1": 538,
+        "heightPct": 2.3,
+        "edgeColumns": 236
+      },
+      {
+        "y0": 564,
+        "y1": 572,
+        "heightPct": 1,
+        "edgeColumns": 133
+      },
+      {
+        "y0": 576,
+        "y1": 584,
+        "heightPct": 1,
+        "edgeColumns": 154
+      },
+      {
+        "y0": 595,
+        "y1": 600,
+        "heightPct": 0.6,
+        "edgeColumns": 172
+      },
+      {
+        "y0": 611,
+        "y1": 619,
+        "heightPct": 1,
+        "edgeColumns": 177
+      },
+      {
+        "y0": 631,
+        "y1": 637,
+        "heightPct": 0.8,
+        "edgeColumns": 184
+      },
+      {
+        "y0": 642,
+        "y1": 648,
+        "heightPct": 0.8,
+        "edgeColumns": 159
+      },
+      {
+        "y0": 669,
+        "y1": 674,
+        "heightPct": 0.6,
+        "edgeColumns": 244
+      },
+      {
+        "y0": 683,
+        "y1": 690,
+        "heightPct": 0.9,
+        "edgeColumns": 201
+      },
+      {
+        "y0": 715,
+        "y1": 719,
+        "heightPct": 0.5,
+        "edgeColumns": 77
+      },
+      {
+        "y0": 720,
+        "y1": 730,
+        "heightPct": 1.3,
+        "edgeColumns": 260
+      }
+    ],
+    "whitespacePct": 43.5,
+    "edgeDensity": 0.0336,
+    "flatRegionPct": 66.1,
+    "clusters": [
+      {
+        "hex": "#F0F0F0",
+        "sharePct": 27.9
+      },
+      {
+        "hex": "#D8D8D8",
+        "sharePct": 19.4
+      },
+      {
+        "hex": "#C0C0C0",
+        "sharePct": 12.4
+      },
+      {
+        "hex": "#A8A8A8",
+        "sharePct": 6.1
+      },
+      {
+        "hex": "#000000",
+        "sharePct": 3.4
+      },
+      {
+        "hex": "#F0F0D8",
+        "sharePct": 3.2
+      }
+    ],
+    "saturatedPct": 2.48,
+    "lightPct": 77.3,
+    "repeatedBlockPeriodPx": null,
+    "repeatedBlockCount": 0,
+    "flatRegionPct2": 17.7,
+    "textEdgePct": 21.7,
+    "columnEdgeCount": 64,
+    "gutterFraction": 0.21,
+    "topBandActivityRatio": 0.617,
+    "colour": {
+      "sampledPx": 54720,
+      "satGe025Pct": 3.73,
+      "satGe003Pct": 27.94,
+      "modalHueDeg": 20,
+      "hueFamilySharePct": 85.3,
+      "topClusters": [
+        {
+          "rgb": [
+            240,
+            240,
+            240
+          ],
+          "hex": "#F0F0F0",
+          "share_pct": 36.47
+        },
+        {
+          "rgb": [
+            224,
+            224,
+            224
+          ],
+          "hex": "#E0E0E0",
+          "share_pct": 10.89
+        },
+        {
+          "rgb": [
+            208,
+            208,
+            208
+          ],
+          "hex": "#D0D0D0",
+          "share_pct": 6.77
+        },
+        {
+          "rgb": [
+            176,
+            176,
+            176
+          ],
+          "hex": "#B0B0B0",
+          "share_pct": 5.94
+        },
+        {
+          "rgb": [
+            192,
+            192,
+            192
+          ],
+          "hex": "#C0C0C0",
+          "share_pct": 4.3
+        }
+      ]
+    }
+  },
+  "inferred": {
+    "note": "Derived by a stated rule from the observed values. Each entry names its basis.",
+    "layoutPattern": {
+      "value": "grid-collage",
+      "basis": "38 horizontal activity bands",
+      "kind": "inferred"
+    },
+    "density": {
+      "value": "moderate",
+      "basis": "43.5% near-white pixels",
+      "kind": "inferred"
+    },
+    "detail": {
+      "value": "medium",
+      "basis": "mean horizontal edge 0.0336",
+      "kind": "inferred"
+    },
+    "repetition": {
+      "value": "single-surface",
+      "basis": "vertical periodicity gives ~0 repeated blocks of Nonepx",
+      "kind": "inferred",
+      "confidence": "low"
+    },
+    "mediaBalance": {
+      "value": "text-led",
+      "basis": "17.7% of rows are flat (photo/colour field proxy) against 21.7% text-dense rows",
+      "kind": "inferred",
+      "confidence": "low"
+    },
+    "gridStructure": {
+      "value": "multi-column",
+      "basis": "64 strong vertical edges, gutter fraction 0.21",
+      "kind": "inferred",
+      "confidence": "low"
+    },
+    "navigationProminence": {
+      "value": "quiet-header",
+      "basis": "top-band activity is 0.617x the body average",
+      "kind": "inferred",
+      "confidence": "low"
+    },
+    "paletteRegister": {
+      "value": "neutral",
+      "basis": "2.48% of pixels at saturation >= 0.25",
+      "kind": "inferred"
+    }
+  },
+  "unknowable": [
+    "what any block contains — periodicity measures repetition, not semantics",
+    "whether a flat region is a photograph, an illustration or a colour field",
+    "interaction affordances and their placement",
+    "responsive behaviour across breakpoints — a single flat collage shows one width",
+    "typography identity (typeface, weights, tracking) — pixels do not carry font names",
+    "interaction states (hover, focus, disabled, error) — a static board shows none",
+    "copy tone and content hierarchy beyond block position",
+    "spacing rhythm in absolute units — no scale reference is present"
+  ],
+  "limitations": [
+    "Absolute spacing, font identity and interaction states cannot be recovered from a static board."
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Belt",
+    "domain": "operations",
+    "family": "belt",
+    "density": "airy",
+    "densityBasis": "light share 76.4%, saturated share 0.55% — a near-white board reads airy",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "fault",
+    "label": "Fault",
+    "plural": "Faults",
+    "media": false,
+    "fields": [
+      {
+        "id": "code",
+        "label": "Fault",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived"
+      },
+      {
+        "id": "issue",
+        "label": "Issue",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived"
+      },
+      {
+        "id": "severity",
+        "label": "Severity",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Critical",
+          "Minor",
+          "Major"
+        ]
+      },
+      {
+        "id": "open",
+        "label": "Open (hours)",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived"
+      },
+      {
+        "id": "station",
+        "label": "Station",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived"
+      },
+      {
+        "id": "owner",
+        "label": "Owner",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived"
+      }
+    ],
+    "titleClass": "fault-name"
+  },
+  "search": {
+    "fields": [
+      "code",
+      "issue"
+    ],
+    "placeholder": "Search faults",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "severity",
+      "field": "severity",
+      "label": "Severity",
+      "testid": "severity-chip",
+      "dataAttr": "data-severity",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "faults",
+      "purpose": "browse",
+      "title": "Conveyor faults, live.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Belt",
+            "context": "Chennai",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Conveyor faults, live.",
+            "subtitle": "Faults reported on the sortation line, oldest first."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search faults",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "fault",
+            "fields": [
+              "code",
+              "issue"
+            ]
+          }
+        },
+        {
+          "id": "filter-severity",
+          "component": "filter-chips",
+          "props": {
+            "label": "Severity",
+            "testid": "severity-chip",
+            "allLabel": "All",
+            "valueAttr": "data-severity"
+          },
+          "binding": {
+            "entity": "fault",
+            "filterId": "severity",
+            "field": "severity",
+            "options": [
+              "Critical",
+              "Minor",
+              "Major"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "data-table",
+          "props": {
+            "testid": "fault-list",
+            "itemTestid": "fault-card",
+            "label": "Fault table"
+          },
+          "binding": {
+            "entity": "fault",
+            "source": "records",
+            "columns": [
+              {
+                "field": "code",
+                "label": "Fault"
+              },
+              {
+                "field": "issue",
+                "label": "Issue"
+              },
+              {
+                "field": "severity",
+                "label": "Severity"
+              },
+              {
+                "field": "open",
+                "label": "Open (hours)",
+                "align": "right"
+              },
+              {
+                "field": "station",
+                "label": "Station"
+              }
+            ]
+          },
+          "controls": [
+            "search",
+            "filter:severity"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Fault",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Belt",
+            "context": "Chennai",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "fault-name"
+          },
+          "binding": {
+            "entity": "fault",
+            "title": "code",
+            "subtitle": "issue"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "fault",
+            "fields": [
+              "open"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "fault",
+            "fields": [
+              "station",
+              "owner"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "faults",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "faults",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "airy",
+      "basis": "light share 76.4%, saturated share 0.55% — a near-white board reads airy",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "table",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"airy\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "data-table",
+      "basis": "5 declared table columns cannot be shown as a list",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> data-table",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "app": "Posture",
+  "entity": "vehicle",
+  "entryView": "vehicles",
+  "recordCount": 5,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the vehicles list renders all 5 records",
+      "act": "count",
+      "sel": "[data-testid=\"vehicle-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"vehicle-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "a KPI row of 3 metrics is present",
+      "act": "count",
+      "sel": "[data-testid=\"kpi-tile\"]",
+      "eq": 3
+    },
+    {
+      "id": "T4",
+      "desc": "every metric shows a value",
+      "act": "count",
+      "sel": "[data-testid=\"kpi-value\"]",
+      "eq": 3
+    },
+    {
+      "id": "T5",
+      "desc": "the table has 5 column headers",
+      "act": "count",
+      "sel": "[data-testid=\"table-head\"]",
+      "eq": 5
+    },
+    {
+      "id": "T6",
+      "desc": "filtering by Depot = North shows 2",
+      "act": "click",
+      "sel": "[data-testid=\"depot-chip\"][data-depot=\"North\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "only 2 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"vehicle-card\"]",
+      "eq": 2
+    },
+    {
+      "id": "T8",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"depot-chip\"][data-depot=\"North\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T9",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"depot-chip\"][data-depot=\"All\"]"
+    },
+    {
+      "id": "T10",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"vehicle-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T11",
+      "desc": "searching \"DL-01-AA-1201\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "DL-01-AA-1201"
+    },
+    {
+      "id": "T12",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"vehicle-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T13",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T14",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"vehicle-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T15",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"vehicle-card\"][data-id=\"v1\"]"
+    },
+    {
+      "id": "T16",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "DL-01-AA-1201"
+    },
+    {
+      "id": "T17",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T18",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

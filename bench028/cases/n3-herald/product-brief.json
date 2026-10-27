@@ -1,0 +1,115 @@
+{
+  "name": "Herald",
+  "tagline": "Dispatches, kept slow.",
+  "about": "Reported pieces on labour, water and the city.",
+  "location": "Chennai",
+  "currency": "\u20b9",
+  "domain": "editorial",
+  "collection": {
+    "label": "Dispatch",
+    "plural": "Dispatches",
+    "items": [
+      {
+        "id": "d1",
+        "headline": "The well under the car park",
+        "reporter": "Meera Suresh",
+        "minutes": 14,
+        "section": "Water",
+        "summary": "A survey map from 1912 turned out to be the only record of a neighbourhood well.",
+        "copy": [
+          "The digging started as a drainage job.",
+          "At two metres the crew hit dressed stone, and the work stopped for a fortnight.",
+          "By the time anyone agreed what it was, the car park had been resurfaced twice."
+        ]
+      },
+      {
+        "id": "d2",
+        "headline": "Night shift, four seasons",
+        "reporter": "Anil Kumar",
+        "minutes": 11,
+        "section": "Labour",
+        "summary": "What changes for a warehouse crew when the shift never does.",
+        "copy": [
+          "The shift starts at ten and ends when the lorries stop.",
+          "Nobody I met could say what season it was without checking a phone.",
+          "The pay is better than the day shift. That is the whole reason."
+        ]
+      },
+      {
+        "id": "d3",
+        "headline": "The last water carrier",
+        "reporter": "Meera Suresh",
+        "minutes": 8,
+        "section": "Water",
+        "summary": "A trade that survived the pipe network by being more convenient.",
+        "copy": [
+          "He carries forty litres at a time, twice a day, to eleven flats.",
+          "The building has a connection. The connection has a schedule.",
+          "He is not a replacement for the network. He is what people do while waiting for it."
+        ]
+      },
+      {
+        "id": "d4",
+        "headline": "Nine hundred applications",
+        "reporter": "Farah Begum",
+        "minutes": 6,
+        "section": "Labour",
+        "summary": "One hiring round, counted properly.",
+        "copy": [
+          "Nine hundred people applied for eleven jobs.",
+          "The shortlist was built in a single afternoon.",
+          "The criteria were not written down, which is itself the story."
+        ]
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "headline",
+      "label": "Headline",
+      "type": "text"
+    },
+    {
+      "id": "reporter",
+      "label": "Reporter",
+      "type": "text"
+    },
+    {
+      "id": "minutes",
+      "label": "Reading time",
+      "type": "number"
+    },
+    {
+      "id": "section",
+      "label": "Section",
+      "type": "enum"
+    },
+    {
+      "id": "summary",
+      "label": "Summary",
+      "type": "text"
+    },
+    {
+      "id": "copy",
+      "label": "Body",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "Readers browse a typographic index of dispatches, not a grid of cards.",
+    "Each entry shows the headline, the summary, the reporter and the reading time.",
+    "Filter by section and search by headline or reporter.",
+    "Opening a dispatch shows the full piece with a comfortable line length.",
+    "No cards, no images, no decorative initials."
+  ],
+  "prohibited": [
+    "cards",
+    "media",
+    "initial chips"
+  ],
+  "journeys": [
+    "Scan the index",
+    "Filter to Water",
+    "Read a dispatch"
+  ]
+}

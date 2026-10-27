@@ -1,0 +1,78 @@
+{
+  "app": "Larder",
+  "entity": "item",
+  "entryView": "items",
+  "recordCount": 6,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the items list renders all 6 records",
+      "act": "count",
+      "sel": "[data-testid=\"item-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"item-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "searching \"Toor dal\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Toor dal"
+    },
+    {
+      "id": "T4",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"item-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T5",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T6",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"item-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T7",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"item-card\"][data-id=\"n1\"]"
+    },
+    {
+      "id": "T8",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Toor dal"
+    },
+    {
+      "id": "T9",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T10",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}
