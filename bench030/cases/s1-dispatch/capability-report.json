@@ -1,0 +1,498 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "s1-dispatch",
+  "app": "Dispatch",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 20,
+    "byCategory": {
+      "content": {
+        "total": 7,
+        "required": 7
+      },
+      "layout": {
+        "total": 4,
+        "required": 4
+      },
+      "interaction": {
+        "total": 2,
+        "required": 2
+      },
+      "navigation": {
+        "total": 1,
+        "required": 1
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 20,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "S1-DISPATCH-C-headline-list",
+    "S1-DISPATCH-C-headline-detail",
+    "S1-DISPATCH-C-reporter-list",
+    "S1-DISPATCH-C-reporter-detail",
+    "S1-DISPATCH-C-minutes-list",
+    "S1-DISPATCH-C-minutes-detail",
+    "S1-DISPATCH-C-article-body",
+    "S1-DISPATCH-L-collection",
+    "S1-DISPATCH-L-detail",
+    "S1-DISPATCH-L-article",
+    "S1-DISPATCH-L-article-standfirst",
+    "S1-DISPATCH-I-search",
+    "S1-DISPATCH-I-facet-section",
+    "S1-DISPATCH-N-view-pieces",
+    "S1-DISPATCH-R-narrow",
+    "S1-DISPATCH-R-wide",
+    "S1-DISPATCH-A-contrast",
+    "S1-DISPATCH-A-labels",
+    "S1-DISPATCH-A-heading",
+    "S1-DISPATCH-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "s1-dispatch",
+    "app": "Dispatch",
+    "domain": "editorial",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "S1-DISPATCH-C-headline-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Headline\" (title) is visible in the Pieces list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "pieces",
+          "where": "list",
+          "field": "headline",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "S1-DISPATCH-C-headline-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Headline\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "headline",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "S1-DISPATCH-C-reporter-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reporter\" (subtitle) is visible in the Pieces list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "pieces",
+          "where": "list",
+          "field": "reporter",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "S1-DISPATCH-C-reporter-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reporter\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "reporter",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "S1-DISPATCH-C-minutes-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reading time\" (stat) is visible in the Pieces list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "pieces",
+          "where": "list",
+          "field": "minutes",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "S1-DISPATCH-C-minutes-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reading time\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "minutes",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "S1-DISPATCH-C-article-body",
+        "category": "content",
+        "required": true,
+        "expectation": "The article body prose is rendered in the reading view.",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "article",
+          "field": "copy",
+          "role": "body",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "S1-DISPATCH-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 4 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "pieces",
+          "selector": "item",
+          "expected": 4
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "S1-DISPATCH-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "S1-DISPATCH-L-article",
+        "category": "layout",
+        "required": true,
+        "expectation": "The reading view sets prose in a measured column (45–80 characters).",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "measure",
+          "view": "detail",
+          "selector": "article-body",
+          "min": 45,
+          "max": 80
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "S1-DISPATCH-L-article-standfirst",
+        "category": "layout",
+        "required": true,
+        "expectation": "The standfirst is set larger than the body text.",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "compare-font",
+          "view": "detail",
+          "larger": "standfirst",
+          "smaller": "article-body"
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "S1-DISPATCH-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "S1-DISPATCH-I-facet-section",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Section\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "section",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "S1-DISPATCH-N-view-pieces",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"pieces\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "pieces",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "S1-DISPATCH-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "S1-DISPATCH-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "S1-DISPATCH-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "S1-DISPATCH-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "S1-DISPATCH-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "S1-DISPATCH-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

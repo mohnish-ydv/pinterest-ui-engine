@@ -1,0 +1,93 @@
+{
+  "name": "Grid",
+  "tagline": "Meter readings.",
+  "about": "Daily readings from eight meters.",
+  "location": "Surat",
+  "currency": "",
+  "domain": "operations",
+  "collection": {
+    "label": "Reading",
+    "plural": "Readings",
+    "items": [
+      {
+        "id": "g1",
+        "meter": "M-101",
+        "site": "North",
+        "reading": 4820,
+        "delta": 42,
+        "flag": "Ok"
+      },
+      {
+        "id": "g2",
+        "meter": "M-102",
+        "site": "North",
+        "reading": 3310,
+        "delta": 18,
+        "flag": "Ok"
+      },
+      {
+        "id": "g3",
+        "meter": "M-201",
+        "site": "South",
+        "reading": 9140,
+        "delta": 96,
+        "flag": "Check"
+      },
+      {
+        "id": "g4",
+        "meter": "M-202",
+        "site": "South",
+        "reading": 2260,
+        "delta": 7,
+        "flag": "Ok"
+      },
+      {
+        "id": "g5",
+        "meter": "M-301",
+        "site": "East",
+        "reading": 6650,
+        "delta": 55,
+        "flag": "Ok"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "meter",
+      "label": "Meter",
+      "type": "text"
+    },
+    {
+      "id": "site",
+      "label": "Site",
+      "type": "enum"
+    },
+    {
+      "id": "reading",
+      "label": "Reading",
+      "type": "number"
+    },
+    {
+      "id": "delta",
+      "label": "Change",
+      "type": "number"
+    },
+    {
+      "id": "flag",
+      "label": "Flag",
+      "type": "enum"
+    }
+  ],
+  "requirements": [
+    "A table where every row shows the meter, the site, the reading and the change.",
+    "Filter by site and search by meter.",
+    "Opening a reading shows its detail.",
+    "The table stays usable on a phone without hiding any column."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Scan the readings",
+    "Filter to South",
+    "Open a reading"
+  ]
+}

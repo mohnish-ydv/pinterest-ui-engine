@@ -1,0 +1,104 @@
+{
+  "id": "stall-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"stall-card\"] .card-title, [data-testid=\"stall-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"stall-card\"] .card-sub, [data-testid=\"stall-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"grade-chip\"][data-grade=\"A\"]"
+    },
+    {
+      "click": "[data-testid=\"grade-chip\"][data-grade=\"A\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"grade-chip\"][data-grade=\"A\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"grade-chip\"][data-grade=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"stall-card\"][data-id=\"k1\"]"
+    },
+    {
+      "click": "[data-testid=\"stall-card\"][data-id=\"k1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "stalls"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"stalls\"], [data-act=\"go\"][data-view=\"stalls\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"stall-card\"][data-id=\"k1\"]"
+    },
+    {
+      "click": "[data-testid=\"stall-card\"][data-id=\"k1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

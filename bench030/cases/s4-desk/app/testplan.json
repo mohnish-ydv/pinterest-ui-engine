@@ -1,0 +1,195 @@
+{
+  "app": "Desk",
+  "entity": "category",
+  "entryView": "categories",
+  "recordCount": 4,
+  "derivedFrom": "layout IR v2 (planner 2.1.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the categories list renders all 4 records",
+      "act": "count",
+      "sel": "[data-testid=\"category-card\"]",
+      "eq": 4
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"category-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "searching \"Electrical\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Electrical"
+    },
+    {
+      "id": "T4",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"category-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T5",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T6",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"category-card\"]",
+      "eq": 4
+    },
+    {
+      "id": "T7",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"category-card\"][data-id=\"c1\"]"
+    },
+    {
+      "id": "T8",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Electrical"
+    },
+    {
+      "id": "T9",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T10",
+      "desc": "reopening a record for the step flow",
+      "act": "goto",
+      "view": "categories"
+    },
+    {
+      "id": "T11",
+      "desc": "opening a record",
+      "act": "click",
+      "sel": "[data-testid=\"category-card\"][data-id=\"c1\"]"
+    },
+    {
+      "id": "T12",
+      "desc": "the flow shows 3 steps",
+      "act": "count",
+      "sel": "[data-testid=\"step\"]",
+      "eq": 3
+    },
+    {
+      "id": "T13",
+      "desc": "the first step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"1\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T14",
+      "desc": "filling Your name",
+      "act": "type",
+      "sel": "[data-testid=\"field-name\"]",
+      "value": "Test Your name"
+    },
+    {
+      "id": "T15",
+      "desc": "filling Mobile number",
+      "act": "type",
+      "sel": "[data-testid=\"field-phone\"]",
+      "value": "9876543210"
+    },
+    {
+      "id": "T16",
+      "desc": "filling Email",
+      "act": "type",
+      "sel": "[data-testid=\"field-email\"]",
+      "value": "Test Email"
+    },
+    {
+      "id": "T17",
+      "desc": "Continue advances the flow",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T18",
+      "desc": "the second step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"2\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T19",
+      "desc": "Back returns to the first step",
+      "act": "click",
+      "sel": "[data-testid=\"step-back\"]"
+    },
+    {
+      "id": "T20",
+      "desc": "the first step is current again",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"1\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T21",
+      "desc": "Continue to step 2",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T22",
+      "desc": "Continue to step 3",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T23",
+      "desc": "the final step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"3\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T24",
+      "desc": "committing issues a reference",
+      "act": "click",
+      "sel": "[data-testid=\"confirm-btn\"]"
+    },
+    {
+      "id": "T25",
+      "desc": "the confirmation is shown",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "confirmation"
+    },
+    {
+      "id": "T26",
+      "desc": "a reference is issued in the declared format",
+      "act": "match",
+      "sel": "[data-testid=\"confirm-ref\"]",
+      "pattern": "^RF-\\d{6}$"
+    },
+    {
+      "id": "T27",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

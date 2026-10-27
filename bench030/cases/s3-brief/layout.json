@@ -1,0 +1,323 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.1.0",
+    "app": "Brief",
+    "domain": "legal",
+    "family": "brief",
+    "density": "balanced",
+    "densityBasis": "composition=row-list → compact: the surface is scanned for one record — density helps comparison; textFields=4 → spacious: few records with much prose — room improves reading",
+    "referenceDensity": "comfortable",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "matter",
+    "label": "Matter",
+    "plural": "Matters",
+    "media": false,
+    "fields": [
+      {
+        "id": "matter",
+        "label": "Matter",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a matter shows the complete record."
+      },
+      {
+        "id": "court",
+        "label": "Court",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived",
+        "requiredIn": "either"
+      },
+      {
+        "id": "filed",
+        "label": "Filed",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "either",
+        "forbiddenIn": "entry"
+      },
+      {
+        "id": "status",
+        "label": "Status",
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "options": [
+          "Open",
+          "Closed"
+        ],
+        "requiredIn": "either",
+        "scopeSource": "Filter by status and search by matter."
+      },
+      {
+        "id": "record",
+        "label": "Record",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "forbiddenIn": "entry",
+        "scopeSource": "Opening a matter shows the complete record."
+      }
+    ],
+    "titleClass": "matter-name"
+  },
+  "search": {
+    "fields": [
+      "matter",
+      "court"
+    ],
+    "placeholder": "Search matters",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "status",
+      "field": "status",
+      "label": "Status",
+      "testid": "status-chip",
+      "dataAttr": "data-status",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "matters",
+      "purpose": "browse",
+      "title": "Case files.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Brief",
+            "context": "Mumbai",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Case files.",
+            "subtitle": "Open matters, summarised on the list and complete on the record."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search matters",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "matter",
+            "fields": [
+              "matter",
+              "court"
+            ]
+          }
+        },
+        {
+          "id": "filter-status",
+          "component": "filter-chips",
+          "props": {
+            "label": "Status",
+            "testid": "status-chip",
+            "allLabel": "All",
+            "valueAttr": "data-status"
+          },
+          "binding": {
+            "entity": "matter",
+            "filterId": "status",
+            "field": "status",
+            "options": [
+              "Open",
+              "Closed"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "matter-list",
+            "itemTestid": "matter-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showChip": false,
+            "entryExtra": [],
+            "forbiddenRoles": [
+              "detail",
+              "detail"
+            ],
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "matter-open"
+          },
+          "binding": {
+            "entity": "matter",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:status"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Matter",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Brief",
+            "context": "Mumbai",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showChip": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "matter-name"
+          },
+          "binding": {
+            "entity": "matter",
+            "title": "matter",
+            "subtitle": "court"
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "matter",
+            "fields": [
+              "filed",
+              "record"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "matters",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "matters",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "light share 49.9%, saturated share 3.73%",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "row-list",
+      "basis": "declared in design-spec.intent",
+      "source": "brief"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

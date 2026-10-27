@@ -1,0 +1,84 @@
+{
+  "fulfilVersion": "1.0.0",
+  "outcomes": [
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/row renders \"title\" natively",
+      "id": "SR-001-field",
+      "subject": "category",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "entity-collection/row renders \"subtitle\" natively",
+      "id": "SR-002-field",
+      "subject": "team",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "entity-collection/row hosts it as an extra region, and the plan wires it",
+      "id": "SR-003-field",
+      "subject": "sla",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"Each entry\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a commit action carries UI, validation and feedback",
+      "id": "SR-004-behaviour",
+      "subject": "commit",
+      "kind": "behaviour",
+      "scope": {
+        "view": "confirmation",
+        "cardinality": "one",
+        "region": "feedback"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-005-field",
+      "subject": "category",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    }
+  ],
+  "counts": {
+    "satisfied": 5
+  },
+  "total": 5,
+  "passes": 5,
+  "blocking": [],
+  "resolutionCounts": {
+    "A": 4,
+    "B": 1
+  }
+}

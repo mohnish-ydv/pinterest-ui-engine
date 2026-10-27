@@ -1,0 +1,104 @@
+{
+  "id": "item-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.1.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"item-card\"] .card-title, [data-testid=\"item-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"item-card\"] .card-sub, [data-testid=\"item-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"category-chip\"][data-category=\"Dry\"]"
+    },
+    {
+      "click": "[data-testid=\"category-chip\"][data-category=\"Dry\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"category-chip\"][data-category=\"Dry\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"category-chip\"][data-category=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"item-card\"][data-id=\"i1\"]"
+    },
+    {
+      "click": "[data-testid=\"item-card\"][data-id=\"i1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "items"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"items\"], [data-act=\"go\"][data-view=\"items\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"item-card\"][data-id=\"i1\"]"
+    },
+    {
+      "click": "[data-testid=\"item-card\"][data-id=\"i1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

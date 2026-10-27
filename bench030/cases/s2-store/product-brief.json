@@ -1,0 +1,92 @@
+{
+  "name": "Store",
+  "tagline": "Stock on the shelf.",
+  "about": "What is in the dry store and how much.",
+  "location": "Pune",
+  "currency": "\u20b9",
+  "domain": "inventory",
+  "collection": {
+    "label": "Item",
+    "plural": "Items",
+    "items": [
+      {
+        "id": "i1",
+        "item": "Rice",
+        "category": "Dry",
+        "qty": 12,
+        "unit": "kg",
+        "reorder": "No"
+      },
+      {
+        "id": "i2",
+        "item": "Toor dal",
+        "category": "Dry",
+        "qty": 4,
+        "unit": "kg",
+        "reorder": "Yes"
+      },
+      {
+        "id": "i3",
+        "item": "Sunflower oil",
+        "category": "Oil",
+        "qty": 6,
+        "unit": "litre",
+        "reorder": "No"
+      },
+      {
+        "id": "i4",
+        "item": "Salt",
+        "category": "Dry",
+        "qty": 2,
+        "unit": "kg",
+        "reorder": "Yes"
+      },
+      {
+        "id": "i5",
+        "item": "Ghee",
+        "category": "Dairy",
+        "qty": 3,
+        "unit": "jar",
+        "reorder": "No"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "item",
+      "label": "Item",
+      "type": "text"
+    },
+    {
+      "id": "category",
+      "label": "Category",
+      "type": "enum"
+    },
+    {
+      "id": "qty",
+      "label": "Quantity",
+      "type": "number"
+    },
+    {
+      "id": "unit",
+      "label": "Unit",
+      "type": "text"
+    },
+    {
+      "id": "reorder",
+      "label": "Reorder",
+      "type": "enum"
+    }
+  ],
+  "requirements": [
+    "Each row shows the item, the quantity with its unit, and whether to reorder.",
+    "Filter by category and search by item.",
+    "Opening an item shows its detail."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Check the store",
+    "Filter to Dry",
+    "Open an item"
+  ]
+}

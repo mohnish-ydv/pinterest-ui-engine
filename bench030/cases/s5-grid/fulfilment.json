@@ -1,0 +1,113 @@
+{
+  "fulfilVersion": "1.0.0",
+  "outcomes": [
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "data-table/ hosts it as a derived column, and the plan wires it",
+      "id": "SR-001-field",
+      "subject": "meter",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"every row\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "data-table/ hosts it as a derived column, and the plan wires it",
+      "id": "SR-002-field",
+      "subject": "site",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"every row\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "data-table/ hosts it as a derived column, and the plan wires it",
+      "id": "SR-003-field",
+      "subject": "reading",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"every row\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "B",
+      "detail": "data-table/ hosts it as a derived column, and the plan wires it",
+      "id": "SR-004-field",
+      "subject": "delta",
+      "kind": "field",
+      "scope": {
+        "view": "entry",
+        "cardinality": "every-item",
+        "region": "item",
+        "evidence": "\"every row\" places the requirement in every repeated item"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-005-field",
+      "subject": "meter",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a section renders this role",
+      "id": "SR-006-field",
+      "subject": "site",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "stat-strip renders \"stat\"",
+      "id": "SR-007-field",
+      "subject": "reading",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    }
+  ],
+  "counts": {
+    "satisfied": 7
+  },
+  "total": 7,
+  "passes": 7,
+  "blocking": [],
+  "resolutionCounts": {
+    "B": 4,
+    "A": 3
+  }
+}

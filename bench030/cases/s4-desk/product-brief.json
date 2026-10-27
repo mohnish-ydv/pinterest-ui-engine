@@ -1,0 +1,76 @@
+{
+  "name": "Desk",
+  "tagline": "Raise a ticket.",
+  "about": "Facilities requests, triaged in three steps.",
+  "location": "Chennai",
+  "currency": "",
+  "domain": "workflow",
+  "collection": {
+    "label": "Category",
+    "plural": "Categories",
+    "items": [
+      {
+        "id": "c1",
+        "category": "Electrical",
+        "team": "Facilities",
+        "sla": "4 h",
+        "note": "Lights, sockets, lifts."
+      },
+      {
+        "id": "c2",
+        "category": "Plumbing",
+        "team": "Facilities",
+        "sla": "8 h",
+        "note": "Leaks, taps, drains."
+      },
+      {
+        "id": "c3",
+        "category": "Cleaning",
+        "team": "Housekeeping",
+        "sla": "24 h",
+        "note": "Spills, bins, deep clean."
+      },
+      {
+        "id": "c4",
+        "category": "Access",
+        "team": "Security",
+        "sla": "2 h",
+        "note": "Cards, doors, visitors."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "category",
+      "label": "Category",
+      "type": "text"
+    },
+    {
+      "id": "team",
+      "label": "Team",
+      "type": "text"
+    },
+    {
+      "id": "sla",
+      "label": "SLA",
+      "type": "text"
+    },
+    {
+      "id": "note",
+      "label": "Note",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "Each entry shows the category, the team and the SLA.",
+    "Raising a ticket takes three steps: describe it, give contact details, then review.",
+    "The person submitting receives a visible confirmation with a reference.",
+    "Search by category."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Pick a category",
+    "Raise a ticket in three steps",
+    "Receive a reference"
+  ]
+}

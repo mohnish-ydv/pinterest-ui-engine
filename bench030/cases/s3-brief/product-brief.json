@@ -1,0 +1,76 @@
+{
+  "name": "Brief",
+  "tagline": "Case files.",
+  "about": "Open matters, summarised on the list and complete on the record.",
+  "location": "Mumbai",
+  "currency": "",
+  "domain": "legal",
+  "collection": {
+    "label": "Matter",
+    "plural": "Matters",
+    "items": [
+      {
+        "id": "m1",
+        "matter": "Sharma v. Municipal Council",
+        "court": "High Court",
+        "filed": "2023",
+        "status": "Open",
+        "record": "Filed under the 1974 Act. Two interlocutory applications pending; the second seeks a stay of the first. Hearing listed for the autumn list."
+      },
+      {
+        "id": "m2",
+        "matter": "Iyer tenancy",
+        "court": "District",
+        "filed": "2024",
+        "status": "Open",
+        "record": "Possession sought on the ground of non-payment. The tenant has deposited arrears and the matter now turns on costs."
+      },
+      {
+        "id": "m3",
+        "matter": "Coastal lease renewal",
+        "court": "Revenue",
+        "filed": "2022",
+        "status": "Closed",
+        "record": "Lease renewed for eleven years with a revised premium. No appeal filed within the limitation period."
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "matter",
+      "label": "Matter",
+      "type": "text"
+    },
+    {
+      "id": "court",
+      "label": "Court",
+      "type": "text"
+    },
+    {
+      "id": "filed",
+      "label": "Filed",
+      "type": "text"
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "type": "enum"
+    },
+    {
+      "id": "record",
+      "label": "Record",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "The list shows only the matter, the court and the status.",
+    "Opening a matter shows the complete record.",
+    "Filter by status and search by matter."
+  ],
+  "prohibited": [],
+  "journeys": [
+    "Scan the matters",
+    "Open a matter",
+    "Read the record"
+  ]
+}

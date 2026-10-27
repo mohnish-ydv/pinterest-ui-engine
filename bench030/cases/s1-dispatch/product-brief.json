@@ -1,0 +1,112 @@
+{
+  "name": "Dispatch",
+  "tagline": "Notes from the field desk.",
+  "about": "Short reported pieces, filed weekly.",
+  "location": "Delhi",
+  "currency": "",
+  "domain": "editorial",
+  "collection": {
+    "label": "Piece",
+    "plural": "Pieces",
+    "items": [
+      {
+        "id": "d1",
+        "headline": "The queue outside the depot",
+        "reporter": "Meera",
+        "minutes": 9,
+        "section": "Labour",
+        "summary": "Six hundred people, eleven jobs, one afternoon.",
+        "copy": [
+          "The queue started at six.",
+          "By nine it had reached the corner.",
+          "Eleven people went in."
+        ]
+      },
+      {
+        "id": "d2",
+        "headline": "Water at the fifth floor",
+        "reporter": "Anil",
+        "minutes": 12,
+        "section": "Water",
+        "summary": "Pressure is a scheduling problem wearing a plumbing costume.",
+        "copy": [
+          "The pump runs for two hours a day.",
+          "Everyone on the fifth floor knows which two.",
+          "The rest of the building does not."
+        ]
+      },
+      {
+        "id": "d3",
+        "headline": "The last licence clerk",
+        "reporter": "Meera",
+        "minutes": 7,
+        "section": "Labour",
+        "summary": "A counter that still works because one person remembers how.",
+        "copy": [
+          "He has been at the counter since 1994.",
+          "The software arrived in 2011.",
+          "He still keeps the paper register."
+        ]
+      },
+      {
+        "id": "d4",
+        "headline": "A tanker, twice a week",
+        "reporter": "Farah",
+        "minutes": 5,
+        "section": "Water",
+        "summary": "Four hundred rupees a week for what the pipe does not deliver.",
+        "copy": [
+          "The tanker comes on Tuesdays and Fridays.",
+          "Four houses share the cost.",
+          "Nobody has asked the ward office why."
+        ]
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "headline",
+      "label": "Headline",
+      "type": "text"
+    },
+    {
+      "id": "reporter",
+      "label": "Reporter",
+      "type": "text"
+    },
+    {
+      "id": "minutes",
+      "label": "Reading time",
+      "type": "number"
+    },
+    {
+      "id": "section",
+      "label": "Section",
+      "type": "enum"
+    },
+    {
+      "id": "summary",
+      "label": "Summary",
+      "type": "text"
+    },
+    {
+      "id": "copy",
+      "label": "Copy",
+      "type": "text"
+    }
+  ],
+  "requirements": [
+    "Each entry shows the headline, the summary, the reporter and the reading time.",
+    "Filter by section and search by headline or reporter.",
+    "Opening a piece shows the full copy with a comfortable line length."
+  ],
+  "prohibited": [
+    "cards",
+    "images"
+  ],
+  "journeys": [
+    "Scan the entries",
+    "Filter to Water",
+    "Read a piece"
+  ]
+}
