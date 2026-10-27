@@ -1,0 +1,559 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Ledger",
+    "domain": "productivity",
+    "family": "ledger",
+    "density": "comfortable",
+    "densityBasis": "light share 50.5%, saturated share 10.86%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "claim",
+    "label": "Claim",
+    "plural": "Claims",
+    "media": false,
+    "fields": [
+      {
+        "id": "ref",
+        "type": "text",
+        "role": "title",
+        "label": "Claim"
+      },
+      {
+        "id": "category",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Category",
+        "options": [
+          "Travel",
+          "Meals",
+          "Equipment",
+          "Software"
+        ]
+      },
+      {
+        "id": "amount",
+        "type": "money",
+        "role": "price",
+        "label": "Amount"
+      },
+      {
+        "id": "submitted",
+        "type": "text",
+        "role": "meta",
+        "label": "Submitted"
+      },
+      {
+        "id": "status",
+        "type": "enum",
+        "role": "status",
+        "label": "Status",
+        "options": [
+          "Draft",
+          "Submitted",
+          "Approved",
+          "Rejected"
+        ]
+      },
+      {
+        "id": "items",
+        "type": "number",
+        "role": "stat",
+        "label": "Line items"
+      },
+      {
+        "id": "notes",
+        "type": "text",
+        "role": "detail",
+        "label": "Notes"
+      }
+    ],
+    "titleClass": "claim-ref"
+  },
+  "search": {
+    "fields": [
+      "ref",
+      "category"
+    ],
+    "placeholder": "Search claims",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "status",
+      "field": "status",
+      "label": "Status",
+      "testid": "status-chip",
+      "dataAttr": "data-status",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "file",
+      "label": "File claim",
+      "kind": "commit",
+      "testid": "file-btn",
+      "form": [
+        {
+          "id": "title",
+          "label": "Claim title",
+          "type": "text",
+          "testid": "claim-title",
+          "errorTestid": "error-title",
+          "required": true,
+          "minLength": 3,
+          "message": "Give the claim a title."
+        },
+        {
+          "id": "amount",
+          "label": "Amount",
+          "type": "text",
+          "testid": "claim-amount",
+          "errorTestid": "error-amount",
+          "required": true,
+          "pattern": "^\\d+$",
+          "message": "Enter the amount in whole rupees."
+        }
+      ],
+      "result": {
+        "collection": "filed",
+        "referencePrefix": "EXP",
+        "title": "Claim filed",
+        "referenceTestid": "file-ref",
+        "summaryTestid": "file-summary"
+      },
+      "steps": [
+        {
+          "id": "details",
+          "label": "Details",
+          "fields": [
+            "title",
+            "amount"
+          ]
+        },
+        {
+          "id": "receipt",
+          "label": "Receipt",
+          "fields": []
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "fields": [],
+          "review": true
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "id": "filed",
+      "view": "approvals",
+      "label": "Awaiting approval",
+      "listTestid": "approval-list",
+      "itemTestid": "approval-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "title",
+        "amount"
+      ],
+      "emptyMessage": "Nothing awaiting approval.",
+      "cancel": {
+        "testid": "withdraw-btn",
+        "confirmTestid": "withdraw-confirm",
+        "label": "Withdraw",
+        "confirmLabel": "Confirm withdraw",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "pending",
+      "collection": "filed",
+      "testid": "pending-banner",
+      "label": "Awaiting approval",
+      "fields": [
+        "ref",
+        "amount"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-claims",
+        "label": "Claims",
+        "view": "claims",
+        "icon": "grid",
+        "dataNav": "claims"
+      },
+      {
+        "id": "approvals-open",
+        "label": "Approvals",
+        "view": "approvals",
+        "icon": "grid",
+        "dataNav": "approvals"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "claims",
+      "purpose": "browse",
+      "title": "Claims that clear in a day.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Ledger",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Claims that clear in a day.",
+            "subtitle": "File, track and approve expenses."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search claims",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "claim",
+            "fields": [
+              "ref",
+              "category"
+            ]
+          }
+        },
+        {
+          "id": "filter-status",
+          "component": "filter-chips",
+          "props": {
+            "label": "Status",
+            "testid": "status-chip",
+            "allLabel": "All",
+            "valueAttr": "data-status"
+          },
+          "binding": {
+            "entity": "claim",
+            "filterId": "status",
+            "field": "status",
+            "options": [
+              "Draft",
+              "Submitted",
+              "Approved",
+              "Rejected"
+            ]
+          }
+        },
+        {
+          "id": "banner-pending",
+          "component": "status-banner",
+          "props": {
+            "testid": "pending-banner",
+            "label": "Awaiting approval",
+            "emptyHide": true
+          },
+          "binding": {
+            "collection": "filed",
+            "fields": [
+              "ref",
+              "amount"
+            ]
+          }
+        },
+        {
+          "id": "entry-action",
+          "component": "primary-action",
+          "props": {
+            "label": "New claim",
+            "testid": "new-claim",
+            "action": "file",
+            "act": "start-create"
+          },
+          "binding": {
+            "entity": "claim",
+            "amountField": null
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "claim-list",
+            "itemTestid": "claim-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": true,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "claim-open"
+          },
+          "binding": {
+            "entity": "claim",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:status"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "approvals",
+      "purpose": "collection",
+      "title": "Awaiting approval",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Ledger",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "Awaiting approval",
+            "testid": "approval-list",
+            "itemTestid": "approval-item",
+            "cancelTestid": "withdraw-btn",
+            "confirmTestid": "withdraw-confirm",
+            "confirmLabel": "Confirm withdraw",
+            "keepLabel": "Keep",
+            "cancelLabel": "Withdraw"
+          },
+          "binding": {
+            "collection": "filed",
+            "fields": [
+              "ref",
+              "title",
+              "amount"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing awaiting approval."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Claim",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Ledger",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": true,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "claim-ref"
+          },
+          "binding": {
+            "entity": "claim",
+            "title": "ref",
+            "subtitle": "category",
+            "price": "amount",
+            "status": "status"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "claim",
+            "fields": [
+              "items"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "claim",
+            "fields": [
+              "submitted",
+              "notes"
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "step-flow",
+          "props": {
+            "testid": "stepflow",
+            "commitTestid": "file-btn",
+            "commitLabel": "File claim"
+          },
+          "binding": {
+            "entity": "claim",
+            "steps": [
+              {
+                "id": "details",
+                "label": "Details",
+                "fields": [
+                  "title",
+                  "amount"
+                ]
+              },
+              {
+                "id": "receipt",
+                "label": "Receipt",
+                "fields": []
+              },
+              {
+                "id": "review",
+                "label": "Review",
+                "fields": [],
+                "review": true
+              }
+            ]
+          },
+          "states": [
+            "current",
+            "done",
+            "todo",
+            "error"
+          ]
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Claim filed",
+            "testid": "file-ref",
+            "summaryTestid": "file-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "claim",
+            "referencePrefix": "EXP"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "claims",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "claims",
+      "trigger": "back"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "file",
+      "creates": "filed",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    },
+    {
+      "id": "cancel-filed",
+      "from": "approvals",
+      "trigger": "cancel",
+      "deletes": "filed",
+      "requiresConfirmation": true,
+      "preconditions": [
+        "itemExists"
+      ],
+      "restores": "frees the slot or resource the record held"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

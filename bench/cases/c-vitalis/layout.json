@@ -1,0 +1,621 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Vitalis",
+    "domain": "booking",
+    "family": "vitalis",
+    "density": "comfortable",
+    "densityBasis": "light share 52.1%, saturated share 7.78%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "therapist",
+    "label": "Therapist",
+    "plural": "Therapists",
+    "media": false,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Therapist"
+      },
+      {
+        "id": "specialty",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Specialty",
+        "options": [
+          "Sports",
+          "Post-surgery",
+          "Geriatric",
+          "Paediatric"
+        ]
+      },
+      {
+        "id": "fee",
+        "type": "money",
+        "role": "price",
+        "label": "Session fee"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "years",
+        "type": "number",
+        "role": "stat",
+        "label": "Years"
+      },
+      {
+        "id": "clinic",
+        "type": "text",
+        "role": "detail",
+        "label": "Clinic"
+      },
+      {
+        "id": "about",
+        "type": "text",
+        "role": "detail",
+        "label": "About"
+      }
+    ],
+    "titleClass": "therapist-name"
+  },
+  "search": {
+    "fields": [
+      "name",
+      "specialty"
+    ],
+    "placeholder": "Search therapists",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "specialty",
+      "field": "specialty",
+      "label": "Specialty",
+      "testid": "specialty-chip",
+      "dataAttr": "data-spec",
+      "allLabel": "All"
+    }
+  ],
+  "availability": {
+    "days": 6,
+    "slots": [
+      "8:00 AM",
+      "9:30 AM",
+      "11:00 AM",
+      "2:00 PM",
+      "4:00 PM",
+      "6:00 PM"
+    ],
+    "label": "Session times",
+    "slotLabel": "Time",
+    "dayTestid": "day-chip",
+    "slotTestid": "slot",
+    "dayAttr": "data-day",
+    "slotAttr": "data-slot",
+    "errorTestid": "error-slot",
+    "required": true,
+    "blockOn": "sessions",
+    "message": "Choose a session time.",
+    "rule": {
+      "kind": "modulo",
+      "modulus": 3,
+      "remainder": 0,
+      "inputs": [
+        "recordIndex",
+        "dayIndex",
+        "slotIndex"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "id": "book",
+      "label": "Book session",
+      "kind": "commit",
+      "testid": "book-btn",
+      "form": [
+        {
+          "id": "patient",
+          "label": "Patient name",
+          "type": "text",
+          "testid": "patient-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the patient's name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "patient-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "result": {
+        "collection": "sessions",
+        "referencePrefix": "VS",
+        "title": "Session booked",
+        "referenceTestid": "session-ref",
+        "summaryTestid": "session-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "sessions",
+      "view": "sessions",
+      "label": "My sessions",
+      "listTestid": "sessions-list",
+      "itemTestid": "session-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "id",
+        "slot",
+        "patient",
+        "phone"
+      ],
+      "emptyMessage": "No sessions booked yet.",
+      "cancel": {
+        "testid": "cancel-btn",
+        "confirmTestid": "cancel-confirm",
+        "label": "Cancel session",
+        "confirmLabel": "Confirm cancel",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "next",
+      "collection": "sessions",
+      "testid": "next-session",
+      "label": "Next session",
+      "fields": [
+        "id",
+        "slot"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-team",
+        "label": "Team",
+        "view": "team",
+        "icon": "grid",
+        "dataNav": "team"
+      },
+      {
+        "id": "sessions-open",
+        "label": "Sessions",
+        "view": "sessions",
+        "icon": "grid",
+        "dataNav": "sessions"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "team",
+      "purpose": "browse",
+      "title": "Physiotherapy, without the wait.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Vitalis",
+            "context": "Pune",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Physiotherapy, without the wait.",
+            "subtitle": "Book a session in under a minute."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search therapists",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "therapist",
+            "fields": [
+              "name",
+              "specialty"
+            ]
+          }
+        },
+        {
+          "id": "filter-specialty",
+          "component": "filter-chips",
+          "props": {
+            "label": "Specialty",
+            "testid": "specialty-chip",
+            "allLabel": "All",
+            "valueAttr": "data-spec"
+          },
+          "binding": {
+            "entity": "therapist",
+            "filterId": "specialty",
+            "field": "specialty",
+            "options": [
+              "Sports",
+              "Post-surgery",
+              "Geriatric",
+              "Paediatric"
+            ]
+          }
+        },
+        {
+          "id": "banner-next",
+          "component": "status-banner",
+          "props": {
+            "testid": "next-session",
+            "label": "Next session",
+            "emptyHide": true
+          },
+          "binding": {
+            "collection": "sessions",
+            "fields": [
+              "id",
+              "slot"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "therapist-list",
+            "itemTestid": "therapist-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "therapist-open"
+          },
+          "binding": {
+            "entity": "therapist",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:specialty"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sessions",
+      "purpose": "collection",
+      "title": "My sessions",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Vitalis",
+            "context": "Pune",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "My sessions",
+            "testid": "sessions-list",
+            "itemTestid": "session-item",
+            "cancelTestid": "cancel-btn",
+            "confirmTestid": "cancel-confirm",
+            "confirmLabel": "Confirm cancel",
+            "keepLabel": "Keep",
+            "cancelLabel": "Cancel session"
+          },
+          "binding": {
+            "collection": "sessions",
+            "fields": [
+              "id",
+              "slot",
+              "patient",
+              "phone"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "No sessions booked yet."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Therapist",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Vitalis",
+            "context": "Pune",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "therapist-name"
+          },
+          "binding": {
+            "entity": "therapist",
+            "title": "name",
+            "subtitle": "specialty",
+            "price": "fee"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "therapist",
+            "fields": [
+              "years"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "therapist",
+            "fields": [
+              "rating",
+              "reviews",
+              "clinic",
+              "about"
+            ]
+          }
+        },
+        {
+          "id": "availability",
+          "component": "availability-picker",
+          "props": {
+            "label": "Session times",
+            "dayTestid": "day-chip",
+            "slotTestid": "slot",
+            "dayAttr": "data-day",
+            "slotAttr": "data-slot",
+            "errorTestid": "error-slot",
+            "required": true
+          },
+          "binding": {
+            "entity": "therapist",
+            "availability": {
+              "days": 6,
+              "slots": [
+                "8:00 AM",
+                "9:30 AM",
+                "11:00 AM",
+                "2:00 PM",
+                "4:00 PM",
+                "6:00 PM"
+              ],
+              "label": "Session times",
+              "slotLabel": "Time",
+              "dayTestid": "day-chip",
+              "slotTestid": "slot",
+              "dayAttr": "data-day",
+              "slotAttr": "data-slot",
+              "errorTestid": "error-slot",
+              "required": true,
+              "blockOn": "sessions",
+              "message": "Choose a session time.",
+              "rule": {
+                "kind": "modulo",
+                "modulus": 3,
+                "remainder": 0,
+                "inputs": [
+                  "recordIndex",
+                  "dayIndex",
+                  "slotIndex"
+                ]
+              }
+            }
+          },
+          "states": [
+            "free",
+            "taken",
+            "selected",
+            "disabled"
+          ]
+        },
+        {
+          "id": "form",
+          "component": "form-fields",
+          "props": {
+            "testid": "form",
+            "submitLabel": "Book session"
+          },
+          "binding": {
+            "entity": "therapist",
+            "fields": [
+              {
+                "id": "patient",
+                "label": "Patient name",
+                "type": "text",
+                "testid": "patient-name",
+                "errorTestid": "error-name",
+                "required": true,
+                "minLength": 2,
+                "message": "Enter the patient's name (at least 2 characters)."
+              },
+              {
+                "id": "phone",
+                "label": "Mobile number",
+                "type": "tel",
+                "testid": "patient-phone",
+                "errorTestid": "error-phone",
+                "required": true,
+                "pattern": "^\\d{10}$",
+                "stripWhitespace": true,
+                "message": "Enter a 10-digit mobile number."
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "component": "primary-action",
+          "props": {
+            "label": "Book session",
+            "testid": "book-btn",
+            "action": "book",
+            "showAmount": false
+          },
+          "binding": {
+            "entity": "therapist",
+            "amountField": "fee"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Session booked",
+            "testid": "session-ref",
+            "summaryTestid": "session-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "therapist",
+            "referencePrefix": "VS"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "team",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "team",
+      "trigger": "back"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "book",
+      "creates": "sessions",
+      "preconditions": [
+        "formValid",
+        "availabilitySelected"
+      ],
+      "persists": true
+    },
+    {
+      "id": "cancel-sessions",
+      "from": "sessions",
+      "trigger": "cancel",
+      "deletes": "sessions",
+      "requiresConfirmation": true,
+      "preconditions": [
+        "itemExists"
+      ],
+      "restores": "frees the slot or resource the record held"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "reference": "R08 Proton Vault (password manager, magenta-red 340deg, light 50.5%)",
+  "family": "ledger",
+  "palette": {
+    "brand": "#9D174D",
+    "brandDeep": "#7A1039",
+    "ground": "#FBF7F9",
+    "surface": "#FFFFFF",
+    "board": "#2A1420",
+    "ink": "#1F1520",
+    "inkSoft": "#6A5A64",
+    "tint": "#F7E3EC",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 utility app",
+    "uiRole": "grotesque; tabular numerals for money",
+    "scalePx": {
+      "body": 14,
+      "display": 25,
+      "section": 17,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 18,
+    "cardRadius": 14,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "Heading, search, status chips, pending banner, then one row per claim with its status pill.",
+    "detail": "Claim header, amount, line-item stat, notes, the filing form, one action.",
+    "density": "Dense; a working ledger."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Status chips.",
+    "numbers": "Amounts in rupees on row, detail and confirmation.",
+    "errors": "Inline under the field.",
+    "tabs": "Claims / Approvals."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "None needed."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py: sat>=0.25 = 10.86%, modal hue 340deg, 50.5% light pixels.",
+    "interpreted": "Composition is interpretation.",
+    "uncertainty": [
+      "R08 is a password manager; it guides density and restraint, not expense workflow."
+    ]
+  },
+  "specVersion": 1
+}

@@ -1,0 +1,314 @@
+{
+  "app": "Vitalis \u2014 physiotherapy appointments (benchmark case C: healthcare workflow)",
+  "brand": "Vitalis",
+  "tagline": "Physiotherapy, without the wait.",
+  "subtitle": "Book a session in under a minute.",
+  "location": "Pune",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "booking",
+  "family": "vitalis",
+  "views": [
+    "team",
+    "sessions"
+  ],
+  "navigation": {
+    "team": {
+      "label": "Team"
+    },
+    "sessions": {
+      "label": "Sessions",
+      "testid": "sessions-open"
+    }
+  },
+  "entity": {
+    "id": "therapist",
+    "label": "Therapist",
+    "plural": "Therapists",
+    "media": false,
+    "titleClass": "therapist-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "therapist-list",
+      "itemTestid": "therapist-card",
+      "openTestid": "therapist-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Therapist"
+      },
+      {
+        "id": "specialty",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Specialty",
+        "options": [
+          "Sports",
+          "Post-surgery",
+          "Geriatric",
+          "Paediatric"
+        ]
+      },
+      {
+        "id": "fee",
+        "type": "money",
+        "role": "price",
+        "label": "Session fee"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "years",
+        "type": "number",
+        "role": "stat",
+        "label": "Years"
+      },
+      {
+        "id": "clinic",
+        "type": "text",
+        "role": "detail",
+        "label": "Clinic"
+      },
+      {
+        "id": "about",
+        "type": "text",
+        "role": "detail",
+        "label": "About"
+      }
+    ],
+    "records": [
+      {
+        "id": "t1",
+        "name": "Dr. Rhea Kulkarni",
+        "specialty": "Sports",
+        "fee": 900,
+        "rating": 4.9,
+        "reviews": 164,
+        "years": 11,
+        "clinic": "Vitalis Kalyani Nagar",
+        "about": "Sports rehabilitation for runners and racquet players. Works from a movement screen rather than a generic protocol."
+      },
+      {
+        "id": "t2",
+        "name": "Dr. Sameer Joshi",
+        "specialty": "Post-surgery",
+        "fee": 1200,
+        "rating": 4.8,
+        "reviews": 98,
+        "years": 16,
+        "clinic": "Vitalis Baner",
+        "about": "Post-operative knee and shoulder rehabilitation, with a hand-off plan for the referring surgeon."
+      },
+      {
+        "id": "t3",
+        "name": "Dr. Anita Desai",
+        "specialty": "Geriatric",
+        "fee": 800,
+        "rating": 4.7,
+        "reviews": 142,
+        "years": 9,
+        "clinic": "Vitalis Kothrud",
+        "about": "Balance and mobility work for older adults; home-programme led."
+      },
+      {
+        "id": "t4",
+        "name": "Dr. Nikhil Rane",
+        "specialty": "Paediatric",
+        "fee": 1000,
+        "rating": 4.6,
+        "reviews": 73,
+        "years": 7,
+        "clinic": "Vitalis Aundh",
+        "about": "Developmental physiotherapy for children aged two to twelve."
+      },
+      {
+        "id": "t5",
+        "name": "Dr. Fatima Sheikh",
+        "specialty": "Sports",
+        "fee": 950,
+        "rating": 4.8,
+        "reviews": 121,
+        "years": 12,
+        "clinic": "Vitalis Baner",
+        "about": "Shoulder and elbow rehabilitation for throwing athletes."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "specialty"
+    ],
+    "placeholder": "Search therapists",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "specialty",
+      "field": "specialty",
+      "label": "Specialty",
+      "testid": "specialty-chip",
+      "dataAttr": "data-spec",
+      "allLabel": "All"
+    }
+  ],
+  "availability": {
+    "days": 6,
+    "slots": [
+      "8:00 AM",
+      "9:30 AM",
+      "11:00 AM",
+      "2:00 PM",
+      "4:00 PM",
+      "6:00 PM"
+    ],
+    "label": "Session times",
+    "slotLabel": "Time",
+    "dayTestid": "day-chip",
+    "slotTestid": "slot",
+    "dayAttr": "data-day",
+    "slotAttr": "data-slot",
+    "errorTestid": "error-slot",
+    "required": true,
+    "blockOn": "sessions",
+    "message": "Choose a session time.",
+    "rule": {
+      "kind": "modulo",
+      "modulus": 3,
+      "remainder": 0,
+      "inputs": [
+        "recordIndex",
+        "dayIndex",
+        "slotIndex"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "id": "book",
+      "label": "Book session",
+      "kind": "commit",
+      "testid": "book-btn",
+      "form": [
+        {
+          "id": "patient",
+          "label": "Patient name",
+          "type": "text",
+          "testid": "patient-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the patient's name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "patient-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "result": {
+        "collection": "sessions",
+        "referencePrefix": "VS",
+        "title": "Session booked",
+        "referenceTestid": "session-ref",
+        "summaryTestid": "session-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "sessions",
+      "view": "sessions",
+      "label": "My sessions",
+      "listTestid": "sessions-list",
+      "itemTestid": "session-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "id",
+        "slot",
+        "patient",
+        "phone"
+      ],
+      "emptyMessage": "No sessions booked yet.",
+      "cancel": {
+        "testid": "cancel-btn",
+        "confirmTestid": "cancel-confirm",
+        "label": "Cancel session",
+        "confirmLabel": "Confirm cancel",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "next",
+      "collection": "sessions",
+      "testid": "next-session",
+      "label": "Next session",
+      "fields": [
+        "id",
+        "slot"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "team",
+      "sessions",
+      "detail",
+      "confirmation"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "specialty-chip",
+      "therapist-list",
+      "therapist-card",
+      "therapist-open",
+      "detail-title",
+      "detail-price",
+      "stat-strip",
+      "detail-list",
+      "day-chip",
+      "slot",
+      "error-slot",
+      "form",
+      "patient-name",
+      "patient-phone",
+      "error-name",
+      "error-phone",
+      "book-btn",
+      "session-ref",
+      "session-summary",
+      "session-item",
+      "sessions-open",
+      "next-session",
+      "cancel-btn",
+      "cancel-confirm",
+      "empty-state",
+      "back-btn"
+    ]
+  }
+}

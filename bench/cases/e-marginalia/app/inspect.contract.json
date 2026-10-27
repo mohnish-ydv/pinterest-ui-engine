@@ -1,0 +1,104 @@
+{
+  "id": "essay-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"essay-card\"] .card-title, [data-testid=\"essay-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"essay-card\"] .card-sub, [data-testid=\"essay-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"topic-chip\"][data-topic=\"Cities\"]"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"Cities\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"topic-chip\"][data-topic=\"Cities\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"essay-card\"][data-id=\"e1\"]"
+    },
+    {
+      "click": "[data-testid=\"essay-card\"][data-id=\"e1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "essays"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"essays\"], [data-act=\"go\"][data-view=\"essays\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"essay-card\"][data-id=\"e1\"]"
+    },
+    {
+      "click": "[data-testid=\"essay-card\"][data-id=\"e1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

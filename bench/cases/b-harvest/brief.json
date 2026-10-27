@@ -1,0 +1,294 @@
+{
+  "app": "Harvest \u2014 local produce marketplace (benchmark case B: image-led marketplace)",
+  "brand": "Harvest",
+  "tagline": "Today's harvest, from farms nearby.",
+  "subtitle": "Picked this morning, at your door by evening.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "kg",
+  "domain": "marketplace",
+  "family": "harvest",
+  "views": [
+    "shop",
+    "saved"
+  ],
+  "navigation": {
+    "shop": {
+      "label": "Shop"
+    },
+    "saved": {
+      "label": "Saved",
+      "testid": "saved-open"
+    }
+  },
+  "entity": {
+    "id": "produce",
+    "label": "Produce",
+    "plural": "Produce",
+    "media": true,
+    "titleClass": "produce-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "produce-list",
+      "itemTestid": "produce-card",
+      "openTestid": "produce-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Produce"
+      },
+      {
+        "id": "farm",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Farm"
+      },
+      {
+        "id": "price",
+        "type": "money",
+        "role": "price",
+        "label": "Price",
+        "suffix": "/kg"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "category",
+        "type": "enum",
+        "role": "facet",
+        "label": "Category",
+        "options": [
+          "Vegetables",
+          "Fruit",
+          "Greens",
+          "Dairy"
+        ]
+      },
+      {
+        "id": "organic",
+        "type": "bool",
+        "role": "badge",
+        "label": "Organic",
+        "trueLabel": "Organic"
+      },
+      {
+        "id": "stock",
+        "type": "number",
+        "role": "stat",
+        "label": "In stock"
+      },
+      {
+        "id": "harvested",
+        "type": "text",
+        "role": "detail",
+        "label": "Harvested"
+      },
+      {
+        "id": "notes",
+        "type": "text",
+        "role": "detail",
+        "label": "Notes"
+      }
+    ],
+    "records": [
+      {
+        "id": "p1",
+        "name": "Nati tomatoes",
+        "farm": "Hosur Farm Co.",
+        "price": 48,
+        "rating": 4.7,
+        "reviews": 86,
+        "category": "Vegetables",
+        "organic": true,
+        "stock": 40,
+        "harvested": "Today, 5 AM",
+        "notes": "Thin-skinned and sweet; best within three days. A local variety grown without hybrid seed."
+      },
+      {
+        "id": "p2",
+        "name": "Alphonso mangoes",
+        "farm": "Ramanagara Orchards",
+        "price": 420,
+        "rating": 4.9,
+        "reviews": 132,
+        "category": "Fruit",
+        "organic": false,
+        "stock": 12,
+        "harvested": "Yesterday",
+        "notes": "Second flush of the season, ripened on the tree."
+      },
+      {
+        "id": "p3",
+        "name": "Baby spinach",
+        "farm": "Kanakapura Greens",
+        "price": 90,
+        "rating": 4.5,
+        "reviews": 54,
+        "category": "Greens",
+        "organic": true,
+        "stock": 25,
+        "harvested": "Today, 4 AM",
+        "notes": "Cut young, washed twice."
+      },
+      {
+        "id": "p4",
+        "name": "A2 cow milk",
+        "farm": "Hesaraghatta Dairy",
+        "price": 78,
+        "rating": 4.8,
+        "reviews": 201,
+        "category": "Dairy",
+        "organic": true,
+        "stock": 60,
+        "harvested": "Today, 3 AM",
+        "notes": "Single-herd, unhomogenised."
+      },
+      {
+        "id": "p5",
+        "name": "Red bananas",
+        "farm": "Chikmagalur Estate",
+        "price": 110,
+        "rating": 4.4,
+        "reviews": 37,
+        "category": "Fruit",
+        "organic": false,
+        "stock": 18,
+        "harvested": "Yesterday",
+        "notes": "Denser and sweeter than the yellow variety."
+      },
+      {
+        "id": "p6",
+        "name": "Curry leaf bunches",
+        "farm": "Hosur Farm Co.",
+        "price": 25,
+        "rating": 4.6,
+        "reviews": 71,
+        "category": "Greens",
+        "organic": true,
+        "stock": 80,
+        "harvested": "Today, 6 AM",
+        "notes": "Aromatic; freezes well."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "farm"
+    ],
+    "placeholder": "Search produce or farm",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "category",
+      "field": "category",
+      "label": "Category",
+      "testid": "category-chip",
+      "dataAttr": "data-category",
+      "allLabel": "All"
+    }
+  ],
+  "actions": [
+    {
+      "id": "save",
+      "label": "Save",
+      "kind": "toggle",
+      "field": "saved"
+    },
+    {
+      "id": "reserve",
+      "label": "Reserve a box",
+      "kind": "commit",
+      "testid": "reserve-btn",
+      "form": [
+        {
+          "id": "name",
+          "label": "Your name",
+          "type": "text",
+          "testid": "buyer-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "buyer-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "options": {
+        "id": "pickup",
+        "label": "Pickup slot",
+        "values": [
+          "Today 5\u20137 PM",
+          "Tomorrow 7\u20139 AM",
+          "Tomorrow 5\u20137 PM"
+        ],
+        "required": true
+      },
+      "result": {
+        "collection": "reservations",
+        "referencePrefix": "HV",
+        "title": "Box reserved",
+        "referenceTestid": "reserve-ref",
+        "summaryTestid": "reserve-summary"
+      }
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "shop",
+      "saved",
+      "detail",
+      "confirmation"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "category-chip",
+      "produce-list",
+      "produce-card",
+      "produce-open",
+      "save-toggle",
+      "detail-title",
+      "detail-price",
+      "stat-strip",
+      "detail-list",
+      "option-pickup",
+      "form",
+      "buyer-name",
+      "buyer-phone",
+      "error-name",
+      "error-phone",
+      "reserve-btn",
+      "reserve-ref",
+      "reserve-summary",
+      "empty-state",
+      "back-btn",
+      "saved-open"
+    ]
+  }
+}

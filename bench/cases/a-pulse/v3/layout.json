@@ -1,0 +1,340 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Pulse",
+    "domain": "analytics",
+    "family": "pulse",
+    "density": "comfortable",
+    "densityBasis": "light share 81.4%, saturated share 9.1%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "channel",
+    "label": "Channel",
+    "plural": "Channels",
+    "media": false,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Channel"
+      },
+      {
+        "id": "kind",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Type",
+        "options": [
+          "Paid",
+          "Social",
+          "Email",
+          "Organic"
+        ]
+      },
+      {
+        "id": "sessions",
+        "type": "number",
+        "role": "stat",
+        "label": "Sessions"
+      },
+      {
+        "id": "conversion",
+        "type": "number",
+        "role": "stat",
+        "label": "Conversion %"
+      },
+      {
+        "id": "revenue",
+        "type": "money",
+        "role": "price",
+        "label": "Revenue"
+      },
+      {
+        "id": "change",
+        "type": "number",
+        "role": "meta",
+        "label": "Change",
+        "suffix": "% WoW"
+      },
+      {
+        "id": "owner",
+        "type": "text",
+        "role": "detail",
+        "label": "Owner"
+      }
+    ],
+    "titleClass": "channel-name"
+  },
+  "search": {
+    "fields": [
+      "name"
+    ],
+    "placeholder": "Search channels",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "kind",
+      "field": "kind",
+      "label": "Channel type",
+      "testid": "kind-chip",
+      "dataAttr": "data-kind",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "overview",
+      "purpose": "browse",
+      "title": "Where the traffic came from.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Pulse",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Where the traffic came from.",
+            "subtitle": "Channel performance for the last 30 days."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search channels",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "channel",
+            "fields": [
+              "name"
+            ]
+          }
+        },
+        {
+          "id": "filter-kind",
+          "component": "filter-chips",
+          "props": {
+            "label": "Channel type",
+            "testid": "kind-chip",
+            "allLabel": "All",
+            "valueAttr": "data-kind"
+          },
+          "binding": {
+            "entity": "channel",
+            "filterId": "kind",
+            "field": "kind",
+            "options": [
+              "Paid",
+              "Social",
+              "Email",
+              "Organic"
+            ]
+          }
+        },
+        {
+          "id": "aggregates",
+          "component": "metric-row",
+          "props": {
+            "testid": "metrics",
+            "tileTestid": "kpi-tile",
+            "valueTestid": "kpi-value"
+          },
+          "binding": {
+            "entity": "channel",
+            "aggregates": [
+              {
+                "id": "sessions",
+                "label": "Sessions",
+                "op": "sum",
+                "field": "sessions",
+                "format": "plain"
+              },
+              {
+                "id": "revenue",
+                "label": "Revenue",
+                "op": "sum",
+                "field": "revenue",
+                "format": "money"
+              },
+              {
+                "id": "conversion",
+                "label": "Avg conversion",
+                "op": "mean",
+                "field": "conversion",
+                "format": "percent"
+              },
+              {
+                "id": "channels",
+                "label": "Active channels",
+                "op": "count",
+                "format": "plain"
+              }
+            ]
+          },
+          "states": [
+            "populated"
+          ]
+        },
+        {
+          "id": "collection",
+          "component": "data-table",
+          "props": {
+            "testid": "channel-list",
+            "itemTestid": "channel-row"
+          },
+          "binding": {
+            "entity": "channel",
+            "source": "records",
+            "columns": [
+              {
+                "field": "name",
+                "label": "Channel"
+              },
+              {
+                "field": "sessions",
+                "label": "Sessions",
+                "align": "right"
+              },
+              {
+                "field": "conversion",
+                "label": "Conversion",
+                "align": "right"
+              },
+              {
+                "field": "revenue",
+                "label": "Revenue",
+                "align": "right"
+              }
+            ]
+          },
+          "controls": [
+            "search",
+            "filter:kind"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Channel",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Pulse",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "channel-name"
+          },
+          "binding": {
+            "entity": "channel",
+            "title": "name",
+            "subtitle": "kind",
+            "price": "revenue"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "channel",
+            "fields": [
+              "sessions",
+              "conversion"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "channel",
+            "fields": [
+              "change",
+              "owner"
+            ]
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "overview",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "overview",
+      "trigger": "back"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

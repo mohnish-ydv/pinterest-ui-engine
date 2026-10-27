@@ -1,0 +1,58 @@
+{
+  "reference": "R10 Fibo (learning companion, orange, light 81.4%)",
+  "family": "pulse",
+  "palette": {
+    "brand": "#A24B0A",
+    "brandDeep": "#7A3806",
+    "ground": "#FBF8F4",
+    "surface": "#FFFFFF",
+    "board": "#241A12",
+    "ink": "#1F1A15",
+    "inkSoft": "#6B6157",
+    "tint": "#F7EADB",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 sans-led",
+    "uiRole": "grotesque; numerals tabular where money is decided",
+    "scalePx": {
+      "body": 14,
+      "display": 26,
+      "section": 17,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 18,
+    "cardRadius": 14,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "Heading, a type filter, then one dense row per channel with its revenue as the last read.",
+    "detail": "Channel header, a stat trio, then labelled detail rows.",
+    "density": "Dense and even; this is a working surface, not a showcase."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Channel type is a chip row.",
+    "numbers": "Revenue is money-formatted and identical on row and detail.",
+    "errors": "Inline under the field.",
+    "tabs": "None \u2014 one destination."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "None needed."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py: sat>=0.25 = 9.1%, modal hue 20deg, 81.4% of pixels above luminance 0.7.",
+    "interpreted": "Composition is interpretation. Font identity not inferred.",
+    "uncertainty": [
+      "R10 is a learning app, not an analytics product; it guides colour and density, not dashboard structure."
+    ]
+  },
+  "specVersion": 1
+}

@@ -1,0 +1,58 @@
+{
+  "reference": "R06 Car-wash service booking (red, neutral, light 52.1%)",
+  "family": "vitalis",
+  "palette": {
+    "brand": "#B3261E",
+    "brandDeep": "#8C1A15",
+    "ground": "#FAF7F7",
+    "surface": "#FFFFFF",
+    "board": "#2A1414",
+    "ink": "#1E1616",
+    "inkSoft": "#6B5A5A",
+    "tint": "#F7E3E1",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 sans-led service app",
+    "uiRole": "grotesque; semibold labels",
+    "scalePx": {
+      "body": 14,
+      "display": 26,
+      "section": 17,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 20,
+    "cardRadius": 16,
+    "controlRadius": 999,
+    "addBtn": 36
+  },
+  "composition": {
+    "home": "Heading, search, specialty chips, next-session banner, then a row list of therapists.",
+    "detail": "Therapist header, fee, stat trio, detail rows, day strip, slot grid, patient form, one action.",
+    "density": "Even and functional."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Specialty chips; day strip + slot grid with taken slots struck through.",
+    "numbers": "Fee identical on row, detail and confirmation.",
+    "errors": "Inline under the field.",
+    "tabs": "Team / Sessions."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "Initial chips instead of portraits."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py: sat>=0.25 = 7.78%, modal hue 0deg, 52.1% light pixels.",
+    "interpreted": "Composition is interpretation; font identity not inferred.",
+    "uncertainty": [
+      "R06 is a car-wash booking kit; it guides the service-booking grammar, not clinical content."
+    ]
+  },
+  "specVersion": 1
+}

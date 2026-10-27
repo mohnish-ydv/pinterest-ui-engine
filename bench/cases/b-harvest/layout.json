@@ -1,0 +1,535 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Harvest",
+    "domain": "marketplace",
+    "family": "harvest",
+    "density": "comfortable",
+    "densityBasis": "light share 42.4%, saturated share 24.56%",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "produce",
+    "label": "Produce",
+    "plural": "Produce",
+    "media": true,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Produce"
+      },
+      {
+        "id": "farm",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Farm"
+      },
+      {
+        "id": "price",
+        "type": "money",
+        "role": "price",
+        "label": "Price",
+        "suffix": "/kg"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "category",
+        "type": "enum",
+        "role": "facet",
+        "label": "Category",
+        "options": [
+          "Vegetables",
+          "Fruit",
+          "Greens",
+          "Dairy"
+        ]
+      },
+      {
+        "id": "organic",
+        "type": "bool",
+        "role": "badge",
+        "label": "Organic",
+        "trueLabel": "Organic"
+      },
+      {
+        "id": "stock",
+        "type": "number",
+        "role": "stat",
+        "label": "In stock"
+      },
+      {
+        "id": "harvested",
+        "type": "text",
+        "role": "detail",
+        "label": "Harvested"
+      },
+      {
+        "id": "notes",
+        "type": "text",
+        "role": "detail",
+        "label": "Notes"
+      }
+    ],
+    "titleClass": "produce-name"
+  },
+  "search": {
+    "fields": [
+      "name",
+      "farm"
+    ],
+    "placeholder": "Search produce or farm",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "category",
+      "field": "category",
+      "label": "Category",
+      "testid": "category-chip",
+      "dataAttr": "data-category",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "save",
+      "label": "Save",
+      "kind": "toggle",
+      "field": "saved"
+    },
+    {
+      "id": "reserve",
+      "label": "Reserve a box",
+      "kind": "commit",
+      "testid": "reserve-btn",
+      "form": [
+        {
+          "id": "name",
+          "label": "Your name",
+          "type": "text",
+          "testid": "buyer-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "buyer-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "options": {
+        "id": "pickup",
+        "label": "Pickup slot",
+        "values": [
+          "Today 5–7 PM",
+          "Tomorrow 7–9 AM",
+          "Tomorrow 5–7 PM"
+        ],
+        "required": true
+      },
+      "result": {
+        "collection": "reservations",
+        "referencePrefix": "HV",
+        "title": "Box reserved",
+        "referenceTestid": "reserve-ref",
+        "summaryTestid": "reserve-summary"
+      }
+    }
+  ],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-shop",
+        "label": "Shop",
+        "view": "shop",
+        "icon": "grid",
+        "dataNav": "shop"
+      },
+      {
+        "id": "saved-open",
+        "label": "Saved",
+        "view": "saved",
+        "icon": "heart",
+        "dataNav": "saved"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "shop",
+      "purpose": "browse",
+      "title": "Today's harvest, from farms nearby.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Harvest",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Today's harvest, from farms nearby.",
+            "subtitle": "Picked this morning, at your door by evening."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search produce or farm",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "produce",
+            "fields": [
+              "name",
+              "farm"
+            ]
+          }
+        },
+        {
+          "id": "filter-category",
+          "component": "filter-chips",
+          "props": {
+            "label": "Category",
+            "testid": "category-chip",
+            "allLabel": "All",
+            "valueAttr": "data-category"
+          },
+          "binding": {
+            "entity": "produce",
+            "filterId": "category",
+            "field": "category",
+            "options": [
+              "Vegetables",
+              "Fruit",
+              "Greens",
+              "Dairy"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "produce-list",
+            "itemTestid": "produce-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "openTestid": "produce-open"
+          },
+          "binding": {
+            "entity": "produce",
+            "source": "records"
+          },
+          "controls": [
+            "search",
+            "filter:category"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "saved",
+      "purpose": "collection",
+      "title": "Saved",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Harvest",
+            "context": "Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Saved",
+            "subtitle": "Your shortlisted produce."
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "produce-list",
+            "itemTestid": "produce-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle"
+          },
+          "binding": {
+            "entity": "produce",
+            "source": "saved"
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing saved yet. Tap the heart on something you like."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Produce",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Harvest",
+            "context": "Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "titleClass": "produce-name"
+          },
+          "binding": {
+            "entity": "produce",
+            "title": "name",
+            "subtitle": "farm",
+            "price": "price"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "produce",
+            "fields": [
+              "stock"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "produce",
+            "fields": [
+              "rating",
+              "reviews",
+              "harvested",
+              "notes"
+            ]
+          }
+        },
+        {
+          "id": "options",
+          "component": "option-grid",
+          "props": {
+            "label": "Pickup slot",
+            "testid": "option-pickup",
+            "required": true
+          },
+          "binding": {
+            "entity": "produce",
+            "field": "pickup",
+            "options": [
+              "Today 5–7 PM",
+              "Tomorrow 7–9 AM",
+              "Tomorrow 5–7 PM"
+            ]
+          }
+        },
+        {
+          "id": "form",
+          "component": "form-fields",
+          "props": {
+            "testid": "form",
+            "submitLabel": "Reserve a box"
+          },
+          "binding": {
+            "entity": "produce",
+            "fields": [
+              {
+                "id": "name",
+                "label": "Your name",
+                "type": "text",
+                "testid": "buyer-name",
+                "errorTestid": "error-name",
+                "required": true,
+                "minLength": 2,
+                "message": "Enter your name (at least 2 characters)."
+              },
+              {
+                "id": "phone",
+                "label": "Mobile number",
+                "type": "tel",
+                "testid": "buyer-phone",
+                "errorTestid": "error-phone",
+                "required": true,
+                "pattern": "^\\d{10}$",
+                "stripWhitespace": true,
+                "message": "Enter a 10-digit mobile number."
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "component": "primary-action",
+          "props": {
+            "label": "Reserve a box",
+            "testid": "reserve-btn",
+            "action": "reserve",
+            "showAmount": false
+          },
+          "binding": {
+            "entity": "produce",
+            "amountField": "price"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Box reserved",
+            "testid": "reserve-ref",
+            "summaryTestid": "reserve-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "produce",
+            "referencePrefix": "HV"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "shop",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "shop",
+      "trigger": "back"
+    },
+    {
+      "id": "toggle-save",
+      "from": "detail",
+      "trigger": "toggle",
+      "collection": "saved",
+      "persists": true
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "reserve",
+      "creates": "reservations",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

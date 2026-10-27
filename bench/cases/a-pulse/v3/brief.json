@@ -1,0 +1,240 @@
+{
+  "app": "Pulse \u2014 marketing analytics (benchmark case A: dashboard)",
+  "brand": "Pulse",
+  "tagline": "Where the traffic came from.",
+  "subtitle": "Channel performance for the last 30 days.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "analytics",
+  "family": "pulse",
+  "views": [
+    "overview"
+  ],
+  "entity": {
+    "id": "channel",
+    "label": "Channel",
+    "plural": "Channels",
+    "media": false,
+    "titleClass": "channel-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "channel-list",
+      "itemTestid": "channel-row",
+      "openTestid": "channel-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Channel"
+      },
+      {
+        "id": "kind",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Type",
+        "options": [
+          "Paid",
+          "Social",
+          "Email",
+          "Organic"
+        ]
+      },
+      {
+        "id": "sessions",
+        "type": "number",
+        "role": "stat",
+        "label": "Sessions"
+      },
+      {
+        "id": "conversion",
+        "type": "number",
+        "role": "stat",
+        "label": "Conversion %"
+      },
+      {
+        "id": "revenue",
+        "type": "money",
+        "role": "price",
+        "label": "Revenue"
+      },
+      {
+        "id": "change",
+        "type": "number",
+        "role": "meta",
+        "label": "Change",
+        "suffix": "% WoW"
+      },
+      {
+        "id": "owner",
+        "type": "text",
+        "role": "detail",
+        "label": "Owner"
+      }
+    ],
+    "records": [
+      {
+        "id": "c1",
+        "name": "Google Ads",
+        "kind": "Paid",
+        "sessions": 48210,
+        "conversion": 3.4,
+        "revenue": 1240000,
+        "change": 12,
+        "owner": "Priya"
+      },
+      {
+        "id": "c2",
+        "name": "Instagram",
+        "kind": "Social",
+        "sessions": 31180,
+        "conversion": 2.1,
+        "revenue": 640000,
+        "change": -4,
+        "owner": "Arun"
+      },
+      {
+        "id": "c3",
+        "name": "Newsletter",
+        "kind": "Email",
+        "sessions": 12440,
+        "conversion": 6.8,
+        "revenue": 410000,
+        "change": 22,
+        "owner": "Priya"
+      },
+      {
+        "id": "c4",
+        "name": "Organic search",
+        "kind": "Organic",
+        "sessions": 52800,
+        "conversion": 2.9,
+        "revenue": 880000,
+        "change": 6,
+        "owner": "Meera"
+      },
+      {
+        "id": "c5",
+        "name": "Affiliates",
+        "kind": "Paid",
+        "sessions": 9120,
+        "conversion": 4.2,
+        "revenue": 220000,
+        "change": -1,
+        "owner": "Arun"
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name"
+    ],
+    "placeholder": "Search channels",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "kind",
+      "field": "kind",
+      "label": "Channel type",
+      "testid": "kind-chip",
+      "dataAttr": "data-kind",
+      "allLabel": "All"
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "overview",
+      "detail"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "kind-chip",
+      "channel-list",
+      "channel-row",
+      "detail-title",
+      "stat-strip",
+      "detail-list",
+      "back-btn",
+      "metrics",
+      "kpi-tile",
+      "kpi-value",
+      "table-head"
+    ]
+  },
+  "aggregates": [
+    {
+      "id": "sessions",
+      "label": "Sessions",
+      "op": "sum",
+      "field": "sessions",
+      "format": "plain"
+    },
+    {
+      "id": "revenue",
+      "label": "Revenue",
+      "op": "sum",
+      "field": "revenue",
+      "format": "money"
+    },
+    {
+      "id": "conversion",
+      "label": "Avg conversion",
+      "op": "mean",
+      "field": "conversion",
+      "format": "percent"
+    },
+    {
+      "id": "channels",
+      "label": "Active channels",
+      "op": "count",
+      "format": "plain"
+    }
+  ],
+  "table": {
+    "columns": [
+      {
+        "field": "name",
+        "label": "Channel"
+      },
+      {
+        "field": "sessions",
+        "label": "Sessions",
+        "align": "right"
+      },
+      {
+        "field": "conversion",
+        "label": "Conversion",
+        "align": "right"
+      },
+      {
+        "field": "revenue",
+        "label": "Revenue",
+        "align": "right"
+      }
+    ]
+  },
+  "_v3Note": "Mission 024: aggregates[] and table{} made explicit. The frozen brief.json is unchanged and remains the benchmark input.",
+  "aggregatesTestid": "metrics",
+  "aggregatesTileTestid": "kpi-tile",
+  "aggregatesValueTestid": "kpi-value",
+  "ranges": [
+    {
+      "id": "7d",
+      "label": "7 days"
+    },
+    {
+      "id": "30d",
+      "label": "30 days"
+    },
+    {
+      "id": "90d",
+      "label": "90 days"
+    }
+  ],
+  "caseId": "a-pulse"
+}

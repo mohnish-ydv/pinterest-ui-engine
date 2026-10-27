@@ -1,0 +1,272 @@
+{
+  "app": "Ledger \u2014 expense claims (benchmark case D: multi-step productivity)",
+  "brand": "Ledger",
+  "tagline": "Claims that clear in a day.",
+  "subtitle": "File, track and approve expenses.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "productivity",
+  "family": "ledger",
+  "views": [
+    "claims",
+    "approvals"
+  ],
+  "navigation": {
+    "claims": {
+      "label": "Claims"
+    },
+    "approvals": {
+      "label": "Approvals",
+      "testid": "approvals-open"
+    }
+  },
+  "entity": {
+    "id": "claim",
+    "label": "Claim",
+    "plural": "Claims",
+    "media": false,
+    "titleClass": "claim-ref",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "claim-list",
+      "itemTestid": "claim-card",
+      "openTestid": "claim-open"
+    },
+    "fields": [
+      {
+        "id": "ref",
+        "type": "text",
+        "role": "title",
+        "label": "Claim"
+      },
+      {
+        "id": "category",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Category",
+        "options": [
+          "Travel",
+          "Meals",
+          "Equipment",
+          "Software"
+        ]
+      },
+      {
+        "id": "amount",
+        "type": "money",
+        "role": "price",
+        "label": "Amount"
+      },
+      {
+        "id": "submitted",
+        "type": "text",
+        "role": "meta",
+        "label": "Submitted"
+      },
+      {
+        "id": "status",
+        "type": "enum",
+        "role": "status",
+        "label": "Status",
+        "options": [
+          "Draft",
+          "Submitted",
+          "Approved",
+          "Rejected"
+        ]
+      },
+      {
+        "id": "items",
+        "type": "number",
+        "role": "stat",
+        "label": "Line items"
+      },
+      {
+        "id": "notes",
+        "type": "text",
+        "role": "detail",
+        "label": "Notes"
+      }
+    ],
+    "records": [
+      {
+        "id": "k1",
+        "ref": "EXP-1041",
+        "category": "Travel",
+        "amount": 4820,
+        "submitted": "2 days ago",
+        "status": "Submitted",
+        "items": 3,
+        "notes": "Airport transfer and one night."
+      },
+      {
+        "id": "k2",
+        "ref": "EXP-1040",
+        "category": "Software",
+        "amount": 1299,
+        "submitted": "3 days ago",
+        "status": "Approved",
+        "items": 1,
+        "notes": "Annual plan renewal."
+      },
+      {
+        "id": "k3",
+        "ref": "EXP-1039",
+        "category": "Meals",
+        "amount": 860,
+        "submitted": "4 days ago",
+        "status": "Approved",
+        "items": 2,
+        "notes": "Client lunch."
+      },
+      {
+        "id": "k4",
+        "ref": "EXP-1038",
+        "category": "Equipment",
+        "amount": 7400,
+        "submitted": "1 week ago",
+        "status": "Rejected",
+        "items": 1,
+        "notes": "Monitor above the per-item cap."
+      },
+      {
+        "id": "k5",
+        "ref": "EXP-1037",
+        "category": "Travel",
+        "amount": 2150,
+        "submitted": "\u2014",
+        "status": "Draft",
+        "items": 2,
+        "notes": "Not yet filed."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "ref",
+      "category"
+    ],
+    "placeholder": "Search claims",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "status",
+      "field": "status",
+      "label": "Status",
+      "testid": "status-chip",
+      "dataAttr": "data-status",
+      "allLabel": "All"
+    }
+  ],
+  "actions": [
+    {
+      "id": "file",
+      "label": "File claim",
+      "kind": "commit",
+      "testid": "file-btn",
+      "form": [
+        {
+          "id": "title",
+          "label": "Claim title",
+          "type": "text",
+          "testid": "claim-title",
+          "errorTestid": "error-title",
+          "required": true,
+          "minLength": 3,
+          "message": "Give the claim a title."
+        },
+        {
+          "id": "amount",
+          "label": "Amount",
+          "type": "text",
+          "testid": "claim-amount",
+          "errorTestid": "error-amount",
+          "required": true,
+          "pattern": "^\\d+$",
+          "message": "Enter the amount in whole rupees."
+        }
+      ],
+      "result": {
+        "collection": "filed",
+        "referencePrefix": "EXP",
+        "title": "Claim filed",
+        "referenceTestid": "file-ref",
+        "summaryTestid": "file-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "filed",
+      "view": "approvals",
+      "label": "Awaiting approval",
+      "listTestid": "approval-list",
+      "itemTestid": "approval-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "title",
+        "amount"
+      ],
+      "emptyMessage": "Nothing awaiting approval.",
+      "cancel": {
+        "testid": "withdraw-btn",
+        "confirmTestid": "withdraw-confirm",
+        "label": "Withdraw",
+        "confirmLabel": "Confirm withdraw",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "pending",
+      "collection": "filed",
+      "testid": "pending-banner",
+      "label": "Awaiting approval",
+      "fields": [
+        "ref",
+        "amount"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "claims",
+      "approvals",
+      "detail",
+      "confirmation"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "status-chip",
+      "claim-list",
+      "claim-card",
+      "claim-open",
+      "detail-title",
+      "detail-price",
+      "stat-strip",
+      "detail-list",
+      "form",
+      "claim-title",
+      "claim-amount",
+      "error-title",
+      "error-amount",
+      "file-btn",
+      "file-ref",
+      "file-summary",
+      "approval-item",
+      "approvals-open",
+      "pending-banner",
+      "withdraw-btn",
+      "withdraw-confirm",
+      "empty-state",
+      "back-btn"
+    ]
+  }
+}

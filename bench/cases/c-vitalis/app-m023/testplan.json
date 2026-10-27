@@ -1,0 +1,359 @@
+{
+  "app": "Vitalis",
+  "entity": "therapist",
+  "entryView": "team",
+  "recordCount": 5,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the therapists list renders all 5 records",
+      "act": "count",
+      "sel": "[data-testid=\"therapist-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"therapist-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "filtering by Specialty = Sports shows 2",
+      "act": "click",
+      "sel": "[data-testid=\"specialty-chip\"][data-spec=\"Sports\"]"
+    },
+    {
+      "id": "T4",
+      "desc": "only 2 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"therapist-card\"]",
+      "eq": 2
+    },
+    {
+      "id": "T5",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"specialty-chip\"][data-spec=\"Sports\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T6",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"specialty-chip\"][data-spec=\"All\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"therapist-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T8",
+      "desc": "searching \"Dr. Rhea Kulkarni\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Dr. Rhea Kulkarni"
+    },
+    {
+      "id": "T9",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"therapist-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T10",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T11",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"therapist-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T12",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "id": "T13",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Dr. Rhea Kulkarni"
+    },
+    {
+      "id": "T14",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T15",
+      "desc": "6 day chips are offered",
+      "act": "count",
+      "sel": "[data-testid=\"day-chip\"]",
+      "eq": 6
+    },
+    {
+      "id": "T16",
+      "desc": "day 0 shows 2 taken and 4 free slots",
+      "act": "slots",
+      "dayTestid": "day-chip",
+      "slotTestid": "slot",
+      "taken": 2,
+      "free": 4
+    },
+    {
+      "id": "T17",
+      "desc": "choosing 9:30 AM marks it selected",
+      "act": "click",
+      "sel": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]"
+    },
+    {
+      "id": "T18",
+      "desc": "the chosen slot reports the selected state",
+      "act": "attr",
+      "sel": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]",
+      "attr": "data-state",
+      "eq": "selected"
+    },
+    {
+      "id": "T19",
+      "desc": "a taken slot (8:00 AM) cannot be selected",
+      "act": "click",
+      "sel": "[data-testid=\"slot\"][data-slot=\"8:00 AM\"]"
+    },
+    {
+      "id": "T20",
+      "desc": "the taken slot keeps its state",
+      "act": "attr",
+      "sel": "[data-testid=\"slot\"][data-slot=\"8:00 AM\"]",
+      "attr": "data-state",
+      "eq": "taken"
+    },
+    {
+      "id": "T21",
+      "desc": "reopening a record for the commit flow",
+      "act": "goto",
+      "view": "team"
+    },
+    {
+      "id": "T22",
+      "desc": "opening a record",
+      "act": "click",
+      "sel": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "id": "T23",
+      "desc": "submitting an empty form is refused",
+      "act": "click",
+      "sel": "[data-testid=\"book-btn\"]"
+    },
+    {
+      "id": "T24",
+      "desc": "the required field shows an error",
+      "act": "visible",
+      "sel": "[data-testid=\"error-name\"]",
+      "eq": true
+    },
+    {
+      "id": "T25",
+      "desc": "the app did not advance to confirmation",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T26",
+      "desc": "submitting without a time is refused",
+      "act": "visible",
+      "sel": "[data-testid=\"error-slot\"]",
+      "eq": true
+    },
+    {
+      "id": "T27",
+      "desc": "choosing 9:30 AM",
+      "act": "click",
+      "sel": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]"
+    },
+    {
+      "id": "T28",
+      "desc": "filling Patient name",
+      "act": "type",
+      "sel": "[data-testid=\"patient-name\"]",
+      "value": "Test Patient name"
+    },
+    {
+      "id": "T29",
+      "desc": "filling Mobile number",
+      "act": "type",
+      "sel": "[data-testid=\"patient-phone\"]",
+      "value": "9876543210"
+    },
+    {
+      "id": "T30",
+      "desc": "submitting a valid form reaches confirmation",
+      "act": "click",
+      "sel": "[data-testid=\"book-btn\"]"
+    },
+    {
+      "id": "T31",
+      "desc": "confirmation is shown",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "confirmation"
+    },
+    {
+      "id": "T32",
+      "desc": "a reference is issued in the declared format",
+      "act": "match",
+      "sel": "[data-testid=\"session-ref\"]",
+      "pattern": "^VS-\\d{6}$"
+    },
+    {
+      "id": "T33",
+      "desc": "the confirmation summarises the submission",
+      "act": "visible",
+      "sel": "[data-testid=\"session-summary\"]",
+      "eq": true
+    },
+    {
+      "id": "T34",
+      "desc": "the submission survives a reload",
+      "act": "reload"
+    },
+    {
+      "id": "T35",
+      "desc": "the app returns to a browsable state after reload",
+      "act": "visible",
+      "sel": "[data-testid=\"therapist-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T36",
+      "desc": "the committed record appears in its collection",
+      "act": "goto",
+      "view": "sessions"
+    },
+    {
+      "id": "T37",
+      "desc": "exactly one record is listed",
+      "act": "count",
+      "sel": "[data-testid=\"session-item\"]",
+      "eq": 1
+    },
+    {
+      "id": "T38",
+      "desc": "the record survives a reload",
+      "act": "reload"
+    },
+    {
+      "id": "T39",
+      "desc": "the record is still listed after reload",
+      "act": "goto",
+      "view": "sessions"
+    },
+    {
+      "id": "T40",
+      "desc": "still one record after reload",
+      "act": "count",
+      "sel": "[data-testid=\"session-item\"]",
+      "eq": 1
+    },
+    {
+      "id": "T41",
+      "desc": "reopening the record shows its slot taken",
+      "act": "goto",
+      "view": "team"
+    },
+    {
+      "id": "T42",
+      "desc": "opening the same record",
+      "act": "click",
+      "sel": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "id": "T43",
+      "desc": "the booked slot is now taken",
+      "act": "attr",
+      "sel": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]",
+      "attr": "data-state",
+      "eq": "taken"
+    },
+    {
+      "id": "T44",
+      "desc": "cancelling requires a confirmation step",
+      "act": "goto",
+      "view": "sessions"
+    },
+    {
+      "id": "T45",
+      "desc": "tapping cancel asks to confirm",
+      "act": "click",
+      "sel": "[data-testid=\"cancel-btn\"]"
+    },
+    {
+      "id": "T46",
+      "desc": "the confirmation control appears",
+      "act": "visible",
+      "sel": "[data-testid=\"cancel-confirm\"]",
+      "eq": true
+    },
+    {
+      "id": "T47",
+      "desc": "confirming removes the record",
+      "act": "click",
+      "sel": "[data-testid=\"cancel-confirm\"]"
+    },
+    {
+      "id": "T48",
+      "desc": "the collection is empty again",
+      "act": "count",
+      "sel": "[data-testid=\"session-item\"]",
+      "eq": 0
+    },
+    {
+      "id": "T49",
+      "desc": "the slot is released",
+      "act": "goto",
+      "view": "team"
+    },
+    {
+      "id": "T50",
+      "desc": "reopening the record after cancel",
+      "act": "click",
+      "sel": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "id": "T51",
+      "desc": "the released slot is free again",
+      "act": "attr",
+      "sel": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]",
+      "attr": "data-state",
+      "eq": "free"
+    },
+    {
+      "id": "T52",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

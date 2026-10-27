@@ -1,0 +1,61 @@
+{
+  "$schema": "design-family/1",
+  "family": "pulse",
+  "description": "Pulse \u2014 dense analytics surface derived from R10 (colour/density only).",
+  "typography": {
+    "displayStrategy": "sans",
+    "displayStack": null,
+    "uiStack": "-apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "displayRoleNote": "role only; the face is not inferred from pixels"
+  },
+  "borders": {
+    "hairline": "#E7DDD4",
+    "stepperHairline": "#E7DDD4",
+    "hairlineWidth": "1px",
+    "stepperWidth": "1.5px",
+    "focusRing": {
+      "width": "3px",
+      "offset": "2px",
+      "color": "brand"
+    }
+  },
+  "shadows": {
+    "card": "0 6px 18px rgba(30, 24, 20, 0.07)",
+    "sheet": "0 -12px 32px rgba(30, 24, 20, 0.10)"
+  },
+  "surfaces": {
+    "groundSource": "spec",
+    "inputBg": "#F4EDE6",
+    "inputTextSource": "ink"
+  },
+  "semantic": {
+    "error": "spec",
+    "warning": null,
+    "success": "palette:cert"
+  },
+  "states": {
+    "hoverTarget": "brandDeep",
+    "disabled": {
+      "bg": "#F0E8E1",
+      "fg": "#6B6157"
+    }
+  },
+  "density": {
+    "lineHeight": 1.45,
+    "bodyScale": 1
+  },
+  "space": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32
+  ],
+  "responsive": {
+    "breakpoint": 900,
+    "mobile": "single column",
+    "desktop": "two-column grid, tab bar hidden"
+  }
+}

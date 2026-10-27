@@ -1,0 +1,58 @@
+{
+  "reference": "R04 Grocery delivery (orange, image-led, light 42.4%)",
+  "family": "harvest",
+  "palette": {
+    "brand": "#9A3412",
+    "brandDeep": "#7A270E",
+    "ground": "#FDF8F3",
+    "surface": "#FFFFFF",
+    "board": "#2A1A12",
+    "ink": "#241812",
+    "inkSoft": "#6E5C50",
+    "tint": "#F8E7DA",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "warm serif for produce names",
+    "uiRole": "grotesque for everything else",
+    "scalePx": {
+      "body": 14,
+      "display": 28,
+      "section": 18,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 20,
+    "cardRadius": 18,
+    "controlRadius": 999,
+    "addBtn": 36
+  },
+  "composition": {
+    "home": "Editorial heading, search, category chips, then a two-up card grid with the photograph dominant and the price last.",
+    "detail": "Media header, name, farm, price, a stock stat, provenance notes, the pickup choice, the buyer form, one action.",
+    "density": "Generous; the grid is image-led."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Category chips; pickup slots are a two-up option grid.",
+    "numbers": "Price per kg everywhere.",
+    "errors": "Inline under the field.",
+    "tabs": "Shop / Saved."
+  },
+  "imagery": {
+    "role": "Photography leads the reference; none is available offline, so a brand-derived gradient stands in. Declared substitution.",
+    "substitution": "Deterministic gradient + initials replaces produce photography."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py: sat>=0.25 = 24.56%, modal hue 20deg, 42.4% light pixels.",
+    "interpreted": "Composition and grammar are interpretation.",
+    "uncertainty": [
+      "Photography is the reference's quality carrier and it is substituted, which caps fidelity."
+    ]
+  },
+  "specVersion": 1
+}

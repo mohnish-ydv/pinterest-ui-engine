@@ -1,0 +1,89 @@
+{
+  "id": "a-pulse-bench",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "centre": "[data-testid=\"kind-chip\"][data-kind=\"Paid\"]"
+    },
+    {
+      "click": "[data-testid=\"kind-chip\"][data-kind=\"Paid\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"kind-chip\"][data-kind=\"Paid\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"kind-chip\"][data-kind=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"channel-row\"][data-id=\"c1\"]"
+    },
+    {
+      "click": "[data-testid=\"channel-row\"][data-id=\"c1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "post-action",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "overview"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"overview\"], [data-act=\"go\"][data-view=\"overview\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"channel-row\"][data-id=\"c1\"]"
+    },
+    {
+      "click": "[data-testid=\"channel-row\"][data-id=\"c1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ],
+  "errorStateWaiver": "This case declares no commit action, so it has no validation error state; error-text contrast is not applicable."
+}

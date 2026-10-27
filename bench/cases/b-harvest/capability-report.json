@@ -1,0 +1,695 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "b-harvest",
+  "app": "Harvest",
+  "variant": "card",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "badge",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 31,
+    "byCategory": {
+      "content": {
+        "total": 14,
+        "required": 14
+      },
+      "layout": {
+        "total": 3,
+        "required": 3
+      },
+      "interaction": {
+        "total": 6,
+        "required": 6
+      },
+      "navigation": {
+        "total": 2,
+        "required": 2
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 31,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "B-HARVEST-C-name-list",
+    "B-HARVEST-C-name-detail",
+    "B-HARVEST-C-farm-list",
+    "B-HARVEST-C-farm-detail",
+    "B-HARVEST-C-price-list",
+    "B-HARVEST-C-price-detail",
+    "B-HARVEST-C-rating-list",
+    "B-HARVEST-C-rating-detail",
+    "B-HARVEST-C-reviews-list",
+    "B-HARVEST-C-reviews-detail",
+    "B-HARVEST-C-organic-list",
+    "B-HARVEST-C-organic-detail",
+    "B-HARVEST-C-stock-list",
+    "B-HARVEST-C-stock-detail",
+    "B-HARVEST-L-collection",
+    "B-HARVEST-L-detail",
+    "B-HARVEST-L-nav",
+    "B-HARVEST-I-search",
+    "B-HARVEST-I-facet-category",
+    "B-HARVEST-I-choice",
+    "B-HARVEST-I-validate",
+    "B-HARVEST-I-commit",
+    "B-HARVEST-I-save",
+    "B-HARVEST-N-view-shop",
+    "B-HARVEST-N-view-saved",
+    "B-HARVEST-R-narrow",
+    "B-HARVEST-R-wide",
+    "B-HARVEST-A-contrast",
+    "B-HARVEST-A-labels",
+    "B-HARVEST-A-heading",
+    "B-HARVEST-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [
+    "The entity is declared media-led but no record carries an image; media is substituted with a brand-derived gradient."
+  ],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "A facet filters records by a field value; there is no global time-range control, and no date dimension in the data model to filter.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "b-harvest",
+    "app": "Harvest",
+    "domain": "marketplace",
+    "variant": "card",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "badge",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "B-HARVEST-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Produce\" (title) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Produce\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-farm-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Farm\" (subtitle) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "farm",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-farm-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Farm\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "farm",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-price-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Price\" (price) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-price-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Price\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-rating-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rating\" (meta) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-rating-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rating\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-reviews-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reviews\" (meta) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-reviews-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reviews\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-organic-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Organic\" (badge) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "organic",
+          "role": "badge",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-organic-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Organic\" (badge) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "organic",
+          "role": "badge",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-C-stock-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"In stock\" (stat) is visible in the Produce list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "shop",
+          "where": "list",
+          "field": "stock",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-C-stock-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"In stock\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "stock",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 6 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "shop",
+          "selector": "item",
+          "expected": 6
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "B-HARVEST-L-nav",
+        "category": "layout",
+        "required": true,
+        "expectation": "Navigation between 2 top-level destinations.",
+        "satisfiedBy": "tab bar",
+        "verification": {
+          "method": "dom-count",
+          "view": "shop",
+          "selector": "nav-item",
+          "expected": 2
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "B-HARVEST-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "B-HARVEST-I-facet-category",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Category\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "category",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "B-HARVEST-I-choice",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Choosing a Pickup slot is required before committing.",
+        "satisfiedBy": "option-grid",
+        "verification": {
+          "method": "interaction",
+          "act": "choice",
+          "expect": "required"
+        },
+        "status": "supported",
+        "capability": "control.choice",
+        "component": "option-grid"
+      },
+      {
+        "id": "B-HARVEST-I-validate",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Invalid input is refused with a visible error and no commit.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "interaction",
+          "act": "validate",
+          "expect": "refused"
+        },
+        "status": "supported",
+        "capability": "form.fields",
+        "component": "form-fields"
+      },
+      {
+        "id": "B-HARVEST-I-commit",
+        "category": "interaction",
+        "required": true,
+        "expectation": "A valid submission issues a HV-###### reference.",
+        "satisfiedBy": "primary-action",
+        "verification": {
+          "method": "interaction",
+          "act": "commit",
+          "expect": "reference"
+        },
+        "status": "supported",
+        "capability": "action.commit",
+        "component": "primary-action"
+      },
+      {
+        "id": "B-HARVEST-I-save",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Saving persists across a reload and appears in the saved view.",
+        "satisfiedBy": "entity-collection (save toggle)",
+        "verification": {
+          "method": "interaction",
+          "act": "save",
+          "expect": "persisted"
+        },
+        "status": "supported",
+        "capability": "toggle.save",
+        "component": "entity-collection"
+      },
+      {
+        "id": "B-HARVEST-N-view-shop",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"shop\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "shop",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "B-HARVEST-N-view-saved",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"saved\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "saved",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "B-HARVEST-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "B-HARVEST-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "B-HARVEST-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "B-HARVEST-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "B-HARVEST-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "B-HARVEST-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

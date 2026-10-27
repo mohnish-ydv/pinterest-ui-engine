@@ -1,0 +1,230 @@
+{
+  "app": "Ledger",
+  "entity": "claim",
+  "entryView": "claims",
+  "recordCount": 5,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the claims list renders all 5 records",
+      "act": "count",
+      "sel": "[data-testid=\"claim-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"claim-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "filtering by Status = Draft shows 1",
+      "act": "click",
+      "sel": "[data-testid=\"status-chip\"][data-status=\"Draft\"]"
+    },
+    {
+      "id": "T4",
+      "desc": "only 1 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"claim-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T5",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"status-chip\"][data-status=\"Draft\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T6",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"status-chip\"][data-status=\"All\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"claim-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T8",
+      "desc": "searching \"EXP-1041\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "EXP-1041"
+    },
+    {
+      "id": "T9",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"claim-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T10",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T11",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"claim-card\"]",
+      "eq": 5
+    },
+    {
+      "id": "T12",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"claim-card\"][data-id=\"k1\"]"
+    },
+    {
+      "id": "T13",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "EXP-1041"
+    },
+    {
+      "id": "T14",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T15",
+      "desc": "reopening a record for the commit flow",
+      "act": "goto",
+      "view": "claims"
+    },
+    {
+      "id": "T16",
+      "desc": "opening a record",
+      "act": "click",
+      "sel": "[data-testid=\"claim-card\"][data-id=\"k1\"]"
+    },
+    {
+      "id": "T17",
+      "desc": "submitting an empty form is refused",
+      "act": "click",
+      "sel": "[data-testid=\"file-btn\"]"
+    },
+    {
+      "id": "T18",
+      "desc": "the required field shows an error",
+      "act": "visible",
+      "sel": "[data-testid=\"error-title\"]",
+      "eq": true
+    },
+    {
+      "id": "T19",
+      "desc": "the app did not advance to confirmation",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T20",
+      "desc": "filling Claim title",
+      "act": "type",
+      "sel": "[data-testid=\"claim-title\"]",
+      "value": "Test Claim title"
+    },
+    {
+      "id": "T21",
+      "desc": "filling Amount",
+      "act": "type",
+      "sel": "[data-testid=\"claim-amount\"]",
+      "value": "Test Amount"
+    },
+    {
+      "id": "T22",
+      "desc": "submitting a valid form reaches confirmation",
+      "act": "click",
+      "sel": "[data-testid=\"file-btn\"]"
+    },
+    {
+      "id": "T23",
+      "desc": "confirmation is shown",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "confirmation"
+    },
+    {
+      "id": "T24",
+      "desc": "a reference is issued in the declared format",
+      "act": "match",
+      "sel": "[data-testid=\"file-ref\"]",
+      "pattern": "^EXP-\\d{6}$"
+    },
+    {
+      "id": "T25",
+      "desc": "the confirmation summarises the submission",
+      "act": "visible",
+      "sel": "[data-testid=\"file-summary\"]",
+      "eq": true
+    },
+    {
+      "id": "T26",
+      "desc": "the submission survives a reload",
+      "act": "reload"
+    },
+    {
+      "id": "T27",
+      "desc": "the app returns to a browsable state after reload",
+      "act": "visible",
+      "sel": "[data-testid=\"claim-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T28",
+      "desc": "the committed record appears in its collection",
+      "act": "goto",
+      "view": "approvals"
+    },
+    {
+      "id": "T29",
+      "desc": "exactly one record is listed",
+      "act": "count",
+      "sel": "[data-testid=\"approval-item\"]",
+      "eq": 1
+    },
+    {
+      "id": "T30",
+      "desc": "the record survives a reload",
+      "act": "reload"
+    },
+    {
+      "id": "T31",
+      "desc": "the record is still listed after reload",
+      "act": "goto",
+      "view": "approvals"
+    },
+    {
+      "id": "T32",
+      "desc": "still one record after reload",
+      "act": "count",
+      "sel": "[data-testid=\"approval-item\"]",
+      "eq": 1
+    },
+    {
+      "id": "T33",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

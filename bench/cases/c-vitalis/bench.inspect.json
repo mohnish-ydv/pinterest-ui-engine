@@ -1,0 +1,187 @@
+{
+  "id": "c-vitalis-bench",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "centre": "[data-testid=\"specialty-chip\"][data-spec=\"Sports\"]"
+    },
+    {
+      "click": "[data-testid=\"specialty-chip\"][data-spec=\"Sports\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"specialty-chip\"][data-spec=\"Sports\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"specialty-chip\"][data-spec=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "click": "[data-testid=\"therapist-card\"][data-id=\"t1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "measure": "daySelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"day-chip\"][aria-pressed=\"true\"]",
+      "sequence": [
+        "day 0 preselected"
+      ]
+    },
+    {
+      "measure": "slotTaken",
+      "kind": "disabled",
+      "selector": "[data-testid=\"slot\"][data-slot=\"8:00 AM\"]",
+      "sequence": [
+        "day 0"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]"
+    },
+    {
+      "click": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "slotSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"slot\"][data-slot=\"9:30 AM\"]",
+      "sequence": [
+        "choose a slot"
+      ]
+    },
+    {
+      "measure": "ctaRest",
+      "kind": "rest",
+      "selector": "[data-testid=\"book-btn\"]",
+      "sequence": [
+        "detail view, pointer away"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"book-btn\"]"
+    },
+    {
+      "hover": "[data-testid=\"book-btn\"]",
+      "settleMs": 300
+    },
+    {
+      "measure": "ctaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"book-btn\"]",
+      "sequence": [
+        "hover the primary action"
+      ]
+    },
+    {
+      "click": "[data-testid=\"book-btn\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "errorText",
+      "kind": "error",
+      "selector": "[data-testid=\"error-name\"]",
+      "sequence": [
+        "submit an empty form"
+      ]
+    },
+    {
+      "shot": "detail-errors-390"
+    },
+    {
+      "setValues": [
+        {
+          "selector": "[data-testid=\"patient-name\"]",
+          "value": "Test Patient name"
+        },
+        {
+          "selector": "[data-testid=\"patient-phone\"]",
+          "value": "9876543210"
+        }
+      ]
+    },
+    {
+      "centre": "[data-testid=\"book-btn\"]"
+    },
+    {
+      "click": "[data-testid=\"book-btn\"]",
+      "settleMs": 450
+    },
+    {
+      "shot": "confirmation-390"
+    },
+    {
+      "measure": "confirmRef",
+      "kind": "post-action",
+      "selector": "[data-testid=\"session-ref\"]",
+      "sequence": [
+        "complete a submission"
+      ]
+    },
+    {
+      "axe": "team"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"team\"], [data-act=\"go\"][data-view=\"team\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"therapist-card\"][data-id=\"t1\"]"
+    },
+    {
+      "click": "[data-testid=\"therapist-card\"][data-id=\"t1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

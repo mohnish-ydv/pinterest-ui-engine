@@ -1,0 +1,654 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "c-vitalis",
+  "app": "Vitalis",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 29,
+    "byCategory": {
+      "content": {
+        "total": 12,
+        "required": 12
+      },
+      "layout": {
+        "total": 3,
+        "required": 3
+      },
+      "interaction": {
+        "total": 6,
+        "required": 6
+      },
+      "navigation": {
+        "total": 2,
+        "required": 2
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 29,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "C-VITALIS-C-name-list",
+    "C-VITALIS-C-name-detail",
+    "C-VITALIS-C-specialty-list",
+    "C-VITALIS-C-specialty-detail",
+    "C-VITALIS-C-fee-list",
+    "C-VITALIS-C-fee-detail",
+    "C-VITALIS-C-rating-list",
+    "C-VITALIS-C-rating-detail",
+    "C-VITALIS-C-reviews-list",
+    "C-VITALIS-C-reviews-detail",
+    "C-VITALIS-C-years-list",
+    "C-VITALIS-C-years-detail",
+    "C-VITALIS-L-collection",
+    "C-VITALIS-L-detail",
+    "C-VITALIS-L-nav",
+    "C-VITALIS-I-search",
+    "C-VITALIS-I-facet-specialty",
+    "C-VITALIS-I-availability",
+    "C-VITALIS-I-validate",
+    "C-VITALIS-I-commit",
+    "C-VITALIS-I-cancel-sessions",
+    "C-VITALIS-N-view-team",
+    "C-VITALIS-N-view-sessions",
+    "C-VITALIS-R-narrow",
+    "C-VITALIS-R-wide",
+    "C-VITALIS-A-contrast",
+    "C-VITALIS-A-labels",
+    "C-VITALIS-A-heading",
+    "C-VITALIS-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "A facet filters records by a field value; there is no global time-range control, and no date dimension in the data model to filter.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "c-vitalis",
+    "app": "Vitalis",
+    "domain": "booking",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "C-VITALIS-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Therapist\" (title) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Therapist\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-C-specialty-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Specialty\" (subtitle) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "specialty",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-specialty-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Specialty\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "specialty",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-C-fee-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Session fee\" (price) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "fee",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-fee-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Session fee\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "fee",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-C-rating-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rating\" (meta) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-rating-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rating\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "rating",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-C-reviews-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reviews\" (meta) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-reviews-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reviews\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "reviews",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-C-years-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Years\" (stat) is visible in the Therapists list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "team",
+          "where": "list",
+          "field": "years",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-C-years-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Years\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "years",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 5 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "team",
+          "selector": "item",
+          "expected": 5
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "C-VITALIS-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "C-VITALIS-L-nav",
+        "category": "layout",
+        "required": true,
+        "expectation": "Navigation between 2 top-level destinations.",
+        "satisfiedBy": "tab bar",
+        "verification": {
+          "method": "dom-count",
+          "view": "team",
+          "selector": "nav-item",
+          "expected": 2
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "C-VITALIS-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "C-VITALIS-I-facet-specialty",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Specialty\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "specialty",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "C-VITALIS-I-availability",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Days and time slots are selectable, and taken slots are not.",
+        "satisfiedBy": "availability-picker",
+        "verification": {
+          "method": "interaction",
+          "act": "availability",
+          "expect": "states"
+        },
+        "status": "supported",
+        "capability": "control.availability",
+        "component": "availability-picker"
+      },
+      {
+        "id": "C-VITALIS-I-validate",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Invalid input is refused with a visible error and no commit.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "interaction",
+          "act": "validate",
+          "expect": "refused"
+        },
+        "status": "supported",
+        "capability": "form.fields",
+        "component": "form-fields"
+      },
+      {
+        "id": "C-VITALIS-I-commit",
+        "category": "interaction",
+        "required": true,
+        "expectation": "A valid submission issues a VS-###### reference.",
+        "satisfiedBy": "primary-action",
+        "verification": {
+          "method": "interaction",
+          "act": "commit",
+          "expect": "reference"
+        },
+        "status": "supported",
+        "capability": "action.commit",
+        "component": "primary-action"
+      },
+      {
+        "id": "C-VITALIS-I-cancel-sessions",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Cancelling requires a confirmation step and then removes the record.",
+        "satisfiedBy": "collection-manager",
+        "verification": {
+          "method": "interaction",
+          "act": "cancel",
+          "collection": "sessions",
+          "expect": "removed"
+        },
+        "status": "supported",
+        "capability": "collection.manage",
+        "component": "collection-manager"
+      },
+      {
+        "id": "C-VITALIS-N-view-team",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"team\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "team",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "C-VITALIS-N-view-sessions",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"sessions\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "sessions",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "C-VITALIS-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "C-VITALIS-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "C-VITALIS-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "C-VITALIS-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "C-VITALIS-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "C-VITALIS-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}
