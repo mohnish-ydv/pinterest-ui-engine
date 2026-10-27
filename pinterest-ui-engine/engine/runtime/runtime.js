@@ -150,6 +150,17 @@
 
   // ------------------------------------------------------------- the bag
   function bagQty(id) { return (store.bag && store.bag[id]) || 0; }
+  // M045: how many of a record the bag may hold. A brief can declare
+  // its items unique (classifieds listings, one-off pieces); a record
+  // can also carry a numeric stock field. Everything else is uncapped.
+  function bagCap(rec) {
+    if (model.bag && model.bag.unique) return 1;
+    var st = rec ? rec.stock : null;
+    return (typeof st === 'number' && st > 0) ? Math.floor(st) : Infinity;
+  }
+  function recById(id) {
+    return (model.records || []).filter(function (r) { return r.id === id; })[0] || null;
+  }
   function bagEntries() {
     if (!model.bag) return [];
     return Object.keys(store.bag || {}).map(function (id) {
@@ -321,7 +332,7 @@
       '</div></div>';
   };
 
-  var MEDIA = model.media || { baseHue: 243, spread: 0, sat: 30, light: 30 };
+  var MEDIA = model.media || { baseHue: 243, spread: 0, sat: 28, light: 87 };
   function mediaBlock(rec, cls) {
     var seed = String(rec.id || '');
     var span = MEDIA.spread * 2 + 1;
@@ -389,12 +400,28 @@
         '</div>';
       }
       if (variant === 'card') {
+        // M045: the card's two-fact budget is spent deliberately —
+        // the first facet (what it is) and the first statistic (how
+        // good / how much signal) outrank everything else; any
+        // remaining slot backfills in priority order.
+        var _present = function (f) { return rec[f.id] != null && String(rec[f.id]) !== ''; };
+        var _facetFs = byRoleAll('facet').filter(_present);
+        var _ordered = _facetFs.concat(sStatFs.filter(_present)).concat(sMetaFs.filter(_present)).concat(sSubF && _present(sSubF) ? [sSubF] : []);
+        var _picks = [];
+        if (_facetFs.length) _picks.push(_facetFs[0]);
+        if (sStatFs.filter(_present).length) _picks.push(sStatFs.filter(_present)[0]);
+        for (var _i = 0; _i < _ordered.length && _picks.length < 2; _i++) {
+          if (_picks.indexOf(_ordered[_i]) === -1) _picks.push(_ordered[_i]);
+        }
+        var _metaHtml = _picks.length
+          ? '<span class="card-meta">' + _picks.map(function (f) { return esc(fmt(f, rec)).replace(/ /g, '\u00a0'); }).filter(Boolean).join(' \u00b7 ') + '</span>'
+          : '';
         return '<article class="card">' +
           '<button class="card-open" data-act="open" data-id="' + esc(rec.id) + '" data-testid="' + esc(s.props.itemTestid) + '">' +
             (s.props.showMedia ? mediaBlock(rec, 'card-media') : '') +
             '<span class="card-body">' +
               '<span class="card-top"><span class="card-title" data-field="' + esc(sTitleF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(sTitleF, rec)) + '</span>' + badge + '</span>' +
-              ((sSubF || sMetaFs.length || byRoleAll('facet').length || sStatFs.length) ? '<span class="card-meta">' + byRoleAll('facet').filter(function (f) { return rec[f.id] != null && String(rec[f.id]) !== ''; }).concat(sStatFs).concat(sMetaFs).concat(sSubF ? [sSubF] : []).map(function (f) { return esc(fmt(f, rec)).replace(/ /g, '\u00a0'); }).filter(Boolean).join(' \u00b7 ') + '</span>' : '') +
+              _metaHtml +
               ((s.props.entryExtra || []).length ? '<span class="card-extra">' + (s.props.entryExtra || []).map(function (id2) { var f2 = FIELDS[id2]; return f2 && rec[id2] != null ? esc(fmt(f2, rec)) : ''; }).filter(Boolean).join(' \u00b7 ') + '</span>' : '') +
               (sPriceF ? '<span class="card-price" data-field="' + esc(sPriceF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(sPriceF, rec)) + '</span>' : '') +
             '</span>' +
@@ -408,9 +435,14 @@
           // every card — a round brand button at the card's foot; it
           // carries the in-bag quantity once the item is added.
           (model.bag
-            ? '<button class="card-add" data-act="add" data-id="' + esc(rec.id) + '"' +
-              ' data-testid="add-btn" aria-label="Add ' + esc(fmt(sTitleF, rec)) + ' to ' + esc(String(model.bag.label || 'bag').toLowerCase()) + '">' +
-              (bagQty(rec.id) ? String(bagQty(rec.id)) : '+') + '</button>'
+            ? (bagQty(rec.id)
+              ? '<span class="card-add is-stepper">' +
+                '<button class="ca-btn" data-act="bag-dec" data-id="' + esc(rec.id) + '" aria-label="Remove one">\u2212</button>' +
+                '<span class="ca-qty">' + bagQty(rec.id) + '</span>' +
+                (bagQty(rec.id) < bagCap(rec) ? '<button class="ca-btn" data-act="add" data-id="' + esc(rec.id) + '" data-testid="add-btn" aria-label="Add one more">+</button>' : '') +
+                '</span>'
+              : '<button class="card-add" data-act="add" data-id="' + esc(rec.id) + '"' +
+                ' data-testid="add-btn" aria-label="Add ' + esc(fmt(sTitleF, rec)) + ' to ' + esc(String(model.bag.label || 'bag').toLowerCase()) + '">+</button>')
             : '') +
           '</article>';
       }
@@ -608,6 +640,9 @@
       items.map(function (it) {
         var confirming = S.confirmCancel === it.ref;
         var rows = (s.binding.fields || []).map(function (fid) {
+          // M045: the reference already heads the item (cm-head); a
+          // "ref" row under it only says the same thing twice.
+          if (fid === 'ref') return '';
           var label = (model.fieldLabels || {})[fid] || fid;
           var val = it[fid];
           if (fid === 'slot' && it.dayLabel) val = it.dayLabel + ' \u00b7 ' + it.slot;
@@ -657,7 +692,7 @@
           '<div class="stepper">' +
           '<button class="step-btn" data-act="bag-dec" data-id="' + esc(e.rec.id) + '" data-testid="bag-dec" aria-label="Remove one">\u2212</button>' +
           '<span class="step-qty" data-testid="bag-qty">' + e.qty + '</span>' +
-          '<button class="step-btn" data-act="bag-inc" data-id="' + esc(e.rec.id) + '" data-testid="bag-inc" aria-label="Add one">+</button>' +
+          (e.qty < bagCap(e.rec) ? '<button class="step-btn" data-act="bag-inc" data-id="' + esc(e.rec.id) + '" data-testid="bag-inc" aria-label="Add one">+</button>' : '') +
           '</div>' +
           '<span class="bag-line">' + esc(money(unit * e.qty)) + '</span>' +
           '</article>';
@@ -741,7 +776,13 @@
           '<span class="rel-name">' + esc(name) + '</span>' +
           (priceId && r[priceId] != null ? '<span class="rel-price">' + esc(money(r[priceId])) + '</span>' : '') +
           '</button>' +
-          (model.bag ? '<button class="card-add rel-add" data-act="add" data-id="' + esc(r.id) + '" data-testid="add-btn" aria-label="Add ' + esc(name) + '">' + (bagQty(r.id) ? String(bagQty(r.id)) : '+') + '</button>' : '') +
+          (model.bag ? (bagQty(r.id)
+            ? '<span class="card-add rel-add is-stepper">' +
+              '<button class="ca-btn" data-act="bag-dec" data-id="' + esc(r.id) + '" aria-label="Remove one">\u2212</button>' +
+              '<span class="ca-qty">' + bagQty(r.id) + '</span>' +
+              (bagQty(r.id) < bagCap(r) ? '<button class="ca-btn" data-act="add" data-id="' + esc(r.id) + '" data-testid="add-btn" aria-label="Add one more">+</button>' : '') +
+              '</span>'
+            : '<button class="card-add rel-add" data-act="add" data-id="' + esc(r.id) + '" data-testid="add-btn" aria-label="Add ' + esc(name) + '">+</button>') : '') +
           '</article>';
       }).join('') + '</div></div></div>';
   };
@@ -1086,10 +1127,31 @@
         bar.appendChild(stepnav);
         bar.hidden = false;
         document.body.classList.add('has-actionbar');
+        document.body.classList.remove('bar-priced');
+      } else if (view.id === 'detail' && main.querySelector('.sect[data-section="bag-add"] .bag-add')) {
+        // M045: on a record page the purchase action belongs to the
+        // app frame, paired with the price — the detail pattern every
+        // reference board uses — not in the scroll under the facts.
+        var bagAdd = main.querySelector('.sect[data-section="bag-add"] .bag-add');
+        var priceEl = main.querySelector('.rec-price');
+        bar.innerHTML = '';
+        if (priceEl) {
+          var bp = document.createElement('span');
+          bp.className = 'bar-price';
+          bp.textContent = priceEl.textContent;
+          bagAdd.insertBefore(bp, bagAdd.firstChild);
+        }
+        bar.appendChild(bagAdd);
+        document.body.classList.add('bar-priced');
+        var baSect = main.querySelector('.sect[data-section="bag-add"]');
+        if (baSect) baSect.hidden = true;
+        bar.hidden = false;
+        document.body.classList.add('has-actionbar');
       } else {
         bar.innerHTML = '';
         bar.hidden = true;
         document.body.classList.remove('has-actionbar');
+        document.body.classList.remove('bar-priced');
       }
     }
 
@@ -1276,6 +1338,8 @@
       e.preventDefault();
       var addId = el.getAttribute('data-id');
       if (!store.bag) store.bag = {};
+      // M045: unique items and stock caps are hard limits, not hints.
+      if (bagQty(addId) >= bagCap(recById(addId))) return;
       store.bag[addId] = bagQty(addId) + 1;
       saveStore();
       render({ keepScroll: true });
@@ -1283,6 +1347,8 @@
       e.preventDefault();
       var bagId = el.getAttribute('data-id');
       var next = bagQty(bagId) + (act === 'bag-inc' ? 1 : -1);
+      var cap = bagCap(recById(bagId));
+      if (next > cap) next = cap;
       if (next <= 0) delete store.bag[bagId]; else store.bag[bagId] = next;
       saveStore();
       render({ keepScroll: true });

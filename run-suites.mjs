@@ -17,7 +17,7 @@ const GROUPS = {
   core: ['unit', 'layout', 'stateprobe', 'capability', 'semantic', 'critique',
     'detectors', 'responsive', 'gates029', 'scope', 'runner', 'density_format', 'recovery'],
   design: ['design036', 'design037', 'design038', 'design039', 'design040',
-    'design041', 'design042', 'design043'],
+    'design041', 'design042', 'design043', 'design045'],
   fixtures: [
     ['app', join(RUNS, 'marble-meats', 'app')],
     ['clinic', join(RUNS, 'carepoint', 'app')],

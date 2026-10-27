@@ -35,6 +35,7 @@ Top-level keys (all plain JSON):
 | `fields` | Typed schema: `{ id, label, type, options? }` with `type` ∈ `text, enum, money, number, date`. Roles (facet/stat/price/title…) are derived from the requirements text, not declared. |
 | `requirements` | Plain-language sentences stating what users can do. These drive capability derivation, layout, test-plan generation **and** the fulfilment report. Write them as user capabilities ("Customers can filter plants by type."). |
 | `bagLabel`, `deliveryFee`, `freeAbove` | Optional commerce knobs; a bag exists only when a requirement asks for one. |
+| `uniqueItems` | Optional, `true` for one-of-one catalogues (classifieds listings, one-off pieces): the bag then holds at most one of each item and shows no quantity stepper for it. An item may also carry a numeric `stock` field, which caps how many the bag may hold. |
 
 **Capability trigger words (important).** Capabilities are derived
 from the requirement sentences, and the bag/cart is derived only

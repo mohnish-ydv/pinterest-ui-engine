@@ -328,7 +328,7 @@ function bagSections(brief, ent) {
     },
     {
       id: 'bag-list', component: 'bag-list',
-      props: { testid: 'bag-list', itemTestid: 'bag-item', emptyMessage: 'Your bag is empty.' },
+      props: { testid: 'bag-list', itemTestid: 'bag-item', emptyMessage: 'Your ' + String(brief.bag.label || 'Bag').toLowerCase() + ' is empty.' },
       binding: { entity: ent.id },
       states: ['empty', 'populated'],
     },

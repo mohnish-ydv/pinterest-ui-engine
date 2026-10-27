@@ -487,7 +487,13 @@ export function deriveBrief(product, evidence) {
       priceField: priceField ? priceField.id : null,
       deliveryFee: typeof product.deliveryFee === 'number' ? product.deliveryFee : null,
       freeAbove: typeof product.freeAbove === 'number' ? product.freeAbove : null,
+      // M045: a brief may declare its items unique (classifieds
+      // listings, one-off pieces) with "uniqueItems": true — the bag
+      // then holds at most one of each record. A record may also
+      // carry a numeric "stock" field, which caps its quantity.
+      unique: product.uniqueItems === true,
     };
+    if (brief.bag.unique) notes.push('the bag treats every item as unique (quantity capped at 1)');
     notes.push(`a bag was derived (price field ${brief.bag.priceField || 'none'}${brief.bag.deliveryFee != null ? `, delivery ${brief.bag.deliveryFee}` : ''}${brief.bag.freeAbove != null ? `, free above ${brief.bag.freeAbove}` : ''})`);
   }
   // M040: a declared home promo passes through as declared — the

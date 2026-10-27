@@ -783,3 +783,83 @@ body.is-detail .sect[data-section="details"] { margin-top: 14px; }
 .related-title { font-family: {{font.ui}}; font-weight: 700; font-size: 1.02em; }
 .sect[data-section="related"] { margin-top: 20px; }
 .chip-sep { flex: 0 0 auto; width: 1px; align-self: stretch; margin: 5px 3px; background: {{color.line}}; }
+
+/* ============ MISSION 045 — THE EVIRA CORRECTIONS ============
+   Field evidence: an app built from this engine by another AI
+   (a classifieds marketplace) next to the Evira board. The grammar
+   was present but the output still read as generated, for reasons
+   the grammar did not cover. This layer covers them.
+   8.  Substituted media is a LIGHT tile. Photography on the boards
+       sits on a near-white seamless backdrop; a dark saturated
+       block per card made every grid loud and empty at once. The
+       initials print in a deep tint of the tile's own hue.
+   9.  One loud element per screen, enforced across components:
+       when the brand zone takes the brand colour, the promo may
+       not. A photo-less promo is a quiet tint band.
+   10. Catalogue titles are working type. The display face belongs
+       to long-form reading (article compositions); an index of
+       products is a catalogue, not a magazine.
+   11. The bag and the order book are not boxes. Their rows sit on
+       the ground, separated by space; nothing is divided by lines.
+   12. A destructive action is quiet: tint ground, error-coloured
+       text, never an outline. Only the confirm step fills.
+   13. An empty state is a sentence on the ground, not a dashed box.
+   14. On a record page the price and the purchase action share the
+       app frame (see runtime: the bag-add moves into the bar). */
+
+/* 8 — substituted media prints its mark in a deep tint of its hue. */
+[data-substitute="true"] .media-mark { color: hsl(var(--media-hue) 45% 34% / 0.8); }
+.card-media .media-mark { font-size: 1.2em; opacity: 0.75; }
+.bag-media .media-mark { color: hsl(var(--media-hue) 45% 34% / 0.85); }
+
+/* 9 — the brand zone keeps the colour; the promo goes quiet. */
+.promo { background: {{color.tint}}; color: {{color.ink}}; }
+.promo-sub { opacity: 0.72; }
+.promo-btn { background: {{color.brand}}; color: {{color.onBrand}}; }
+/* …and the zone itself gives back some height: one line of sub. */
+body.is-home .sect[data-section="heading"] { padding-top: 12px; }
+body.is-home .sect[data-section="heading"] .page-sub { -webkit-line-clamp: 1; }
+body.is-home .sect[data-section="search"] { padding-bottom: 14px; }
+
+/* 10 — catalogue titles in the working sans. */
+body.comp-index .page-title { font-family: {{font.ui}}; font-weight: 750; font-size: 27px; letter-spacing: -0.02em; }
+body.comp-index .rec-title { font-family: {{font.ui}}; font-weight: 750; }
+
+/* 11 — bag and orders live on the ground. */
+.bag-item { background: none; box-shadow: none; border-radius: 0; padding: 10px 0; }
+.bag-totals .dl { background: none; box-shadow: none; border-radius: 0; padding: 0; }
+.bag-totals .dl-row, .cm-item .dl-row, body.is-detail .dl-row { border-bottom: none; }
+.cm-item { background: none; box-shadow: none; border-radius: 0; padding: 4px 0 20px; }
+body.is-detail .rec-head { border-bottom: none; }
+
+/* 12 — cancel is a quiet danger, never an outline. */
+.btn-cancel { border: none; background: {{color.input}}; color: {{color.error}}; }
+
+/* 13 — empty states are sentences. */
+.empty { background: none; border: none; box-shadow: none; }
+
+/* The card's in-bag control is a stepper pill, not a bare count —
+   a number alone in a filled circle reads as a notification badge. */
+.card-add.is-stepper {
+  width: auto; height: 34px; padding: 0 3px;
+  display: flex; align-items: center; gap: 1px;
+}
+.card-add .ca-btn {
+  width: 27px; height: 30px; border-radius: 999px; flex: none;
+  display: grid; place-items: center;
+  font-size: 1.02em; font-weight: 800; line-height: 1;
+  color: {{color.onBrand}}; background: none;
+}
+.card-add .ca-qty { min-width: 15px; text-align: center; font-size: 0.94em; font-weight: 800; }
+.rel-add.is-stepper { top: 54px; height: 30px; }
+.rel-add.is-stepper .ca-btn { width: 23px; height: 26px; font-size: 0.94em; }
+
+/* 14 — the record page's frame: price left, action right. */
+.actionbar .bag-add { display: flex; align-items: center; gap: 14px; }
+.actionbar .bar-price { font-weight: 800; font-size: 1.08em; white-space: nowrap; }
+.actionbar .bag-add .cta { flex: 1; }
+.actionbar .bag-note { display: none; }
+/* M045 fix: the totals CONTAINER also carried the M042 shadow. */
+.bag-totals { background: none; box-shadow: none; }
+/* M045: when the bar carries the price, the head sheet does not repeat it. */
+body.bar-priced .rec-price { display: none; }

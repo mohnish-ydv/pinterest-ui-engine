@@ -77,3 +77,41 @@ It is not a theme. It does not pick colours, write copy, shoot
 photography, or invent product content (riders, reviews, maps). An
 engine can hold every law and still ship a dull product if the brief
 is dull — but it will no longer ship a noisy one.
+
+## Addenda — Mission 045 (learned from a field build)
+
+A classifieds app built from this engine by another AI was compared,
+screen by screen, with the Evira board. The twelve laws held; the
+output still read as generated. These rules close the gaps found:
+
+13. **Substituted media is a light tile.** When a brief supplies no
+    photography, the stand-in is a pale tint of the product's hue
+    with its initials printed deep — like a product shot on a
+    seamless backdrop. Never a dark, saturated block: six of those
+    in a grid shout louder than any headline.
+14. **One loud element per screen is a budget shared by all
+    components.** If the brand zone spends the brand colour, the
+    promo may not spend it again: a promo without a photograph is a
+    quiet tint band with one small filled button.
+15. **Catalogue titles are working type.** The display face is for
+    long-form reading. A grid of products, a cart, an order book —
+    their titles are the UI sans, bold. (An index of products is a
+    catalogue, not a magazine.)
+16. **A card's meta line carries at most two facts** — the first
+    facet and the strongest signal. Seller, place and date belong
+    on the record page; a card is an invitation, not a record.
+17. **The bag and the order book are not boxes.** Their rows sit on
+    the ground and are separated by space. No card surface, no
+    shadow, no dividing lines.
+18. **Destructive actions are quiet.** Cancel is tint ground with
+    error-coloured text — never an outline, never a second accent
+    competing with the brand. Only the final confirm fills.
+19. **An empty state is a sentence on the ground.** No dashed box.
+    And it names the container the user sees ("Your cart is
+    empty."), never an internal word.
+20. **Price and action share the frame.** On a record page the
+    price sits in the fixed bottom bar beside the purchase button.
+    A price buried in the text flow is a price not seen.
+21. **An in-bag card control is a stepper** (− quantity +), never
+    a bare number in a filled circle — that reads as a notification
+    badge. Unique items show no stepper at all.

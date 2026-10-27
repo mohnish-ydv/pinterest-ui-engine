@@ -62,7 +62,12 @@ export function buildModel(brief, ir, tokens, composition) {
     // what the first generation did, and it looked broken.
     media: (() => {
       const h = hueOf(tokens.color?.brand);
-      return { baseHue: h == null ? 243 : Math.round(h), spread: 58, sat: 28, light: 29 };
+      // M045: substituted media is a LIGHT tile, the way the reference
+      // boards' product photography sits on a near-white seamless
+      // backdrop — a dark saturated block per card read as noise and
+      // made every grid loud. The hue still varies per record; only
+      // the lightness moved (29 -> 87).
+      return { baseHue: h == null ? 243 : Math.round(h), spread: 58, sat: 28, light: 87 };
     })(),
     // Labels for submission fields, so a confirmation can name what it shows
     // instead of printing the raw field id.
