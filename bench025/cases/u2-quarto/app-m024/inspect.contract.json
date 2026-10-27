@@ -1,0 +1,104 @@
+{
+  "id": "piece-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"piece-card\"] .card-title, [data-testid=\"piece-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"piece-card\"] .card-sub, [data-testid=\"piece-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"topic-chip\"][data-topic=\"Archives\"]"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"Archives\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"topic-chip\"][data-topic=\"Archives\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"topic-chip\"][data-topic=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"piece-card\"][data-id=\"q1\"]"
+    },
+    {
+      "click": "[data-testid=\"piece-card\"][data-id=\"q1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "axe": "pieces"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"pieces\"], [data-act=\"go\"][data-view=\"pieces\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"piece-card\"][data-id=\"q1\"]"
+    },
+    {
+      "click": "[data-testid=\"piece-card\"][data-id=\"q1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

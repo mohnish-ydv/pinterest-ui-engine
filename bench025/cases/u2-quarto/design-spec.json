@@ -1,0 +1,58 @@
+{
+  "reference": "none \u2014 the corpus has no editorial reference (see EVALUATION_SET.md)",
+  "family": "quarto",
+  "palette": {
+    "brand": "#5B21B6",
+    "brandDeep": "#4C1D95",
+    "ground": "#FAF8F5",
+    "surface": "#FFFDFB",
+    "board": "#241B2E",
+    "ink": "#1C1917",
+    "inkSoft": "#5E554C",
+    "tint": "#EFE8F8",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "high-contrast serif for titles and standfirsts",
+    "uiRole": "serif body; grotesque for metadata",
+    "scalePx": {
+      "body": 17,
+      "display": 34,
+      "section": 22,
+      "small": 13,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 10,
+    "cardRadius": 8,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "A typographic index: title, standfirst, byline, rule. No cards, no media.",
+    "detail": "An article column with a standfirst, measured line length, and metadata demoted to a byline.",
+    "density": "Airy; the measure and the rules carry hierarchy."
+  },
+  "grammar": {
+    "cta": "None.",
+    "selection": "Topic chips.",
+    "numbers": "Reading time as a suffix.",
+    "errors": "n/a",
+    "tabs": "None."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "None."
+  },
+  "provenance": {
+    "measured": "No reference. Specified directly from long-form reading conventions.",
+    "interpreted": "Everything authored.",
+    "uncertainty": [
+      "No editorial reference exists in the corpus; fidelity cannot be assessed."
+    ]
+  },
+  "specVersion": 1
+}

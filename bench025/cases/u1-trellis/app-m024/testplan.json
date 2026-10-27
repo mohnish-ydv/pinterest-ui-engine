@@ -1,0 +1,133 @@
+{
+  "app": "Trellis",
+  "entity": "campaign",
+  "entryView": "overview",
+  "recordCount": 5,
+  "derivedFrom": "layout IR v2 (planner 2.0.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the campaigns list renders all 5 records",
+      "act": "count",
+      "sel": "[data-testid=\"campaign-row\"]",
+      "eq": 5
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"campaign-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "a KPI row of 4 metrics is present",
+      "act": "count",
+      "sel": "[data-testid=\"kpi-tile\"]",
+      "eq": 4
+    },
+    {
+      "id": "T4",
+      "desc": "every metric shows a value",
+      "act": "count",
+      "sel": "[data-testid=\"kpi-value\"]",
+      "eq": 4
+    },
+    {
+      "id": "T5",
+      "desc": "the table has 5 column headers",
+      "act": "count",
+      "sel": "[data-testid=\"table-head\"]",
+      "eq": 5
+    },
+    {
+      "id": "T6",
+      "desc": "filtering by Channel = Paid search shows 1",
+      "act": "click",
+      "sel": "[data-testid=\"channel-chip\"][data-channel=\"Paid search\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "only 1 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"campaign-row\"]",
+      "eq": 1
+    },
+    {
+      "id": "T8",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"channel-chip\"][data-channel=\"Paid search\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T9",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"channel-chip\"][data-channel=\"All\"]"
+    },
+    {
+      "id": "T10",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"campaign-row\"]",
+      "eq": 5
+    },
+    {
+      "id": "T11",
+      "desc": "searching \"Monsoon sale — search\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Monsoon sale — search"
+    },
+    {
+      "id": "T12",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"campaign-row\"]",
+      "eq": 1
+    },
+    {
+      "id": "T13",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T14",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"campaign-row\"]",
+      "eq": 5
+    },
+    {
+      "id": "T15",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"campaign-row\"][data-id=\"m1\"]"
+    },
+    {
+      "id": "T16",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Monsoon sale — search"
+    },
+    {
+      "id": "T17",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T18",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

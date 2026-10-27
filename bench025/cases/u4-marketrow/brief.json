@@ -1,0 +1,281 @@
+{
+  "app": "Market Row \u2014 independent makers (untouched case U4: image-led commerce)",
+  "brand": "Market Row",
+  "tagline": "Made by people you could meet.",
+  "subtitle": "Small-batch goods from makers within fifty kilometres.",
+  "location": "Pune",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "commerce",
+  "family": "marketrow",
+  "views": [
+    "shop",
+    "saved"
+  ],
+  "navigation": {
+    "shop": {
+      "label": "Shop"
+    },
+    "saved": {
+      "label": "Saved",
+      "testid": "saved-open"
+    }
+  },
+  "entity": {
+    "id": "good",
+    "label": "Good",
+    "plural": "Goods",
+    "media": true,
+    "titleClass": "good-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "good-list",
+      "itemTestid": "good-card",
+      "openTestid": "good-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Good"
+      },
+      {
+        "id": "maker",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Maker"
+      },
+      {
+        "id": "price",
+        "type": "money",
+        "role": "price",
+        "label": "Price"
+      },
+      {
+        "id": "rating",
+        "type": "rating",
+        "role": "meta",
+        "label": "Rating"
+      },
+      {
+        "id": "reviews",
+        "type": "number",
+        "role": "meta",
+        "label": "Reviews",
+        "suffix": " reviews"
+      },
+      {
+        "id": "category",
+        "type": "enum",
+        "role": "facet",
+        "label": "Category",
+        "options": [
+          "Ceramics",
+          "Textiles",
+          "Wood",
+          "Paper"
+        ]
+      },
+      {
+        "id": "handmade",
+        "type": "bool",
+        "role": "badge",
+        "label": "Handmade",
+        "trueLabel": "Handmade"
+      },
+      {
+        "id": "stock",
+        "type": "number",
+        "role": "stat",
+        "label": "In stock"
+      },
+      {
+        "id": "story",
+        "type": "text",
+        "role": "detail",
+        "label": "Story"
+      }
+    ],
+    "records": [
+      {
+        "id": "g1",
+        "name": "Stoneware mug",
+        "maker": "Kiln & Co.",
+        "price": 850,
+        "rating": 4.8,
+        "reviews": 64,
+        "category": "Ceramics",
+        "handmade": true,
+        "stock": 14,
+        "story": "Thrown in a garage studio in Kothrud; each glaze batch is slightly different."
+      },
+      {
+        "id": "g2",
+        "name": "Khadi table runner",
+        "maker": "Loom House",
+        "price": 1400,
+        "rating": 4.6,
+        "reviews": 38,
+        "category": "Textiles",
+        "handmade": true,
+        "stock": 9,
+        "story": "Handloomed in a two-person workshop that has run since 1978."
+      },
+      {
+        "id": "g3",
+        "name": "Teak serving board",
+        "maker": "Bandra Woodworks",
+        "price": 2200,
+        "rating": 4.9,
+        "reviews": 91,
+        "category": "Wood",
+        "handmade": true,
+        "stock": 6,
+        "story": "Offcuts from a furniture shop, finished with food-safe oil."
+      },
+      {
+        "id": "g4",
+        "name": "Letterpress cards (set of 6)",
+        "maker": "Paper Tiger",
+        "price": 450,
+        "rating": 4.4,
+        "reviews": 22,
+        "category": "Paper",
+        "handmade": false,
+        "stock": 40,
+        "story": "Printed on a 1960s platen press."
+      },
+      {
+        "id": "g5",
+        "name": "Indigo cushion cover",
+        "maker": "Loom House",
+        "price": 1100,
+        "rating": 4.7,
+        "reviews": 51,
+        "category": "Textiles",
+        "handmade": true,
+        "stock": 11,
+        "story": "Natural indigo, four dips, softened twice."
+      },
+      {
+        "id": "g6",
+        "name": "Pour-over jug",
+        "maker": "Kiln & Co.",
+        "price": 1650,
+        "rating": 4.5,
+        "reviews": 29,
+        "category": "Ceramics",
+        "handmade": true,
+        "stock": 7,
+        "story": "A second, narrower spout after the first batch poured too fast."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "maker"
+    ],
+    "placeholder": "Search goods or makers",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "category",
+      "field": "category",
+      "label": "Category",
+      "testid": "category-chip",
+      "dataAttr": "data-category",
+      "allLabel": "All"
+    }
+  ],
+  "actions": [
+    {
+      "id": "save",
+      "label": "Save",
+      "kind": "toggle",
+      "field": "saved"
+    },
+    {
+      "id": "reserve",
+      "label": "Reserve for pickup",
+      "kind": "commit",
+      "testid": "reserve-btn",
+      "form": [
+        {
+          "id": "name",
+          "label": "Your name",
+          "type": "text",
+          "testid": "buyer-name",
+          "errorTestid": "error-name",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter your name (at least 2 characters)."
+        },
+        {
+          "id": "phone",
+          "label": "Mobile number",
+          "type": "tel",
+          "testid": "buyer-phone",
+          "errorTestid": "error-phone",
+          "required": true,
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number."
+        }
+      ],
+      "options": {
+        "id": "pickup",
+        "label": "Pickup day",
+        "values": [
+          "Saturday",
+          "Sunday",
+          "Monday"
+        ],
+        "required": true
+      },
+      "result": {
+        "collection": "reservations",
+        "referencePrefix": "MR",
+        "title": "Reserved",
+        "referenceTestid": "reserve-ref",
+        "summaryTestid": "reserve-summary"
+      }
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "shop",
+      "saved",
+      "detail",
+      "confirmation"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "category-chip",
+      "good-list",
+      "good-card",
+      "good-open",
+      "save-toggle",
+      "detail-title",
+      "detail-price",
+      "stat-strip",
+      "detail-list",
+      "option-pickup",
+      "form",
+      "buyer-name",
+      "buyer-phone",
+      "error-name",
+      "error-phone",
+      "reserve-btn",
+      "reserve-ref",
+      "reserve-summary",
+      "empty-state",
+      "back-btn",
+      "saved-open"
+    ]
+  }
+}

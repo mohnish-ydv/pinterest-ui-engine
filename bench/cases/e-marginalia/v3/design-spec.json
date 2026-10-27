@@ -1,0 +1,58 @@
+{
+  "reference": "R03 Good Food Good Mood (orange, type-led presentation mockup, light 62.8%)",
+  "family": "marginalia",
+  "palette": {
+    "brand": "#7C2D12",
+    "brandDeep": "#5E2210",
+    "ground": "#FBF7F0",
+    "surface": "#FFFDFA",
+    "board": "#231A14",
+    "ink": "#1C1917",
+    "inkSoft": "#5E554C",
+    "tint": "#F2E7DA",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "high-contrast serif for titles and standfirsts",
+    "uiRole": "serif body text with a grotesque for metadata",
+    "scalePx": {
+      "body": 17,
+      "display": 34,
+      "section": 22,
+      "small": 13,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 12,
+    "cardRadius": 10,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "A typographic index: title, author, reading time, then a rule between essays. No cards, no media.",
+    "detail": "An article column with a standfirst, a measured line length, and metadata demoted to a byline.",
+    "density": "Airy; the measure and the rules carry the hierarchy."
+  },
+  "grammar": {
+    "cta": "None on the index; the essay is the destination.",
+    "selection": "Topic chips.",
+    "numbers": "Reading time as a suffix.",
+    "errors": "Inline under the field.",
+    "tabs": "None \u2014 one destination."
+  },
+  "imagery": {
+    "role": "The reference is type-led; no photography is required.",
+    "substitution": "None."
+  },
+  "provenance": {
+    "measured": "engine/analyze_image.py: sat>=0.25 = 19.75%, modal hue 20deg, 62.8% light pixels.",
+    "interpreted": "Composition is interpretation.",
+    "uncertainty": [
+      "The corpus contains NO editorial or long-form reference. R03 is a food-delivery presentation mockup used only for its warm, type-led register; the article typography for this case is specified directly rather than derived. Recorded as a case-level limitation."
+    ]
+  },
+  "specVersion": 1
+}

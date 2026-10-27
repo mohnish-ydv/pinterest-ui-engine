@@ -1,0 +1,297 @@
+{
+  "app": "Onward \u2014 employee onboarding (untouched case U3: multi-step workflow)",
+  "brand": "Onward",
+  "tagline": "New joiners, ready on day one.",
+  "subtitle": "Start a hire, collect documents, confirm before day one.",
+  "location": "Hyderabad",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "workflow",
+  "family": "onward",
+  "views": [
+    "hires",
+    "queue"
+  ],
+  "navigation": {
+    "hires": {
+      "label": "Hires"
+    },
+    "queue": {
+      "label": "Queue",
+      "testid": "queue-open"
+    }
+  },
+  "entity": {
+    "id": "hire",
+    "label": "Hire",
+    "plural": "Hires",
+    "media": false,
+    "titleClass": "hire-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "hire-list",
+      "itemTestid": "hire-card",
+      "openTestid": "hire-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Name"
+      },
+      {
+        "id": "role",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Role"
+      },
+      {
+        "id": "start",
+        "type": "text",
+        "role": "meta",
+        "label": "Start date"
+      },
+      {
+        "id": "stage",
+        "type": "enum",
+        "role": "status",
+        "label": "Stage",
+        "options": [
+          "Draft",
+          "Documents",
+          "Ready"
+        ]
+      },
+      {
+        "id": "salary",
+        "type": "money",
+        "role": "price",
+        "label": "CTC"
+      },
+      {
+        "id": "docs",
+        "type": "number",
+        "role": "stat",
+        "label": "Documents"
+      }
+    ],
+    "records": [
+      {
+        "id": "h1",
+        "name": "Priya Raghavan",
+        "role": "Staff engineer",
+        "start": "2 Dec",
+        "stage": "Documents",
+        "salary": 4800000,
+        "docs": 3
+      },
+      {
+        "id": "h2",
+        "name": "Omar Siddiqui",
+        "role": "Design lead",
+        "start": "9 Dec",
+        "stage": "Ready",
+        "salary": 3600000,
+        "docs": 4
+      },
+      {
+        "id": "h3",
+        "name": "Tanvi Bose",
+        "role": "Analyst",
+        "start": "16 Dec",
+        "stage": "Draft",
+        "salary": 1800000,
+        "docs": 1
+      },
+      {
+        "id": "h4",
+        "name": "Karthik Menon",
+        "role": "Support engineer",
+        "start": "2 Dec",
+        "stage": "Documents",
+        "salary": 1200000,
+        "docs": 2
+      },
+      {
+        "id": "h5",
+        "name": "Leila Farouk",
+        "role": "Recruiter",
+        "start": "9 Dec",
+        "stage": "Ready",
+        "salary": 2100000,
+        "docs": 4
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name",
+      "role"
+    ],
+    "placeholder": "Search hires",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "stage",
+      "field": "stage",
+      "label": "Stage",
+      "testid": "stage-chip",
+      "dataAttr": "data-stage",
+      "allLabel": "All"
+    }
+  ],
+  "entryAction": {
+    "label": "Start onboarding",
+    "testid": "new-hire",
+    "action": "onboard"
+  },
+  "actions": [
+    {
+      "id": "onboard",
+      "label": "Confirm onboarding",
+      "kind": "commit",
+      "testid": "confirm-btn",
+      "form": [
+        {
+          "id": "candidate",
+          "label": "Candidate name",
+          "type": "text",
+          "testid": "candidate-name",
+          "errorTestid": "error-candidate",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the candidate's name."
+        },
+        {
+          "id": "manager",
+          "label": "Hiring manager",
+          "type": "text",
+          "testid": "manager-name",
+          "errorTestid": "error-manager",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the hiring manager."
+        },
+        {
+          "id": "email",
+          "label": "Work email",
+          "type": "text",
+          "testid": "candidate-email",
+          "errorTestid": "error-email",
+          "required": true,
+          "pattern": "^[^@\\s]+@[^@\\s]+\\.[a-z]{2,}$",
+          "message": "Enter a valid email address."
+        }
+      ],
+      "steps": [
+        {
+          "id": "who",
+          "label": "Who",
+          "fields": [
+            "candidate",
+            "manager"
+          ]
+        },
+        {
+          "id": "contact",
+          "label": "Contact",
+          "fields": [
+            "email"
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "fields": [],
+          "review": true
+        }
+      ],
+      "result": {
+        "collection": "queue",
+        "referencePrefix": "ON",
+        "title": "Onboarding started",
+        "referenceTestid": "onboard-ref",
+        "summaryTestid": "onboard-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "queue",
+      "view": "queue",
+      "label": "Onboarding queue",
+      "listTestid": "queue-list",
+      "itemTestid": "queue-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "candidate",
+        "manager"
+      ],
+      "emptyMessage": "Nobody in the queue.",
+      "cancel": {
+        "testid": "drop-btn",
+        "confirmTestid": "drop-confirm",
+        "label": "Drop",
+        "confirmLabel": "Confirm drop",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "queued",
+      "collection": "queue",
+      "testid": "queue-banner",
+      "label": "In the queue",
+      "fields": [
+        "candidate"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "hires",
+      "queue",
+      "detail",
+      "confirmation"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "stage-chip",
+      "hire-list",
+      "hire-card",
+      "hire-open",
+      "detail-title",
+      "detail-price",
+      "stat-strip",
+      "detail-list",
+      "candidate-name",
+      "manager-name",
+      "candidate-email",
+      "error-candidate",
+      "error-manager",
+      "error-email",
+      "confirm-btn",
+      "onboard-ref",
+      "onboard-summary",
+      "queue-item",
+      "queue-open",
+      "queue-banner",
+      "drop-btn",
+      "drop-confirm",
+      "empty-state",
+      "back-btn",
+      "new-hire",
+      "step",
+      "step-next",
+      "step-back",
+      "stepflow"
+    ]
+  }
+}

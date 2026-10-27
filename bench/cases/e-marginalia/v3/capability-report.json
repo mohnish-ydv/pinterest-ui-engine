@@ -1,0 +1,536 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "e-marginalia",
+  "app": "Marginalia",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 22,
+    "byCategory": {
+      "content": {
+        "total": 9,
+        "required": 9
+      },
+      "layout": {
+        "total": 4,
+        "required": 4
+      },
+      "interaction": {
+        "total": 2,
+        "required": 2
+      },
+      "navigation": {
+        "total": 1,
+        "required": 1
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 22,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "E-MARGINALIA-C-title-list",
+    "E-MARGINALIA-C-title-detail",
+    "E-MARGINALIA-C-author-list",
+    "E-MARGINALIA-C-author-detail",
+    "E-MARGINALIA-C-readTime-list",
+    "E-MARGINALIA-C-readTime-detail",
+    "E-MARGINALIA-C-published-list",
+    "E-MARGINALIA-C-published-detail",
+    "E-MARGINALIA-C-article-body",
+    "E-MARGINALIA-L-collection",
+    "E-MARGINALIA-L-detail",
+    "E-MARGINALIA-L-article",
+    "E-MARGINALIA-L-article-standfirst",
+    "E-MARGINALIA-I-search",
+    "E-MARGINALIA-I-facet-topic",
+    "E-MARGINALIA-N-view-essays",
+    "E-MARGINALIA-R-narrow",
+    "E-MARGINALIA-R-wide",
+    "E-MARGINALIA-A-contrast",
+    "E-MARGINALIA-A-labels",
+    "E-MARGINALIA-A-heading",
+    "E-MARGINALIA-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "A facet filters records by a field value; there is no global time-range control, and no date dimension in the data model to filter.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "e-marginalia",
+    "app": "Marginalia",
+    "domain": "editorial",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "E-MARGINALIA-C-title-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Title\" (title) is visible in the Essays list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "essays",
+          "where": "list",
+          "field": "title",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "E-MARGINALIA-C-title-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Title\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "title",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "E-MARGINALIA-C-author-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Author\" (subtitle) is visible in the Essays list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "essays",
+          "where": "list",
+          "field": "author",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "E-MARGINALIA-C-author-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Author\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "author",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "E-MARGINALIA-C-readTime-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Reading time\" (meta) is visible in the Essays list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "essays",
+          "where": "list",
+          "field": "readTime",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "E-MARGINALIA-C-readTime-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Reading time\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "readTime",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "E-MARGINALIA-C-published-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Published\" (meta) is visible in the Essays list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "essays",
+          "where": "list",
+          "field": "published",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "E-MARGINALIA-C-published-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Published\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "published",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "E-MARGINALIA-C-article-body",
+        "category": "content",
+        "required": true,
+        "expectation": "The article body prose is rendered in the reading view.",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "article",
+          "field": "body",
+          "role": "body",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "E-MARGINALIA-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 5 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "essays",
+          "selector": "item",
+          "expected": 5
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "E-MARGINALIA-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "E-MARGINALIA-L-article",
+        "category": "layout",
+        "required": true,
+        "expectation": "The reading view sets prose in a measured column (45–80 characters).",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "measure",
+          "view": "detail",
+          "selector": "article-body",
+          "min": 45,
+          "max": 80
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "E-MARGINALIA-L-article-standfirst",
+        "category": "layout",
+        "required": true,
+        "expectation": "The standfirst is set larger than the body text.",
+        "satisfiedBy": "article",
+        "verification": {
+          "method": "compare-font",
+          "view": "detail",
+          "larger": "standfirst",
+          "smaller": "article-body"
+        },
+        "status": "supported",
+        "capability": "article",
+        "component": "article"
+      },
+      {
+        "id": "E-MARGINALIA-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "E-MARGINALIA-I-facet-topic",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Topic\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "topic",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "E-MARGINALIA-N-view-essays",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"essays\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "essays",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "E-MARGINALIA-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "E-MARGINALIA-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "E-MARGINALIA-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "E-MARGINALIA-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "E-MARGINALIA-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "E-MARGINALIA-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

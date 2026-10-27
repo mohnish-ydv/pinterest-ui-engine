@@ -1,0 +1,75 @@
+{
+  "constraints": [
+    {
+      "hardness": "hard",
+      "source": "inferred",
+      "evidence": "composition.home: \"a five-column table\" — read from prose, not declared as a constraint",
+      "irField": "views[0].sections[collection].variant",
+      "enforce": {
+        "stage": "plan",
+        "mechanism": "planner selects the variant"
+      },
+      "test": "constraint.test.mjs — an inferred prohibition is enforced or reported",
+      "failureMessage": "prose in composition.home forbids \"table\" but it appears in the generated app",
+      "kind": "composition",
+      "value": "table",
+      "statement": "The collection must be a table.",
+      "confidence": "high",
+      "id": "CI-001-composition"
+    },
+    {
+      "hardness": "hard",
+      "source": "inferred",
+      "evidence": "composition.home: \"KPI band\" — read from prose, not declared as a constraint",
+      "irField": "views[0].sections[collection].variant",
+      "enforce": {
+        "stage": "plan",
+        "mechanism": "planner selects the variant"
+      },
+      "test": "constraint.test.mjs — an inferred prohibition is enforced or reported",
+      "failureMessage": "prose in composition.home forbids \"dashboard\" but it appears in the generated app",
+      "kind": "composition",
+      "value": "dashboard",
+      "statement": "The entry view must open with a KPI band.",
+      "confidence": "high",
+      "id": "CI-002-composition"
+    },
+    {
+      "hardness": "hard",
+      "source": "inferred",
+      "evidence": "imagery.role: \"None.\" (stated in the spec, compiled to a prohibition)",
+      "irField": "rendered .card-media / .rec-media",
+      "enforce": {
+        "stage": "both",
+        "mechanism": "the card variant is not selected; the renderer is checked"
+      },
+      "test": "constraint.test.mjs",
+      "failureMessage": "media appears although imagery.role is None",
+      "kind": "prohibited",
+      "element": "media",
+      "confidence": "high",
+      "statement": "The spec declares no imagery role, so no media block may be rendered.",
+      "id": "CI-003-prohibited"
+    },
+    {
+      "hardness": "soft",
+      "source": "inferred",
+      "evidence": "inferred from the responsive requirement: a table wider than the viewport must be discoverable",
+      "irField": "data-table wrapper attributes",
+      "enforce": {
+        "stage": "both",
+        "mechanism": "the renderer emits the affordance; the critique checks it is discoverable"
+      },
+      "test": "responsive.test.mjs — affordance present, keyboard-reachable, no lost columns",
+      "failureMessage": "a table overflows the viewport with no discoverable affordance",
+      "kind": "mobile",
+      "value": "scroll-affordance",
+      "confidence": "high",
+      "statement": "At mobile widths a table that overflows must expose a discoverable scroll affordance and stay keyboard-reachable.",
+      "id": "CI-004-mobile"
+    }
+  ],
+  "uncompiled": [],
+  "conflicts": [],
+  "composition": "table"
+}

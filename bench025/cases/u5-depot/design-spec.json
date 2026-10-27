@@ -1,0 +1,58 @@
+{
+  "reference": "R01 Evira (partial \u2014 admin/order screens only)",
+  "family": "depot",
+  "palette": {
+    "brand": "#334155",
+    "brandDeep": "#1E293B",
+    "ground": "#F8F8F7",
+    "surface": "#FFFFFF",
+    "board": "#0F172A",
+    "ink": "#111827",
+    "inkSoft": "#5B6472",
+    "tint": "#E8EBF0",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 operational surface",
+    "uiRole": "grotesque; tabular numerals for age",
+    "scalePx": {
+      "body": 13,
+      "display": 24,
+      "section": 16,
+      "small": 12,
+      "amount": 14
+    }
+  },
+  "shape": {
+    "sheetRadius": 14,
+    "cardRadius": 10,
+    "controlRadius": 999,
+    "addBtn": 32
+  },
+  "composition": {
+    "home": "Heading, search, priority chips, then a five-column table of open tickets.",
+    "detail": "Ticket header, age stat, then labelled detail rows including the summary.",
+    "density": "Very dense; an operator scans this all day."
+  },
+  "grammar": {
+    "cta": "None \u2014 read-only queue.",
+    "selection": "Priority chips.",
+    "numbers": "Age in hours, right-aligned.",
+    "errors": "n/a",
+    "tabs": "None."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "None."
+  },
+  "provenance": {
+    "measured": "R01 is an e-commerce mega-collage; only its admin/order density is used.",
+    "interpreted": "Composition authored.",
+    "uncertainty": [
+      "R01 does not depict a support queue; fidelity is partial."
+    ]
+  },
+  "specVersion": 1
+}

@@ -1,0 +1,193 @@
+{
+  "app": "Quarto \u2014 essays and archive writing (untouched case U2: editorial long-form)",
+  "brand": "Quarto",
+  "tagline": "Slow reading, kept in print.",
+  "subtitle": "Essays on archives, cities and the paper that outlives us.",
+  "location": "Kolkata",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "editorial",
+  "family": "quarto",
+  "views": [
+    "pieces"
+  ],
+  "entity": {
+    "id": "piece",
+    "label": "Essay",
+    "plural": "Essays",
+    "media": false,
+    "titleClass": "essay-title",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "piece-list",
+      "itemTestid": "piece-card",
+      "openTestid": "piece-open"
+    },
+    "fields": [
+      {
+        "id": "title",
+        "type": "text",
+        "role": "title",
+        "label": "Title"
+      },
+      {
+        "id": "author",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Author"
+      },
+      {
+        "id": "readTime",
+        "type": "number",
+        "role": "meta",
+        "label": "Reading time",
+        "suffix": " min read"
+      },
+      {
+        "id": "issue",
+        "type": "text",
+        "role": "meta",
+        "label": "Issue"
+      },
+      {
+        "id": "topic",
+        "type": "enum",
+        "role": "facet",
+        "label": "Topic",
+        "options": [
+          "Archives",
+          "Cities",
+          "Objects",
+          "Prose"
+        ]
+      },
+      {
+        "id": "standfirst",
+        "type": "text",
+        "role": "detail",
+        "label": "Standfirst"
+      },
+      {
+        "id": "body",
+        "type": "text",
+        "role": "body",
+        "label": "Body"
+      }
+    ],
+    "records": [
+      {
+        "id": "q1",
+        "title": "Box fourteen",
+        "author": "Ananya Iyer",
+        "readTime": 13,
+        "issue": "No. 4",
+        "topic": "Archives",
+        "standfirst": "A box nobody had opened in thirty years turned out to be the only complete record of a demolished neighbourhood.",
+        "body": [
+          "The archive was never meant to be read. It was meant to be kept.",
+          "Then a researcher requested box fourteen, and the request went through four desks before anyone could say whether the box still existed.",
+          "What follows is an account of eleven weeks, three storage units and one very patient archivist."
+        ]
+      },
+      {
+        "id": "q2",
+        "title": "The room where the paper goes",
+        "author": "Rehan Mirza",
+        "readTime": 9,
+        "issue": "No. 4",
+        "topic": "Archives",
+        "standfirst": "Every city keeps one. Most are closing.",
+        "body": [
+          "Every city has a room where the paper goes.",
+          "Usually it is a basement, usually it smells of dust and mild regret, and usually the person who runs it has been there longer than the building's current name.",
+          "This is a piece about those rooms, and about what happens when they close."
+        ]
+      },
+      {
+        "id": "q3",
+        "title": "Reading only old sentences",
+        "author": "Ananya Iyer",
+        "readTime": 7,
+        "issue": "No. 3",
+        "topic": "Prose",
+        "standfirst": "A month with nothing published after 1970.",
+        "body": [
+          "I spent a month reading only things printed before 1970.",
+          "It is a strange discipline. The sentences are longer, the assumptions are louder, and the confidence is total in a way that reads now as almost charming.",
+          "The point was not nostalgia. It was to notice what current prose takes for granted."
+        ]
+      },
+      {
+        "id": "q4",
+        "title": "A map wrong for sixty years",
+        "author": "Meghna Das",
+        "readTime": 6,
+        "issue": "No. 3",
+        "topic": "Cities",
+        "standfirst": "The bridge was gone. The road was never there. Nobody minded.",
+        "body": [
+          "The map was wrong for sixty years and nobody minded.",
+          "It showed a bridge that had been demolished in 1954 and omitted a road that carries eleven thousand vehicles a day.",
+          "Both facts were known. Neither was urgent."
+        ]
+      },
+      {
+        "id": "q5",
+        "title": "Notes toward a theory of the photocopy",
+        "author": "Rehan Mirza",
+        "readTime": 5,
+        "issue": "No. 2",
+        "topic": "Objects",
+        "standfirst": "An argument about what deserves to exist twice.",
+        "body": [
+          "Notes toward a theory of the photocopy.",
+          "A photocopy is an argument about what matters: someone decided this page, not that one, deserved to exist twice.",
+          "That decision is usually invisible, and it is the most interesting thing about the object."
+        ]
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "title",
+      "author"
+    ],
+    "placeholder": "Search essays",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "topic",
+      "field": "topic",
+      "label": "Topic",
+      "testid": "topic-chip",
+      "dataAttr": "data-topic",
+      "allLabel": "All"
+    }
+  ],
+  "article": {
+    "body": "body",
+    "standfirst": "standfirst",
+    "byline": "author"
+  },
+  "functionalContract": {
+    "views": [
+      "pieces",
+      "detail"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "topic-chip",
+      "piece-list",
+      "piece-card",
+      "piece-open",
+      "detail-title",
+      "empty-state",
+      "back-btn",
+      "article-body",
+      "standfirst"
+    ]
+  }
+}

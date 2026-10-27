@@ -1,0 +1,41 @@
+{
+  "constraints": [
+    {
+      "hardness": "hard",
+      "source": "inferred",
+      "evidence": "composition.home: \"card grid\" — read from prose, not declared as a constraint",
+      "irField": "views[0].sections[collection].variant",
+      "enforce": {
+        "stage": "plan",
+        "mechanism": "planner selects the variant"
+      },
+      "test": "constraint.test.mjs — an inferred prohibition is enforced or reported",
+      "failureMessage": "prose in composition.home forbids \"gallery\" but it appears in the generated app",
+      "kind": "composition",
+      "value": "gallery",
+      "statement": "The collection must be a card grid.",
+      "confidence": "high",
+      "id": "CI-001-composition"
+    },
+    {
+      "hardness": "soft",
+      "source": "inferred",
+      "evidence": "inferred from the responsive requirement: a table wider than the viewport must be discoverable",
+      "irField": "data-table wrapper attributes",
+      "enforce": {
+        "stage": "both",
+        "mechanism": "the renderer emits the affordance; the critique checks it is discoverable"
+      },
+      "test": "responsive.test.mjs — affordance present, keyboard-reachable, no lost columns",
+      "failureMessage": "a table overflows the viewport with no discoverable affordance",
+      "kind": "mobile",
+      "value": "scroll-affordance",
+      "confidence": "high",
+      "statement": "At mobile widths a table that overflows must expose a discoverable scroll affordance and stay keyboard-reachable.",
+      "id": "CI-002-mobile"
+    }
+  ],
+  "uncompiled": [],
+  "conflicts": [],
+  "composition": "gallery"
+}

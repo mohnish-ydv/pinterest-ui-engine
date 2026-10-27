@@ -1,0 +1,254 @@
+{
+  "app": "Trellis \u2014 campaign analytics (untouched case U1: data-dense dashboard)",
+  "brand": "Trellis",
+  "tagline": "Where the money went.",
+  "subtitle": "Campaign performance across paid, owned and earned.",
+  "location": "Mumbai",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "analytics",
+  "family": "trellis",
+  "views": [
+    "overview"
+  ],
+  "entity": {
+    "id": "campaign",
+    "label": "Campaign",
+    "plural": "Campaigns",
+    "media": false,
+    "titleClass": "campaign-name",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "campaign-list",
+      "itemTestid": "campaign-row",
+      "openTestid": "campaign-open"
+    },
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Campaign"
+      },
+      {
+        "id": "channel",
+        "type": "enum",
+        "role": "subtitle",
+        "label": "Channel",
+        "options": [
+          "Paid search",
+          "Social",
+          "Email",
+          "Display",
+          "Affiliate"
+        ]
+      },
+      {
+        "id": "spend",
+        "type": "money",
+        "role": "price",
+        "label": "Spend"
+      },
+      {
+        "id": "clicks",
+        "type": "number",
+        "role": "stat",
+        "label": "Clicks"
+      },
+      {
+        "id": "ctr",
+        "type": "number",
+        "role": "stat",
+        "label": "CTR %"
+      },
+      {
+        "id": "revenue",
+        "type": "money",
+        "role": "detail",
+        "label": "Revenue"
+      },
+      {
+        "id": "roas",
+        "type": "number",
+        "role": "meta",
+        "label": "ROAS",
+        "suffix": "x"
+      },
+      {
+        "id": "owner",
+        "type": "text",
+        "role": "detail",
+        "label": "Owner"
+      }
+    ],
+    "records": [
+      {
+        "id": "m1",
+        "name": "Monsoon sale \u2014 search",
+        "channel": "Paid search",
+        "spend": 480000,
+        "clicks": 38200,
+        "ctr": 4.1,
+        "revenue": 1920000,
+        "roas": 4.0,
+        "owner": "Nisha"
+      },
+      {
+        "id": "m2",
+        "name": "Reels awareness",
+        "channel": "Social",
+        "spend": 320000,
+        "clicks": 51000,
+        "ctr": 2.8,
+        "revenue": 780000,
+        "roas": 2.4,
+        "owner": "Arjun"
+      },
+      {
+        "id": "m3",
+        "name": "Weekly digest",
+        "channel": "Email",
+        "spend": 42000,
+        "clicks": 9800,
+        "ctr": 6.2,
+        "revenue": 410000,
+        "roas": 9.8,
+        "owner": "Nisha"
+      },
+      {
+        "id": "m4",
+        "name": "Retargeting display",
+        "channel": "Display",
+        "spend": 190000,
+        "clicks": 22400,
+        "ctr": 1.9,
+        "revenue": 560000,
+        "roas": 2.9,
+        "owner": "Farah"
+      },
+      {
+        "id": "m5",
+        "name": "Creator affiliates",
+        "channel": "Affiliate",
+        "spend": 88000,
+        "clicks": 7100,
+        "ctr": 3.6,
+        "revenue": 320000,
+        "roas": 3.6,
+        "owner": "Arjun"
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "name"
+    ],
+    "placeholder": "Search campaigns",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "channel",
+      "field": "channel",
+      "label": "Channel",
+      "testid": "channel-chip",
+      "dataAttr": "data-channel",
+      "allLabel": "All"
+    }
+  ],
+  "aggregatesTestid": "metrics",
+  "aggregatesTileTestid": "kpi-tile",
+  "aggregatesValueTestid": "kpi-value",
+  "functionalContract": {
+    "views": [
+      "overview",
+      "detail"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "channel-chip",
+      "campaign-list",
+      "campaign-row",
+      "detail-title",
+      "stat-strip",
+      "detail-list",
+      "back-btn",
+      "metrics",
+      "kpi-tile",
+      "kpi-value",
+      "table-head"
+    ]
+  },
+  "aggregates": [
+    {
+      "id": "spend",
+      "label": "Spend",
+      "op": "sum",
+      "field": "spend",
+      "format": "money"
+    },
+    {
+      "id": "revenue",
+      "label": "Revenue",
+      "op": "sum",
+      "field": "revenue",
+      "format": "money"
+    },
+    {
+      "id": "ctr",
+      "label": "Avg CTR",
+      "op": "mean",
+      "field": "ctr",
+      "format": "percent"
+    },
+    {
+      "id": "campaigns",
+      "label": "Campaigns",
+      "op": "count",
+      "format": "plain"
+    }
+  ],
+  "table": {
+    "columns": [
+      {
+        "field": "name",
+        "label": "Campaign"
+      },
+      {
+        "field": "channel",
+        "label": "Channel"
+      },
+      {
+        "field": "spend",
+        "label": "Spend",
+        "align": "right"
+      },
+      {
+        "field": "ctr",
+        "label": "CTR",
+        "align": "right"
+      },
+      {
+        "field": "roas",
+        "label": "ROAS",
+        "align": "right"
+      }
+    ]
+  },
+  "ranges": [
+    {
+      "id": "7d",
+      "label": "7 days"
+    },
+    {
+      "id": "30d",
+      "label": "30 days"
+    },
+    {
+      "id": "90d",
+      "label": "90 days"
+    }
+  ]
+}

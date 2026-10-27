@@ -1,0 +1,58 @@
+{
+  "reference": "none \u2014 the corpus has no analytics reference (see EVALUATION_SET.md)",
+  "family": "trellis",
+  "palette": {
+    "brand": "#115E59",
+    "brandDeep": "#0C4A46",
+    "ground": "#F7F8F7",
+    "surface": "#FFFFFF",
+    "board": "#0F1F1E",
+    "ink": "#15201F",
+    "inkSoft": "#5D6B69",
+    "tint": "#E3EFED",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 sans-led working surface",
+    "uiRole": "grotesque; tabular numerals for money",
+    "scalePx": {
+      "body": 14,
+      "display": 26,
+      "section": 17,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 16,
+    "cardRadius": 12,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "KPI band, range control, channel facet, then a five-column table.",
+    "detail": "Campaign header, spend, a stat trio, then labelled detail rows.",
+    "density": "Dense; a working surface."
+  },
+  "grammar": {
+    "cta": "None \u2014 this is a read-only surface.",
+    "selection": "Channel chips.",
+    "numbers": "Money and percentages formatted consistently.",
+    "errors": "n/a",
+    "tabs": "None."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "None."
+  },
+  "provenance": {
+    "measured": "No reference. Palette specified directly for a neutral analytics register.",
+    "interpreted": "Everything in this spec is authored, not derived.",
+    "uncertainty": [
+      "The corpus contains no analytics reference, so reference fidelity cannot be assessed for this case."
+    ]
+  },
+  "specVersion": 1
+}

@@ -1,0 +1,58 @@
+{
+  "reference": "R16 E-Commerce UI Kit (genuine fit \u2014 image-led product grid with save)",
+  "family": "marketrow",
+  "palette": {
+    "brand": "#B45309",
+    "brandDeep": "#92400E",
+    "ground": "#FDFAF6",
+    "surface": "#FFFFFF",
+    "board": "#2A1E12",
+    "ink": "#221A12",
+    "inkSoft": "#6B5B4C",
+    "tint": "#F7EADB",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "warm serif for maker names",
+    "uiRole": "grotesque elsewhere",
+    "scalePx": {
+      "body": 14,
+      "display": 28,
+      "section": 18,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 20,
+    "cardRadius": 18,
+    "controlRadius": 999,
+    "addBtn": 36
+  },
+  "composition": {
+    "home": "Editorial heading, search, category chips, two-up card grid with the image dominant.",
+    "detail": "Media header, name, maker, price, stock, story, pickup choice, buyer form, one action.",
+    "density": "Generous; image-led."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Category chips; pickup as an option grid.",
+    "numbers": "Price everywhere.",
+    "errors": "Inline under the field.",
+    "tabs": "Shop / Saved."
+  },
+  "imagery": {
+    "role": "R16 is photographic; no photography is available offline, so a brand-derived gradient stands in. Declared substitution.",
+    "substitution": "Deterministic gradient + initials replaces product photography."
+  },
+  "provenance": {
+    "measured": "R16 measured: image-led grid, warm palette, save affordance.",
+    "interpreted": "Composition authored from the reference's pattern.",
+    "uncertainty": [
+      "Photography is the reference's quality carrier and it is substituted."
+    ]
+  },
+  "specVersion": 1
+}

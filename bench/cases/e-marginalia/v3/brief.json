@@ -1,0 +1,193 @@
+{
+  "app": "Marginalia \u2014 essays and long reads (benchmark case E: editorial typography)",
+  "brand": "Marginalia",
+  "tagline": "Long reads, kept short of noise.",
+  "subtitle": "One essay a week on cities and the people in them.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "editorial",
+  "family": "marginalia",
+  "views": [
+    "essays"
+  ],
+  "entity": {
+    "id": "essay",
+    "label": "Essay",
+    "plural": "Essays",
+    "media": false,
+    "titleClass": "essay-title",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "essay-list",
+      "itemTestid": "essay-card",
+      "openTestid": "essay-open"
+    },
+    "fields": [
+      {
+        "id": "title",
+        "type": "text",
+        "role": "title",
+        "label": "Title"
+      },
+      {
+        "id": "author",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Author"
+      },
+      {
+        "id": "readTime",
+        "type": "number",
+        "role": "meta",
+        "label": "Reading time",
+        "suffix": " min read"
+      },
+      {
+        "id": "topic",
+        "type": "enum",
+        "role": "facet",
+        "label": "Topic",
+        "options": [
+          "Cities",
+          "Work",
+          "Memory",
+          "Water"
+        ]
+      },
+      {
+        "id": "standfirst",
+        "type": "text",
+        "role": "detail",
+        "label": "Standfirst"
+      },
+      {
+        "id": "published",
+        "type": "text",
+        "role": "meta",
+        "label": "Published"
+      },
+      {
+        "id": "body",
+        "type": "text",
+        "role": "body",
+        "label": "Body"
+      }
+    ],
+    "records": [
+      {
+        "id": "e1",
+        "title": "The last bus out of Jayanagar",
+        "author": "Sneha Rao",
+        "readTime": 11,
+        "topic": "Cities",
+        "standfirst": "A route that runs past midnight keeps a city honest about who works in it.",
+        "published": "12 Oct",
+        "body": [
+          "The 11:40 from Jayanagar is never full, and never empty. It carries the people a city needs after it has stopped pretending to be awake for them.",
+          "I rode it for a week. The same eleven or so passengers, the same conductor, a different argument each night about whether the last stop counts as the last stop.",
+          "What the route really provides is a guarantee: that the city will still move you home at an hour when nothing else will."
+        ]
+      },
+      {
+        "id": "e2",
+        "title": "What a desk remembers",
+        "author": "Imran Qureshi",
+        "readTime": 8,
+        "topic": "Work",
+        "standfirst": "Notes on hot-desking, and what gets lost when nobody has a drawer.",
+        "published": "5 Oct",
+        "body": [
+          "A drawer is a small claim on a place. Remove it and you remove the claim, and people stop leaving things behind.",
+          "The office I worked in last year had 240 desks and 310 people and no drawers at all. It was always clean. It was never anyone's."
+        ]
+      },
+      {
+        "id": "e3",
+        "title": "The well under the car park",
+        "author": "Lakshmi Menon",
+        "readTime": 14,
+        "topic": "Water",
+        "standfirst": "A neighbourhood rediscovered its oldest water source by accident.",
+        "published": "28 Sep",
+        "body": [
+          "They were digging for a drainage line and hit stone at two metres.",
+          "It took a fortnight to establish that the stone was a well, and another month to establish that it was the one on the 1912 survey map.",
+          "About a year passed before anyone agreed on what to do about it."
+        ]
+      },
+      {
+        "id": "e4",
+        "title": "Tape, labels, and the afterlife of things",
+        "author": "Sneha Rao",
+        "readTime": 6,
+        "topic": "Memory",
+        "standfirst": "On keeping boxes you have not opened in nine years.",
+        "published": "21 Sep",
+        "body": [
+          "The box is labelled in a hand I no longer write in.",
+          "Inside: a broken radio, three notebooks, and a receipt for something I cannot remember buying.",
+          "I have moved it four times."
+        ]
+      },
+      {
+        "id": "e5",
+        "title": "A room of one's own, rented by the hour",
+        "author": "Imran Qureshi",
+        "readTime": 9,
+        "topic": "Work",
+        "standfirst": "The quiet economy of pay-as-you-go privacy.",
+        "published": "14 Sep",
+        "body": [
+          "There is a market for an hour of not being interrupted, and it is larger than you would think.",
+          "The rooms are small, the walls are thick, and the pricing is by the half hour."
+        ]
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "title",
+      "author"
+    ],
+    "placeholder": "Search essays",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "topic",
+      "field": "topic",
+      "label": "Topic",
+      "testid": "topic-chip",
+      "dataAttr": "data-topic",
+      "allLabel": "All"
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "essays",
+      "detail"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "topic-chip",
+      "essay-list",
+      "essay-card",
+      "essay-open",
+      "detail-title",
+      "empty-state",
+      "back-btn",
+      "article-body",
+      "standfirst"
+    ]
+  },
+  "article": {
+    "body": "body",
+    "standfirst": "standfirst",
+    "byline": "author"
+  },
+  "_v3Note": "Mission 024: article{} and a body field declared. Frozen brief.json unchanged.",
+  "caseId": "e-marginalia"
+}

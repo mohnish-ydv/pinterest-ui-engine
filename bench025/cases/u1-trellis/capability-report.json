@@ -1,0 +1,620 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "u1-trellis",
+  "app": "Trellis",
+  "variant": "row",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "status"
+  ],
+  "decision": "stop",
+  "summary": {
+    "total": 26,
+    "byCategory": {
+      "content": {
+        "total": 12,
+        "required": 11
+      },
+      "layout": {
+        "total": 5,
+        "required": 5
+      },
+      "interaction": {
+        "total": 2,
+        "required": 2
+      },
+      "navigation": {
+        "total": 1,
+        "required": 1
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 25,
+    "disclosed": 0,
+    "unsupported": 1
+  },
+  "supported": [
+    "U1-TRELLIS-C-name-list",
+    "U1-TRELLIS-C-name-detail",
+    "U1-TRELLIS-C-channel-list",
+    "U1-TRELLIS-C-channel-detail",
+    "U1-TRELLIS-C-spend-list",
+    "U1-TRELLIS-C-spend-detail",
+    "U1-TRELLIS-C-clicks-list",
+    "U1-TRELLIS-C-clicks-detail",
+    "U1-TRELLIS-C-ctr-list",
+    "U1-TRELLIS-C-ctr-detail",
+    "U1-TRELLIS-C-roas-list",
+    "U1-TRELLIS-C-roas-detail",
+    "U1-TRELLIS-L-collection",
+    "U1-TRELLIS-L-detail",
+    "U1-TRELLIS-L-aggregates",
+    "U1-TRELLIS-L-table",
+    "U1-TRELLIS-I-search",
+    "U1-TRELLIS-I-facet-channel",
+    "U1-TRELLIS-N-view-overview",
+    "U1-TRELLIS-R-narrow",
+    "U1-TRELLIS-R-wide",
+    "U1-TRELLIS-A-contrast",
+    "U1-TRELLIS-A-labels",
+    "U1-TRELLIS-A-heading",
+    "U1-TRELLIS-A-targets"
+  ],
+  "unsupported": [
+    {
+      "id": "U1-TRELLIS-L-ranges",
+      "category": "layout",
+      "required": true,
+      "expectation": "A time-range control offering 3 ranges.",
+      "limitation": "A time-range control is declared but the entity has no date field to filter on, so no honest range filter can be built from this brief — implementing the control alone would produce an inert filter.",
+      "fallback": null
+    }
+  ],
+  "risks": [
+    "1 required requirement(s) cannot be expressed by the current engine.",
+    "Generating anyway would produce a plausible but incomplete interface — the exact failure Mission 023 recorded."
+  ],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "u1-trellis",
+    "app": "Trellis",
+    "domain": "analytics",
+    "variant": "row",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "U1-TRELLIS-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Campaign\" (title) is visible in the Campaigns list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Campaign\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-C-channel-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Channel\" (subtitle) is visible in the Campaigns list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "channel",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-channel-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Channel\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "channel",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-C-spend-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Spend\" (price) is visible in the Campaigns list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "spend",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-spend-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Spend\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "spend",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-C-clicks-list",
+        "category": "content",
+        "required": false,
+        "expectation": "\"Clicks\" is excluded from the declared table columns (brief choice).",
+        "satisfiedBy": "brief.table.columns",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "clicks",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-clicks-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Clicks\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "clicks",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-C-ctr-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"CTR %\" (stat) is visible in the Campaigns list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "ctr",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-ctr-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"CTR %\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "ctr",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-C-roas-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"ROAS\" (meta) is visible in the Campaigns list.",
+        "satisfiedBy": "entity-collection (row variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "overview",
+          "where": "list",
+          "field": "roas",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-C-roas-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"ROAS\" (meta) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "roas",
+          "role": "meta",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 5 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "overview",
+          "selector": "item",
+          "expected": 5
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "U1-TRELLIS-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "U1-TRELLIS-L-aggregates",
+        "category": "layout",
+        "required": true,
+        "expectation": "A row of 4 aggregate metrics is shown above the collection.",
+        "satisfiedBy": "metric-row",
+        "verification": {
+          "method": "dom-count",
+          "view": "overview",
+          "selector": "metric-tile",
+          "expected": 4
+        },
+        "status": "supported",
+        "capability": "aggregates",
+        "component": "metric-row"
+      },
+      {
+        "id": "U1-TRELLIS-L-ranges",
+        "category": "layout",
+        "required": true,
+        "expectation": "A time-range control offering 3 ranges.",
+        "satisfiedBy": "range-filter",
+        "verification": {
+          "method": "dom-count",
+          "view": "overview",
+          "selector": "range-chip",
+          "expected": 3
+        },
+        "status": "unsupported",
+        "capability": "ranges",
+        "limitation": "A time-range control is declared but the entity has no date field to filter on, so no honest range filter can be built from this brief — implementing the control alone would produce an inert filter."
+      },
+      {
+        "id": "U1-TRELLIS-L-table",
+        "category": "layout",
+        "required": true,
+        "expectation": "The collection is presented as a table with 5 labelled columns.",
+        "satisfiedBy": "data-table",
+        "verification": {
+          "method": "dom-count",
+          "view": "overview",
+          "selector": "table-head",
+          "expected": 5
+        },
+        "status": "supported",
+        "capability": "table",
+        "component": "data-table"
+      },
+      {
+        "id": "U1-TRELLIS-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "U1-TRELLIS-I-facet-channel",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Channel\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "channel",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "U1-TRELLIS-N-view-overview",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"overview\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "overview",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "U1-TRELLIS-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "U1-TRELLIS-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "U1-TRELLIS-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "U1-TRELLIS-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "U1-TRELLIS-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "U1-TRELLIS-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

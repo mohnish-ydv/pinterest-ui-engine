@@ -1,0 +1,61 @@
+{
+  "$schema": "design-family/1",
+  "family": "marketrow",
+  "description": "Market Row \u2014 image-led commerce (genuine reference fit).",
+  "typography": {
+    "displayStrategy": "serif",
+    "displayStack": "\"Iowan Old Style\", \"Palatino Linotype\", Georgia, serif",
+    "uiStack": "-apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "displayRoleNote": "role only; the face is not inferred from pixels"
+  },
+  "borders": {
+    "hairline": "#E7E2DC",
+    "stepperHairline": "#E7E2DC",
+    "hairlineWidth": "1px",
+    "stepperWidth": "1.5px",
+    "focusRing": {
+      "width": "3px",
+      "offset": "2px",
+      "color": "brand"
+    }
+  },
+  "shadows": {
+    "card": "0 6px 18px rgba(28,25,23,0.07)",
+    "sheet": "0 -12px 32px rgba(28,25,23,0.10)"
+  },
+  "surfaces": {
+    "groundSource": "spec",
+    "inputBg": "#F4EFE9",
+    "inputTextSource": "ink"
+  },
+  "semantic": {
+    "error": "spec",
+    "warning": null,
+    "success": "palette:cert"
+  },
+  "states": {
+    "hoverTarget": "brandDeep",
+    "disabled": {
+      "bg": "#F0EBE5",
+      "fg": "#6B635C"
+    }
+  },
+  "density": {
+    "lineHeight": 1.5,
+    "bodyScale": 1
+  },
+  "space": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32
+  ],
+  "responsive": {
+    "breakpoint": 900,
+    "mobile": "single column",
+    "desktop": "multi-column, tab bar hidden"
+  }
+}

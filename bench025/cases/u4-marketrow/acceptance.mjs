@@ -1,0 +1,30 @@
+// Acceptance — U4 Market Row (image-led commerce). Written from the brief.
+import { runSuite } from '../../../bench/lib/harness.mjs';
+await runSuite('U4. Market Row — image-led commerce', process.argv[2], async (t) => {
+  t.check('T1 6 goods render', await t.count('[data-testid="good-card"]') === 6, `cards=${await t.count('[data-testid="good-card"]')}`);
+  const media = await t.page.evaluate(() => document.querySelectorAll('[data-testid="good-card"] .card-media, [data-testid="good-card"] img').length);
+  t.check('T2 every card carries a media block', media === 6, `media=${media}`);
+  await t.click('[data-testid="category-chip"][data-category="Ceramics"]'); await t.sleep(220);
+  t.check('T3 category Ceramics leaves 2', await t.count('[data-testid="good-card"]') === 2, `cards=${await t.count('[data-testid="good-card"]')}`);
+  await t.click('[data-testid="category-chip"][data-category="All"]'); await t.sleep(200);
+  await t.type('[data-testid="search"]', 'loom'); await t.sleep(250);
+  t.check('T4 searching a maker leaves 2', await t.count('[data-testid="good-card"]') === 2, `cards=${await t.count('[data-testid="good-card"]')}`);
+  await t.type('[data-testid="search"]', ''); await t.sleep(200);
+  await t.click('[data-testid="save-toggle"][data-id="g1"]'); await t.sleep(250);
+  await t.click('[data-testid="saved-open"]'); await t.sleep(250);
+  t.check('T5 saving persists into Saved', await t.count('[data-testid="good-card"]') === 1, `saved=${await t.count('[data-testid="good-card"]')}`);
+  await t.click('[data-testid="nav-shop"]'); await t.sleep(250);
+  await t.click('[data-testid="good-card"][data-id="g1"]'); await t.sleep(300);
+  const price = await t.text('[data-testid="detail-price"]');
+  t.check('T6 the detail shows the price', !!price && price.indexOf('850') !== -1, price);
+  await t.click('[data-testid="reserve-btn"]'); await t.sleep(250);
+  t.check('T7 an empty submit shows both field errors', (await t.vis('[data-testid="error-name"]')) && (await t.vis('[data-testid="error-phone"]')));
+  await t.setValue('[data-testid="buyer-name"]','Asha Nair');
+  await t.setValue('[data-testid="buyer-phone"]','98765 43210');
+  await t.click('[data-testid="option-pickup"][data-value="Saturday"]'); await t.sleep(200);
+  await t.click('[data-testid="reserve-btn"]'); await t.sleep(400);
+  const ref = await t.text('[data-testid="reserve-ref"]');
+  t.check('T8 a valid reservation issues an MR reference', /^MR-\d{6}$/.test(ref || ''), ref || 'none');
+  t.check('T9 the confirmation summarises the reservation', await t.vis('[data-testid="reserve-summary"]'));
+  t.check('T10 no page or console errors', t.errors.length === 0, t.errors.slice(0,2).join(' | '));
+});

@@ -1,0 +1,327 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Quarto",
+    "domain": "editorial",
+    "family": "quarto",
+    "density": "comfortable",
+    "densityBasis": "no reference profile supplied — default",
+    "generatedFrom": [
+      "brief.json",
+      "(no profile)"
+    ]
+  },
+  "entity": {
+    "id": "piece",
+    "label": "Essay",
+    "plural": "Essays",
+    "media": false,
+    "fields": [
+      {
+        "id": "title",
+        "type": "text",
+        "role": "title",
+        "label": "Title"
+      },
+      {
+        "id": "author",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Author"
+      },
+      {
+        "id": "readTime",
+        "type": "number",
+        "role": "meta",
+        "label": "Reading time",
+        "suffix": " min read"
+      },
+      {
+        "id": "issue",
+        "type": "text",
+        "role": "meta",
+        "label": "Issue"
+      },
+      {
+        "id": "topic",
+        "type": "enum",
+        "role": "facet",
+        "label": "Topic",
+        "options": [
+          "Archives",
+          "Cities",
+          "Objects",
+          "Prose"
+        ]
+      },
+      {
+        "id": "standfirst",
+        "type": "text",
+        "role": "detail",
+        "label": "Standfirst"
+      },
+      {
+        "id": "body",
+        "type": "text",
+        "role": "body",
+        "label": "Body"
+      }
+    ],
+    "titleClass": "essay-title"
+  },
+  "search": {
+    "fields": [
+      "title",
+      "author"
+    ],
+    "placeholder": "Search essays",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "topic",
+      "field": "topic",
+      "label": "Topic",
+      "testid": "topic-chip",
+      "dataAttr": "data-topic",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [],
+  "collections": [],
+  "banners": [],
+  "navigation": {
+    "pattern": "header-only",
+    "items": [],
+    "basis": "one top-level destination — no tab bar needed"
+  },
+  "views": [
+    {
+      "id": "pieces",
+      "purpose": "browse",
+      "title": "Slow reading, kept in print.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Quarto",
+            "context": "Kolkata",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Slow reading, kept in print.",
+            "subtitle": "Essays on archives, cities and the paper that outlives us."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search essays",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "piece",
+            "fields": [
+              "title",
+              "author"
+            ]
+          }
+        },
+        {
+          "id": "filter-topic",
+          "component": "filter-chips",
+          "props": {
+            "label": "Topic",
+            "testid": "topic-chip",
+            "allLabel": "All",
+            "valueAttr": "data-topic"
+          },
+          "binding": {
+            "entity": "piece",
+            "filterId": "topic",
+            "field": "topic",
+            "options": [
+              "Archives",
+              "Cities",
+              "Objects",
+              "Prose"
+            ]
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "index",
+          "props": {
+            "testid": "piece-list",
+            "itemTestid": "piece-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "piece-open"
+          },
+          "binding": {
+            "entity": "piece",
+            "source": "records",
+            "standfirstField": "standfirst"
+          },
+          "controls": [
+            "search",
+            "filter:topic"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Essay",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Quarto",
+            "context": "Kolkata",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": false,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "essay-title"
+          },
+          "binding": {
+            "entity": "piece",
+            "title": "title",
+            "subtitle": "author"
+          }
+        },
+        {
+          "id": "article",
+          "component": "article",
+          "props": {
+            "testid": "article"
+          },
+          "binding": {
+            "entity": "piece",
+            "article": {
+              "body": "body",
+              "standfirst": "standfirst",
+              "byline": "author"
+            }
+          },
+          "states": [
+            "populated"
+          ]
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "pieces",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "pieces",
+      "trigger": "back"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "no reference profile supplied — default",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "header-only",
+      "basis": "one top-level destination — no tab bar needed",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "index",
+      "basis": "compiled from design-spec prose",
+      "source": "reference"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "index",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "recordBody",
+      "value": "article",
+      "basis": "an article is declared, so prose replaces the label/value list",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}

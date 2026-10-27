@@ -1,0 +1,217 @@
+{
+  "app": "Depot \u2014 support queue (untouched case U5: operational tool with table, filters, detail)",
+  "brand": "Depot",
+  "tagline": "The queue, in one view.",
+  "subtitle": "Open tickets across three regions, with age and owner.",
+  "location": "Bengaluru",
+  "currency": "\u20b9",
+  "unit": "",
+  "domain": "operations",
+  "family": "depot",
+  "views": [
+    "tickets"
+  ],
+  "entity": {
+    "id": "ticket",
+    "label": "Ticket",
+    "plural": "Tickets",
+    "media": false,
+    "titleClass": "ticket-ref",
+    "backTestid": "back-btn",
+    "collection": {
+      "listTestid": "ticket-list",
+      "itemTestid": "ticket-row",
+      "openTestid": "ticket-open"
+    },
+    "fields": [
+      {
+        "id": "ref",
+        "type": "text",
+        "role": "title",
+        "label": "Ticket"
+      },
+      {
+        "id": "subject",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Subject"
+      },
+      {
+        "id": "priority",
+        "type": "enum",
+        "role": "facet",
+        "label": "Priority",
+        "options": [
+          "P1",
+          "P2",
+          "P3"
+        ]
+      },
+      {
+        "id": "age",
+        "type": "number",
+        "role": "stat",
+        "label": "Age (hours)"
+      },
+      {
+        "id": "assignee",
+        "type": "text",
+        "role": "detail",
+        "label": "Assignee"
+      },
+      {
+        "id": "region",
+        "type": "text",
+        "role": "detail",
+        "label": "Region"
+      },
+      {
+        "id": "status",
+        "type": "enum",
+        "role": "status",
+        "label": "Status",
+        "options": [
+          "Open",
+          "Waiting",
+          "Escalated"
+        ]
+      },
+      {
+        "id": "updated",
+        "type": "text",
+        "role": "meta",
+        "label": "Updated"
+      },
+      {
+        "id": "summary",
+        "type": "text",
+        "role": "detail",
+        "label": "Summary"
+      }
+    ],
+    "records": [
+      {
+        "id": "t1",
+        "ref": "DP-4471",
+        "subject": "Checkout fails on Safari",
+        "priority": "P1",
+        "age": 6,
+        "assignee": "Ritu",
+        "region": "West",
+        "status": "Escalated",
+        "updated": "12 min ago",
+        "summary": "Payment sheet never resolves; reproducible on iOS 17 only."
+      },
+      {
+        "id": "t2",
+        "ref": "DP-4468",
+        "subject": "Invoice PDF missing GSTIN",
+        "priority": "P2",
+        "age": 22,
+        "assignee": "Sam",
+        "region": "South",
+        "status": "Open",
+        "updated": "40 min ago",
+        "summary": "Affects invoices generated after the 14th."
+      },
+      {
+        "id": "t3",
+        "ref": "DP-4462",
+        "subject": "Bulk upload times out",
+        "priority": "P1",
+        "age": 31,
+        "assignee": "Ritu",
+        "region": "North",
+        "status": "Waiting",
+        "updated": "1 hr ago",
+        "summary": "Files over 5 MB hit a 30s gateway timeout."
+      },
+      {
+        "id": "t4",
+        "ref": "DP-4455",
+        "subject": "Wrong currency on receipts",
+        "priority": "P3",
+        "age": 52,
+        "assignee": "Ana",
+        "region": "South",
+        "status": "Open",
+        "updated": "3 hr ago",
+        "summary": "Receipts show USD for two accounts set to INR."
+      },
+      {
+        "id": "t5",
+        "ref": "DP-4449",
+        "subject": "Search ignores tags",
+        "priority": "P2",
+        "age": 74,
+        "assignee": "Sam",
+        "region": "West",
+        "status": "Open",
+        "updated": "5 hr ago",
+        "summary": "Tag search returns nothing since the index rebuild."
+      }
+    ]
+  },
+  "search": {
+    "fields": [
+      "ref",
+      "subject"
+    ],
+    "placeholder": "Search tickets",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "priority",
+      "field": "priority",
+      "label": "Priority",
+      "testid": "priority-chip",
+      "dataAttr": "data-priority",
+      "allLabel": "All"
+    }
+  ],
+  "functionalContract": {
+    "views": [
+      "tickets",
+      "detail"
+    ],
+    "testids": [
+      "app-header",
+      "search",
+      "search-btn",
+      "priority-chip",
+      "ticket-list",
+      "ticket-row",
+      "detail-title",
+      "stat-strip",
+      "detail-list",
+      "back-btn",
+      "table-head"
+    ]
+  },
+  "table": {
+    "columns": [
+      {
+        "field": "ref",
+        "label": "Ticket"
+      },
+      {
+        "field": "subject",
+        "label": "Subject"
+      },
+      {
+        "field": "priority",
+        "label": "Priority"
+      },
+      {
+        "field": "age",
+        "label": "Age",
+        "align": "right"
+      },
+      {
+        "field": "assignee",
+        "label": "Owner"
+      }
+    ]
+  }
+}

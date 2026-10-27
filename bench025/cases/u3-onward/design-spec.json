@@ -1,0 +1,58 @@
+{
+  "reference": "R13 AIRI (partial \u2014 wallet flows show multi-step progress patterns)",
+  "family": "onward",
+  "palette": {
+    "brand": "#1D4ED8",
+    "brandDeep": "#1E3A8A",
+    "ground": "#F6F7FB",
+    "surface": "#FFFFFF",
+    "board": "#141A2E",
+    "ink": "#161A22",
+    "inkSoft": "#5B6270",
+    "tint": "#E4E9FA",
+    "star": "#E8A33D",
+    "cert": "#1E5B3C",
+    "error": "#A32026"
+  },
+  "typography": {
+    "displayRole": "none \u2014 utility workflow",
+    "uiRole": "grotesque; semibold step labels",
+    "scalePx": {
+      "body": 14,
+      "display": 25,
+      "section": 17,
+      "small": 12,
+      "amount": 15
+    }
+  },
+  "shape": {
+    "sheetRadius": 18,
+    "cardRadius": 14,
+    "controlRadius": 999,
+    "addBtn": 34
+  },
+  "composition": {
+    "home": "Heading, search, stage chips, queue banner, then one row per hire.",
+    "detail": "A three-step flow with a step indicator, per-step fields, back and continue.",
+    "density": "Even and functional."
+  },
+  "grammar": {
+    "cta": "One pill, brand fill.",
+    "selection": "Stage chips; steps show current/done.",
+    "numbers": "CTC as money.",
+    "errors": "Inline under the field.",
+    "tabs": "Hires / Queue."
+  },
+  "imagery": {
+    "role": "None.",
+    "substitution": "Initial chips."
+  },
+  "provenance": {
+    "measured": "R13 is a food+wallet kit; only its multi-step progress register is used.",
+    "interpreted": "Composition authored.",
+    "uncertainty": [
+      "R13 does not depict an onboarding workflow; fidelity is partial at best."
+    ]
+  },
+  "specVersion": 1
+}

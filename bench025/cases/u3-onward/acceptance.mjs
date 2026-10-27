@@ -1,0 +1,31 @@
+// Acceptance — U3 Onward (multi-step onboarding). Written from the brief.
+import { runSuite } from '../../../bench/lib/harness.mjs';
+await runSuite('U3. Onward — multi-step workflow', process.argv[2], async (t) => {
+  t.check('T1 5 hires render', await t.count('[data-testid="hire-card"]') === 5, `cards=${await t.count('[data-testid="hire-card"]')}`);
+  t.check('T2 every hire shows its stage', await t.count('[data-testid="hire-card"] .pill') === 5, `pills=${await t.count('[data-testid="hire-card"] .pill')}`);
+  await t.click('[data-testid="stage-chip"][data-stage="Ready"]'); await t.sleep(220);
+  t.check('T3 stage filter Ready leaves 2', await t.count('[data-testid="hire-card"]') === 2, `cards=${await t.count('[data-testid="hire-card"]')}`);
+  await t.click('[data-testid="stage-chip"][data-stage="All"]'); await t.sleep(200);
+  await t.click('[data-testid="hire-card"][data-id="h1"]'); await t.sleep(300);
+  t.check('T4 opening a hire shows its detail', (await t.text('[data-testid="detail-title"]')) === 'Priya Raghavan');
+  await t.click('[data-testid="back-btn"]'); await t.sleep(250);
+  await t.click('[data-testid="new-hire"]'); await t.sleep(320);
+  t.check('T5 onboarding opens a 3-step flow', await t.count('[data-testid="step"]') === 3, `steps=${await t.count('[data-testid="step"]')}`);
+  t.check('T6 the first step is current', (await t.attr('[data-testid="step"][data-step="1"]','data-state')) === 'current');
+  await t.setValue('[data-testid="candidate-name"]','Nadia Fernandes');
+  await t.setValue('[data-testid="manager-name"]','Ravi Kumar');
+  await t.click('[data-testid="step-next"]'); await t.sleep(280);
+  t.check('T7 Continue advances to step 2', (await t.attr('[data-testid="step"][data-step="2"]','data-state')) === 'current', await t.attr('[data-testid="step"][data-step="2"]','data-state'));
+  await t.click('[data-testid="step-back"]'); await t.sleep(240);
+  t.check('T8 Back returns to step 1 and keeps the data', (await t.attr('[data-testid="step"][data-step="1"]','data-state')) === 'current' && (await t.page.evaluate(() => document.querySelector('[data-testid="candidate-name"]')?.value)) === 'Nadia Fernandes');
+  await t.click('[data-testid="step-next"]'); await t.sleep(240);
+  await t.setValue('[data-testid="candidate-email"]','nadia@example.com');
+  await t.click('[data-testid="step-next"]'); await t.sleep(240);
+  t.check('T9 a review step is reached', (await t.attr('[data-testid="step"][data-step="3"]','data-state')) === 'current');
+  await t.click('[data-testid="confirm-btn"]'); await t.sleep(420);
+  const ref = await t.text('[data-testid="onboard-ref"]');
+  t.check('T10 confirming issues an ON reference', /^ON-\d{6}$/.test(ref || ''), ref || 'none');
+  await t.click('[data-testid="queue-open"]'); await t.sleep(320);
+  t.check('T11 the hire lands in the queue', await t.count('[data-testid="queue-item"]') >= 1, `items=${await t.count('[data-testid="queue-item"]')}`);
+  t.check('T12 no page or console errors', t.errors.length === 0, t.errors.slice(0,2).join(' | '));
+});

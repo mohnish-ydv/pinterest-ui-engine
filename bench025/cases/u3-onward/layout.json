@@ -1,0 +1,601 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.0.0",
+    "app": "Onward",
+    "domain": "workflow",
+    "family": "onward",
+    "density": "compact",
+    "densityBasis": "saturated share 34.26% — a colour-committed board reads dense",
+    "generatedFrom": [
+      "brief.json",
+      "reference-profile.json"
+    ]
+  },
+  "entity": {
+    "id": "hire",
+    "label": "Hire",
+    "plural": "Hires",
+    "media": false,
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "role": "title",
+        "label": "Name"
+      },
+      {
+        "id": "role",
+        "type": "text",
+        "role": "subtitle",
+        "label": "Role"
+      },
+      {
+        "id": "start",
+        "type": "text",
+        "role": "meta",
+        "label": "Start date"
+      },
+      {
+        "id": "stage",
+        "type": "enum",
+        "role": "status",
+        "label": "Stage",
+        "options": [
+          "Draft",
+          "Documents",
+          "Ready"
+        ]
+      },
+      {
+        "id": "salary",
+        "type": "money",
+        "role": "price",
+        "label": "CTC"
+      },
+      {
+        "id": "docs",
+        "type": "number",
+        "role": "stat",
+        "label": "Documents"
+      }
+    ],
+    "titleClass": "hire-name"
+  },
+  "search": {
+    "fields": [
+      "name",
+      "role"
+    ],
+    "placeholder": "Search hires",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "stage",
+      "field": "stage",
+      "label": "Stage",
+      "testid": "stage-chip",
+      "dataAttr": "data-stage",
+      "allLabel": "All"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "onboard",
+      "label": "Confirm onboarding",
+      "kind": "commit",
+      "testid": "confirm-btn",
+      "form": [
+        {
+          "id": "candidate",
+          "label": "Candidate name",
+          "type": "text",
+          "testid": "candidate-name",
+          "errorTestid": "error-candidate",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the candidate's name."
+        },
+        {
+          "id": "manager",
+          "label": "Hiring manager",
+          "type": "text",
+          "testid": "manager-name",
+          "errorTestid": "error-manager",
+          "required": true,
+          "minLength": 2,
+          "message": "Enter the hiring manager."
+        },
+        {
+          "id": "email",
+          "label": "Work email",
+          "type": "text",
+          "testid": "candidate-email",
+          "errorTestid": "error-email",
+          "required": true,
+          "pattern": "^[^@\\s]+@[^@\\s]+\\.[a-z]{2,}$",
+          "message": "Enter a valid email address."
+        }
+      ],
+      "steps": [
+        {
+          "id": "who",
+          "label": "Who",
+          "fields": [
+            "candidate",
+            "manager"
+          ]
+        },
+        {
+          "id": "contact",
+          "label": "Contact",
+          "fields": [
+            "email"
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "fields": [],
+          "review": true
+        }
+      ],
+      "result": {
+        "collection": "queue",
+        "referencePrefix": "ON",
+        "title": "Onboarding started",
+        "referenceTestid": "onboard-ref",
+        "summaryTestid": "onboard-summary"
+      }
+    }
+  ],
+  "collections": [
+    {
+      "id": "queue",
+      "view": "queue",
+      "label": "Onboarding queue",
+      "listTestid": "queue-list",
+      "itemTestid": "queue-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "candidate",
+        "manager"
+      ],
+      "emptyMessage": "Nobody in the queue.",
+      "cancel": {
+        "testid": "drop-btn",
+        "confirmTestid": "drop-confirm",
+        "label": "Drop",
+        "confirmLabel": "Confirm drop",
+        "keepLabel": "Keep"
+      }
+    }
+  ],
+  "banners": [
+    {
+      "id": "queued",
+      "collection": "queue",
+      "testid": "queue-banner",
+      "label": "In the queue",
+      "fields": [
+        "candidate"
+      ],
+      "emptyHide": true
+    }
+  ],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-hires",
+        "label": "Hires",
+        "view": "hires",
+        "icon": "grid",
+        "dataNav": "hires"
+      },
+      {
+        "id": "queue-open",
+        "label": "Queue",
+        "view": "queue",
+        "icon": "grid",
+        "dataNav": "queue"
+      }
+    ],
+    "basis": "2 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "hires",
+      "purpose": "browse",
+      "title": "New joiners, ready on day one.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Onward",
+            "context": "Hyderabad",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "New joiners, ready on day one.",
+            "subtitle": "Start a hire, collect documents, confirm before day one."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search hires",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "hire",
+            "fields": [
+              "name",
+              "role"
+            ]
+          }
+        },
+        {
+          "id": "filter-stage",
+          "component": "filter-chips",
+          "props": {
+            "label": "Stage",
+            "testid": "stage-chip",
+            "allLabel": "All",
+            "valueAttr": "data-stage"
+          },
+          "binding": {
+            "entity": "hire",
+            "filterId": "stage",
+            "field": "stage",
+            "options": [
+              "Draft",
+              "Documents",
+              "Ready"
+            ]
+          }
+        },
+        {
+          "id": "banner-queued",
+          "component": "status-banner",
+          "props": {
+            "testid": "queue-banner",
+            "label": "In the queue",
+            "emptyHide": true
+          },
+          "binding": {
+            "collection": "queue",
+            "fields": [
+              "candidate"
+            ]
+          }
+        },
+        {
+          "id": "entry-action",
+          "component": "primary-action",
+          "props": {
+            "label": "Start onboarding",
+            "testid": "new-hire",
+            "action": "onboard",
+            "act": "start-create"
+          },
+          "binding": {
+            "entity": "hire",
+            "amountField": null
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "row",
+          "props": {
+            "testid": "hire-list",
+            "itemTestid": "hire-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 3
+            },
+            "showMedia": false,
+            "showStatus": true,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "openTestid": "hire-open"
+          },
+          "binding": {
+            "entity": "hire",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:stage"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "queue",
+      "purpose": "collection",
+      "title": "Onboarding queue",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Onward",
+            "context": "Hyderabad",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "Onboarding queue",
+            "testid": "queue-list",
+            "itemTestid": "queue-item",
+            "cancelTestid": "drop-btn",
+            "confirmTestid": "drop-confirm",
+            "confirmLabel": "Confirm drop",
+            "keepLabel": "Keep",
+            "cancelLabel": "Drop"
+          },
+          "binding": {
+            "collection": "queue",
+            "fields": [
+              "ref",
+              "candidate",
+              "manager"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nobody in the queue."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Hire",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Onward",
+            "context": "Hyderabad",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": false,
+            "showStatus": true,
+            "showSave": false,
+            "saveTestid": "save-toggle",
+            "titleClass": "hire-name"
+          },
+          "binding": {
+            "entity": "hire",
+            "title": "name",
+            "subtitle": "role",
+            "price": "salary",
+            "status": "stage"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "hire",
+            "fields": [
+              "docs"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "hire",
+            "fields": [
+              "start"
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "step-flow",
+          "props": {
+            "testid": "stepflow",
+            "commitTestid": "confirm-btn",
+            "commitLabel": "Confirm onboarding"
+          },
+          "binding": {
+            "entity": "hire",
+            "steps": [
+              {
+                "id": "who",
+                "label": "Who",
+                "fields": [
+                  "candidate",
+                  "manager"
+                ]
+              },
+              {
+                "id": "contact",
+                "label": "Contact",
+                "fields": [
+                  "email"
+                ]
+              },
+              {
+                "id": "review",
+                "label": "Review",
+                "fields": [],
+                "review": true
+              }
+            ]
+          },
+          "states": [
+            "current",
+            "done",
+            "todo",
+            "error"
+          ]
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Onboarding started",
+            "testid": "onboard-ref",
+            "summaryTestid": "onboard-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "hire",
+            "referencePrefix": "ON"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "hires",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "hires",
+      "trigger": "back"
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "onboard",
+      "creates": "queue",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    },
+    {
+      "id": "cancel-queue",
+      "from": "queue",
+      "trigger": "cancel",
+      "deletes": "queue",
+      "requiresConfirmation": true,
+      "preconditions": [
+        "itemExists"
+      ],
+      "restores": "frees the slot or resource the record held"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "compact",
+      "basis": "saturated share 34.26% — a colour-committed board reads dense",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "tabbar",
+      "basis": "2 top-level destinations, mobile-first",
+      "source": "rule"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "row",
+      "basis": "no media role, so records are text-led",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "3",
+      "basis": "density \"compact\" sets 3 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "commitShape",
+      "value": "step-flow",
+      "basis": "3 declared steps replace a single form",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> status-banner -> primary-action -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}
