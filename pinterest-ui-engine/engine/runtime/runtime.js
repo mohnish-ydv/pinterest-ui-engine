@@ -121,7 +121,7 @@
   var store = loadStore();
 
   function loadStore() {
-    var empty = { saved: [], collections: {}, bag: {}, wallet: null, authed: false, seenIntro: false, myReviews: {}, profile: {} };
+    var empty = { saved: [], collections: {}, bag: {}, wallet: null, authed: false, seenIntro: false, myReviews: {}, profile: {}, perms: {}, chatMsgs: {}, recentSearches: [] };
     try {
       var raw = localStorage.getItem(KEY);
       if (!raw) return empty;
@@ -139,6 +139,11 @@
         seenIntro: !!p.seenIntro,
         myReviews: p.myReviews && typeof p.myReviews === 'object' ? p.myReviews : {},
         profile: p.profile && typeof p.profile === 'object' ? p.profile : {},
+        // M050: permission choices, appended chat messages and recent
+        // searches keep their own local state under the same key.
+        perms: p.perms && typeof p.perms === 'object' ? p.perms : {},
+        chatMsgs: p.chatMsgs && typeof p.chatMsgs === 'object' ? p.chatMsgs : {},
+        recentSearches: Array.isArray(p.recentSearches) ? p.recentSearches : [],
       };
     } catch (e) { return empty; }
   }
@@ -155,6 +160,9 @@
       if (model.onboarding) out.seenIntro = !!store.seenIntro;
       out.myReviews = store.myReviews || {};
       out.profile = store.profile || {};
+      if (model.permissions) out.perms = store.perms || {};
+      if (model.chat) out.chatMsgs = store.chatMsgs || {};
+      if (model.search) out.recentSearches = store.recentSearches || [];
       localStorage.setItem(KEY, JSON.stringify(out));
     } catch (e) { /* private mode: the app still works, it just forgets */ }
   }
@@ -251,6 +259,15 @@
     introStep: 0,
     topupAmt: '',
     reviewStars: 0,
+    // M050 state: the OTP step and its digits, whether the catalogue
+    // search is focused (its suggestion state), the open chat thread
+    // and its draft, and the orders view's status segment.
+    otpStep: false,
+    otpDigits: [],
+    searchFocus: false,
+    chatThread: null,
+    chatDraft: '',
+    orderFilter: 'All',
   };
   (model.filters || []).forEach(function (f) { S.filters[f.id] = 'All'; });
   (model.actions || []).forEach(function (a) { if (a.options) S.options[a.options.id] = null; });
@@ -391,6 +408,50 @@
       '</div>';
   };
 
+  // M050: the search suggestion state. While the catalogue search is
+  // focused with an empty query, the field offers what a user plausibly
+  // came for: their recent searches (persisted on this device), popular
+  // terms (the first facet's options), and the first records as tappable
+  // rows. A tap fills the query and runs the search — the same filter
+  // path typing takes. It renders ONLY in that state, so an unfocused
+  // or filled search is byte-identical to before.
+  function suggestionsHtml() {
+    if (!S.searchFocus || S.query.trim()) return '';
+    var recents = (store.recentSearches || []).slice(0, 5);
+    var facetF = byRoleAll('facet')[0] || null;
+    var popular = facetF
+      ? Array.from(new Set((model.records || []).map(function (r) { return r[facetF.id]; }).filter(Boolean))).slice(0, 5).map(String)
+      : [];
+    var rows = (model.records || []).slice(0, 4);
+    if (!recents.length && !popular.length && !rows.length) return '';
+    var chip = function (v, kind) {
+      // Recent chips carry the base reference's recent-search marker,
+      // written literally: they ARE the recent searches.
+      if (kind === 'recent') {
+        return '<button class="sugg-chip" data-act="suggest" data-value="' + esc(v) + '" data-testid="recent-search" data-kind="recent">' + esc(v) + '</button>';
+      }
+      return '<button class="sugg-chip" data-act="suggest" data-value="' + esc(v) + '" data-testid="search-suggestion" data-kind="' + kind + '">' + esc(v) + '</button>';
+    };
+    return '<div class="suggestions" data-testid="search-suggestions">' +
+      (recents.length ? '<span class="sugg-lb">Recent</span><div class="sugg-chips">' + recents.map(function (v) { return chip(v, 'recent'); }).join('') + '</div>' : '') +
+      (popular.length ? '<span class="sugg-lb">Popular</span><div class="sugg-chips">' + popular.map(function (v) { return chip(v, 'popular'); }).join('') + '</div>' : '') +
+      (rows.length ? '<div class="sugg-rows">' + rows.map(function (r) {
+          var name = titleF ? String(r[titleF.id] || r.id) : r.id;
+          var meta = priceF && r[priceF.id] != null ? money(r[priceF.id]) : '';
+          return '<button class="sugg-row" data-act="suggest" data-value="' + esc(name) + '" data-testid="search-suggestion">' +
+            '<span class="sugg-name">' + esc(name) + '</span>' + (meta ? '<span class="sugg-meta">' + esc(meta) + '</span>' : '') + '</button>';
+        }).join('') + '</div>' : '') +
+      '</div>';
+  }
+  function noteRecentSearch(q) {
+    var v = String(q || '').trim();
+    if (!v) return;
+    var list = (store.recentSearches || []).filter(function (x) { return String(x).toLowerCase() !== v.toLowerCase(); });
+    list.unshift(v);
+    store.recentSearches = list.slice(0, 5);
+    saveStore();
+  }
+
   R['search-bar'] = function (s) {
     var t = s.props.testid || 'search';
     return '<div class="wrap"><div class="search-row">' +
@@ -403,7 +464,7 @@
       (currentView().sections.some(function (x) { return x.component === 'filter-chips' || x.component === 'category-medallions'; })
         ? '<button class="filter-btn" data-act="sheet-filter" data-testid="filter-btn" aria-label="Sort and filter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>'
         : '') +
-      '</div></div>';
+      '</div>' + suggestionsHtml() + '</div>';
   };
 
   R['filter-chips'] = function (s) {
@@ -412,18 +473,37 @@
     // sections: two stacked chip rows pushed the product grid below the
     // fold on every multi-facet browse screen.
     var groups = s.groups || [s];
+    // M049: when several facet groups share this one row, a bare reset
+    // label repeats — Fern rendered two identical "All" chips, both
+    // selected at once, with nothing but a hairline between them, so a
+    // first-time user could not tell which facet either reset belonged
+    // to. In a multi-group rail the reset chip is qualified by its own
+    // facet's label ("All Type", "All Light") and every chip carries an
+    // aria-label naming its facet. The reset VALUE stays the allLabel
+    // ('All'): data attributes, filter state and the test gates select
+    // by value, never by the visible text. A single-group rail is
+    // unambiguous and keeps the plain label.
+    var multi = groups.length > 1;
     var parts = groups.map(function (g) {
-      var opts = [g.props.allLabel || 'All'].concat(g.binding.options || []);
+      var reset = g.props.allLabel || 'All';
+      var opts = [reset].concat(g.binding.options || []);
       var fid = g.binding.filterId || g.binding.field;
-      var active = S.filters[fid] || (g.props.allLabel || 'All');
+      var active = S.filters[fid] || reset;
       var attr = g.props.valueAttr || 'data-value';
+      var glabel = g.props.label || fid;
       return opts.map(function (o) {
         var on = o === active;
+        var isReset = o === reset;
+        var text = isReset && multi ? reset + ' ' + glabel : o;
+        var aria = multi ? ' aria-label="' + esc(isReset ? reset + ' ' + glabel : glabel + ': ' + o) + '"' : '';
         return '<button class="chip' + (on ? ' chip-on' : '') + '" data-act="filter" data-filter="' + esc(fid) + '"' +
-          ' ' + attr + '="' + esc(o) + '" data-field="' + esc(fid) + '" data-testid="' + esc(g.props.testid) + '" aria-pressed="' + on + '">' + esc(o) + '</button>';
+          ' ' + attr + '="' + esc(o) + '" data-field="' + esc(fid) + '" data-testid="' + esc(g.props.testid) + '" aria-pressed="' + on + '"' + aria + '>' + esc(text) + '</button>';
       }).join('');
     });
-    return '<div class="wrap"><div class="chips" role="group" aria-label="' + esc(s.props.label) + '">' +
+    var railLabel = multi
+      ? 'Filters: ' + groups.map(function (g) { return g.props.label || g.binding.filterId || g.binding.field; }).join(', ')
+      : s.props.label;
+    return '<div class="wrap"><div class="chips" role="group" aria-label="' + esc(railLabel) + '">' +
       parts.join('<span class="chip-sep" aria-hidden="true"></span>') +
       '</div></div>';
   };
@@ -711,6 +791,48 @@
 
   function fieldInputId(f) { return 'f-' + f.id; }
 
+  // M050: booking field types for a declared flow. A `date-strip`
+  // field is a horizontal strip of day chips (the next N days, or the
+  // field's declared options); a `time-chips` field is a row of time
+  // slot chips. Both are single-select, both store their value in
+  // S.form like every other field — so validation (readField falls
+  // back to S.form), the review step and the confirmation/order
+  // summary all carry the chosen day and time with no special case.
+  function chipFieldOptions(f) {
+    if (Array.isArray(f.options) && f.options.length) {
+      return f.options.map(function (o) {
+        return typeof o === 'string' ? { label: o, value: o } : { label: o.label || String(o.value), value: String(o.value) };
+      });
+    }
+    if (f.type === 'date-strip') {
+      var n = Number(f.days) || 7;
+      var out = [];
+      for (var i = 0; i < n; i++) {
+        var d = new Date(Date.now() + i * 86400000);
+        var iso = d.toISOString().slice(0, 10);
+        var wd = d.toLocaleDateString('en-IN', { weekday: 'short' });
+        var dm = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        out.push({ label: (i === 0 ? 'Today' : wd) + ' ' + dm, value: iso });
+      }
+      return out;
+    }
+    return ['09:00', '11:00', '13:00', '15:00', '17:00'].map(function (v) { return { label: v, value: v }; });
+  }
+  function chipField(f, etid) {
+    var cur = S.form[f.id] || '';
+    var err = S.errors[f.id];
+    var kind = f.type === 'date-strip' ? 'date-strip' : 'time-chips';
+    return '<div class="field"><span class="field-label">' + esc(f.label) + '</span>' +
+      '<div class="chips flow-chips ' + kind + '" role="group" aria-label="' + esc(f.label) + '" data-testid="' + esc(f.testid || ('field-' + f.id)) + '">' +
+      chipFieldOptions(f).map(function (o) {
+        var on = String(o.value) === String(cur);
+        return '<button class="chip flow-chip' + (on ? ' chip-on' : '') + '" data-act="flow-chip" data-field="' + esc(f.id) + '"' +
+          ' data-value="' + esc(o.value) + '" data-testid="chip-' + esc(f.id) + '" aria-pressed="' + on + '">' + esc(o.label) + '</button>';
+      }).join('') + '</div>' +
+      '<p class="err" data-testid="' + esc(etid) + '"' + (err ? '' : ' hidden') + '>' + esc(err || '') + '</p></div>';
+  }
+  function isChipField(f) { return f && (f.type === 'date-strip' || f.type === 'time-chips'); }
+
   // M046: a choice field renders the way the boards render every choice
   // — a row with a medallion, a name, a caption, a price, and a radio
   // that fills when chosen. A <select> is a desktop habit.
@@ -736,6 +858,7 @@
   R['form-fields'] = function (s) {
     return '<div class="wrap"><div class="form" data-testid="' + esc(s.props.testid) + '">' +
       (s.binding.fields || []).map(function (f) {
+        if (isChipField(f)) return chipField(f, f.errorTestid || ('error-' + f.id));
         if (f.options) return radioRows(f, f.errorTestid || ('error-' + f.id));
         var err = S.errors[f.id];
         var tid = f.testid || ('field-' + f.id);
@@ -769,14 +892,44 @@
   // confirmation step. Cancelling removes the record, which is what frees the
   // resource it held (a slot, a seat, a room).
   R['collection-manager'] = function (s) {
-    var items = collectionItems(s.binding.collection);
+    var allItems = collectionItems(s.binding.collection);
+    // M050: segmented status tabs on the orders view, built from the
+    // statuses the orders actually carry (a bag order is 'Placed'
+    // unless the record says otherwise). The segment filters the
+    // list; 'All' is always first. Apps whose orders carry no status
+    // distinction beyond one value still get the honest two segments
+    // (All + that status) — never invented statuses.
+    var orderStatuses = [];
+    allItems.forEach(function (it) {
+      var st = it.status || (model.bag ? 'Placed' : null);
+      if (st && orderStatuses.indexOf(st) === -1) orderStatuses.push(st);
+    });
+    var showSeg = !!(model.bag || allItems.some(function (it) { return !!it.status; }));
+    var segHtml = '';
+    var items = allItems;
+    if (showSeg && allItems.length) {
+      if (S.orderFilter !== 'All' && orderStatuses.indexOf(S.orderFilter) === -1) S.orderFilter = 'All';
+      segHtml = '<div class="seg-tabs" role="group" aria-label="Order status" data-testid="order-status-tabs">' +
+        ['All'].concat(orderStatuses).map(function (st) {
+          var on = S.orderFilter === st;
+          return '<button class="seg-btn' + (on ? ' is-on' : '') + '" data-act="order-filter" data-value="' + esc(st) + '"' +
+            ' data-testid="order-filter" aria-pressed="' + on + '">' + esc(st) + '</button>';
+        }).join('') + '</div>';
+      if (S.orderFilter !== 'All') {
+        items = allItems.filter(function (it) { return (it.status || (model.bag ? 'Placed' : '')) === S.orderFilter; });
+      }
+    }
+    if (!items.length && allItems.length) {
+      return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' + segHtml +
+        '<div class="empty" data-testid="empty-state"><p>No ' + esc(S.orderFilter.toLowerCase()) + ' orders yet.</p></div></div>';
+    }
     if (!items.length) {
       return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' +
         '<div class="empty" data-testid="empty-state">' +
         (model.bag ? '<svg class="empty-art" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11L5.5 8Z"/><path d="M9 10.5V6.5a3 3 0 0 1 6 0v4"/></svg>' : '') +
         '<p>' + esc(s.emptyMessage || 'Nothing here yet.') + '</p></div></div>';
     }
-    return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' +
+    return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' + segHtml +
       '<div class="cm-list" data-testid="' + esc(s.props.testid) + '">' +
       items.map(function (it) {
         var confirming = S.confirmCancel === it.ref;
@@ -1109,6 +1262,7 @@
     var panel = panelFields.map(function (fid) {
       var f = (action.form || []).filter(function (x) { return x.id === fid; })[0];
       if (!f) return '';
+      if (isChipField(f)) return chipField(f, f.errorTestid || ('error-' + f.id));
       if (f.options) return radioRows(f, f.errorTestid || ('error-' + f.id));
       var err = S.errors[f.id];
       var tid = f.testid || ('field-' + f.id);
@@ -1126,6 +1280,12 @@
     if (steps[cur].review) {
       review = '<div class="dl">' + (action.form || []).map(function (f) {
         var v = S.form[f.id] == null ? '' : String(S.form[f.id]);
+        // M050: a booking chip field reviews as the label the user
+        // tapped ("Today 29 Oct"), not the stored value ("2026-10-29").
+        if (v && isChipField(f)) {
+          var hit = chipFieldOptions(f).filter(function (o) { return String(o.value) === v; })[0];
+          if (hit) v = hit.label;
+        }
         return v ? '<div class="dl-row"><span>' + esc(f.label) + '</span><span>' + esc(v) + '</span></div>' : '';
       }).join('') + '</div>';
     }
@@ -1381,6 +1541,54 @@
       }).join('') + '</div></div>';
   };
 
+  // ==========================================================================
+  // MISSION 050 — chat. Declared threads plus the user's own on-device
+  // messages (persisted in store.chatMsgs). It is honestly labelled
+  // local-only: there is no server, no delivery, no other person —
+  // the canned reply each thread declares is what answers.
+  // ==========================================================================
+  function chatThreads() { return (model.chat && model.chat.threads) || []; }
+  function chatThreadById(id) { return chatThreads().filter(function (t) { return t.id === id; })[0] || null; }
+  function chatMessages(t) {
+    return (t.messages || []).concat((store.chatMsgs && store.chatMsgs[t.id]) || []);
+  }
+  R['chat-threads'] = function (s) {
+    var threads = chatThreads();
+    var open = S.chatThread ? chatThreadById(S.chatThread) : null;
+    if (open) {
+      var msgs = chatMessages(open);
+      return '<div class="wrap"><div class="chat" data-testid="chat">' +
+        '<div class="chat-head"><button class="back-btn" data-act="chat-back" data-testid="chat-back" aria-label="Back to conversations">\u2190</button>' +
+        '<span class="chat-av" aria-hidden="true">' + esc(initials(open.name || 'C')) + '</span>' +
+        '<span class="chat-name">' + esc(open.name || '') + '</span></div>' +
+        '<p class="chat-note">Local demo \u00b7 messages stay on this device</p>' +
+        '<div class="chat-msgs" data-testid="chat-messages">' +
+        (msgs.length ? msgs.map(function (m) {
+          var mine = m.from === 'me' || m.from === 'mine';
+          return '<div class="chat-row ' + (mine ? 'is-mine' : 'is-theirs') + '"><span class="chat-bubble" data-testid="chat-message" data-from="' + (mine ? 'me' : 'them') + '">' + esc(m.text || '') + '</span></div>';
+        }).join('') : '<div class="empty" data-testid="empty-state"><p>No messages yet. Say hello.</p></div>') +
+        '</div>' +
+        '<div class="chat-composer">' +
+        '<input id="chat-text" class="chat-input" data-act="chat-input" data-testid="chat-input" type="text" placeholder="Message\u2026" value="' + esc(S.chatDraft || '') + '" aria-label="Message">' +
+        '<button class="cta chat-send" data-act="chat-send" data-testid="chat-send">Send</button>' +
+        '</div></div></div>';
+    }
+    if (!threads.length) {
+      return '<div class="wrap"><div class="empty" data-testid="empty-state"><p>No conversations yet.</p></div></div>';
+    }
+    return '<div class="wrap"><div class="chat-list" data-testid="chat">' +
+      '<p class="chat-note">Local demo \u00b7 messages stay on this device</p>' +
+      threads.map(function (t) {
+        var ms = chatMessages(t);
+        var last = ms[ms.length - 1];
+        return '<button class="chat-thread" data-act="chat-open" data-id="' + esc(t.id) + '" data-testid="chat-thread">' +
+          '<span class="chat-av" aria-hidden="true">' + esc(initials(t.name || 'C')) + '</span>' +
+          '<span class="chat-main"><span class="chat-name">' + esc(t.name || '') + '</span>' +
+          '<span class="chat-last">' + esc(last ? (last.text || '') : 'No messages yet') + '</span></span>' +
+          '<span class="row-chev" aria-hidden="true">\u203a</span></button>';
+      }).join('') + '</div></div>';
+  };
+
   // ---- M046 sheets: one scrim, three bodies -----------------------------
   function sheetHtml() {
     if (!S.sheet) return '';
@@ -1391,7 +1599,11 @@
         var active = S.filters[f.id] || 'All';
         return '<div class="sheet-group"><span class="sheet-lb">' + esc(f.label || f.id) + '</span><div class="chips">' +
           opts.map(function (o) {
-            return '<button class="chip' + (o === active ? ' chip-on' : '') + '" data-act="filter" data-filter="' + esc(f.id) + '" data-value="' + esc(o) + '">' + esc(o) + '</button>';
+            // M049: the sheet labels each group visually, so the visible
+            // reset text stays "All" — but a screen reader lands on the
+            // chip, not the heading, so the reset chip names its facet.
+            var aria = o === 'All' ? ' aria-label="All ' + esc(f.label || f.id) + '"' : '';
+            return '<button class="chip' + (o === active ? ' chip-on' : '') + '" data-act="filter" data-filter="' + esc(f.id) + '" data-value="' + esc(o) + '"' + aria + '>' + esc(o) + '</button>';
           }).join('') + '</div></div>';
       }).join('');
       var prices = (model.records || []).map(function (r) { return Number(r[priceF ? priceF.id : '']); }).filter(function (n) { return isFinite(n); });
@@ -1456,8 +1668,51 @@
       '<div class="sheet" role="dialog" aria-modal="true" data-testid="sheet">' + body + '</div>';
   }
 
-  // ---- M046 entry gates: onboarding, then auth, then the app ------------
+  // ---- M050 entry gates: splash, then permission priming -------------
+  // Both stand in front of the M046 gates. Splash shows once per
+  // session (sessionStorage, not the persisted store — a new session
+  // is a new visit, and the brand moment belongs to it); permission
+  // choices persist in the store, so Allow / Maybe later is asked once
+  // ever per permission key.
+  function splashSeen() {
+    try { return sessionStorage.getItem(KEY + ':splash') === '1'; } catch (e) { return false; }
+  }
+  function markSplashSeen() {
+    try { sessionStorage.setItem(KEY + ':splash', '1'); } catch (e) { /* private mode: splash may repeat */ }
+  }
+  function splashPending() { return !!(model.splash && !splashSeen()); }
+  function otpDigitsWanted() {
+    var o = model.auth && model.auth.otp;
+    if (o && typeof o === 'object' && Number(o.digits)) return Math.max(4, Math.min(6, Number(o.digits)));
+    if (model.auth && Number(model.auth.otpDigits)) return Math.max(4, Math.min(6, Number(model.auth.otpDigits)));
+    return 6;
+  }
+
   function gateHtml() {
+    if (splashPending()) {
+      var sp = model.splash || {};
+      return '<div class="splash" data-testid="splash" data-act="splash-dismiss">' +
+        '<span class="splash-mark" aria-hidden="true">' + esc(initials(sp.title || model.app.brand)) + '</span>' +
+        '<h1 class="splash-title">' + esc(sp.title || model.app.brand) + '</h1>' +
+        ((sp.tagline || model.app.tagline) ? '<p class="splash-tag">' + esc(sp.tagline || model.app.tagline) + '</p>' : '') +
+        '<button class="splash-btn" data-act="splash-dismiss" data-testid="splash-dismiss">' + esc(sp.cta || 'Continue') + '</button>' +
+        '<span class="splash-hint">Tap anywhere to continue</span>' +
+        '</div>';
+    }
+    var perms = model.permissions || [];
+    var pending = perms.filter(function (p) { return !(store.perms && store.perms[p.key]); });
+    if (perms.length && pending.length) {
+      var pm = pending[0];
+      var doneCount = perms.length - pending.length;
+      return '<div class="perm" data-testid="permission-priming" data-key="' + esc(pm.key) + '">' +
+        '<span class="perm-disc" aria-hidden="true">' + esc(pm.glyph || initials(pm.title || 'P')) + '</span>' +
+        '<h1 class="perm-h" data-testid="permission">' + esc(pm.title || '') + '</h1>' +
+        (pm.benefit ? '<p class="perm-benefit">' + esc(pm.benefit) + '</p>' : '') +
+        (perms.length > 1 ? '<p class="perm-count">' + (doneCount + 1) + ' of ' + perms.length + '</p>' : '') +
+        '<button class="cta" data-act="perm-allow" data-key="' + esc(pm.key) + '" data-testid="perm-allow">Allow</button>' +
+        '<button class="btn-quiet perm-later" data-act="perm-later" data-key="' + esc(pm.key) + '" data-testid="perm-later">Maybe later</button>' +
+        '</div>';
+    }
     if (model.onboarding && !store.seenIntro) {
       var slides = model.onboarding.slides || [];
       var i = Math.min(S.introStep, slides.length - 1);
@@ -1484,15 +1739,33 @@
             return '<button class="social-btn" data-act="auth-social" data-testid="auth-social" aria-label="Continue with ' + esc(pv) + '">' + esc(initials(pv)) + '</button>';
           }).join('') + '</div><p class="auth-or">or continue with</p>'
         : '';
+      // M050: with OTP declared, a valid email moves to a digit-box
+      // step instead of signing in. Local and honest: no code is sent
+      // anywhere, any complete code is accepted on this device.
+      if (a.otp && S.otpStep) {
+        var nOtp = otpDigitsWanted();
+        return '<div class="auth otp" data-testid="otp">' +
+          '<h1 class="auth-h">Enter the code</h1>' +
+          '<p class="otp-note">We would text a ' + nOtp + '-digit code to your number. This demo is local \u2014 any complete code works, nothing is sent.</p>' +
+          '<div class="otp-row" role="group" aria-label="One-time code">' +
+          Array.from({ length: nOtp }, function (_, i) {
+            return '<input class="otp-box" data-act="otp-input" data-i="' + i + '" data-testid="otp-input" type="text" inputmode="numeric" autocomplete="' + (i === 0 ? 'one-time-code' : 'off') + '" maxlength="1" value="' + esc(S.otpDigits[i] || '') + '" aria-label="Digit ' + (i + 1) + '">';
+          }).join('') + '</div>' +
+          (S.authError ? '<p class="err" data-testid="auth-error">' + esc(S.authError) + '</p>' : '') +
+          '<button class="cta" data-act="otp-verify" data-testid="otp-verify">Verify</button>' +
+          '<button class="auth-link" data-act="otp-resend" data-testid="otp-resend">Resend code</button>' +
+          '<button class="auth-link otp-back" data-act="otp-back">Use a different email</button>' +
+          '</div>';
+      }
       return '<div class="auth" data-testid="auth">' +
         '<h1 class="auth-h">' + esc(up ? (a.titleUp || 'Create your Account') : (a.titleIn || 'Login to your Account')) + '</h1>' +
         social +
         (up ? '<div class="field"><label for="auth-name">Full name</label><input id="auth-name" data-act="field" data-field="auth-name" type="text" autocomplete="name"></div>' : '') +
         '<div class="field"><label for="auth-email">Email</label><input id="auth-email" data-act="field" data-field="auth-email" type="email" autocomplete="email"></div>' +
-        '<div class="field"><label for="auth-pass">Password</label><input id="auth-pass" data-act="field" data-field="auth-pass" type="password" autocomplete="current-password"></div>' +
+        (a.otp ? '' : '<div class="field"><label for="auth-pass">Password</label><input id="auth-pass" data-act="field" data-field="auth-pass" type="password" autocomplete="current-password"></div>') +
         '<label class="auth-remember"><span class="checkbox' + (S.remember ? ' is-on' : '') + '" data-act="auth-remember" role="checkbox" aria-checked="' + !!S.remember + '">' + (S.remember ? '\u2713' : '') + '</span> Remember me</label>' +
         (S.authError ? '<p class="err" data-testid="auth-error">' + esc(S.authError) + '</p>' : '') +
-        '<button class="cta" data-act="auth-submit" data-testid="auth-submit">' + (up ? 'Sign up' : 'Sign in') + '</button>' +
+        '<button class="cta" data-act="auth-submit" data-testid="auth-submit">' + (a.otp ? 'Send code' : (up ? 'Sign up' : 'Sign in')) + '</button>' +
         '<p class="auth-foot">' + (up ? 'Already have an account? ' : 'Do not have an account? ') +
         '<button class="auth-link" data-act="auth-mode">' + (up ? 'Sign in' : 'Sign up') + '</button></p>' +
         '</div>';
@@ -1518,6 +1791,7 @@
     user: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.4-3.4 3.9-5 7-5s5.6 1.6 7 5"/></svg>',
     search: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>',
     bag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11L5.5 8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>',
+    chat: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.3 0-2.6-.3-3.7-.8L3 21l1.8-5.8A8.5 8.5 0 1 1 21 11.5Z"/></svg>',
   };
   function renderTabs() {
     var tabs = $('#tabs');
@@ -1573,9 +1847,34 @@
     }
   }
 
+  // M049: chip rails got the table treatment's opposite — M047 hid
+  // their scrollbars and nothing replaced the affordance, so a facet
+  // group could sit entirely off-screen with no sign it existed. Same
+  // measured approach as the tables: while (and only while) more chips
+  // remain to the right, the rail carries data-overflow and its
+  // trailing edge fades (see .chips[data-overflow] in the CSS). Sheet
+  // chips wrap instead of scrolling and are excluded.
+  function syncChipAffordance() {
+    var rails = document.querySelectorAll('.chips');
+    for (var i = 0; i < rails.length; i++) {
+      var r = rails[i];
+      if (r.closest && r.closest('.sheet')) continue;
+      var more = r.scrollWidth > r.clientWidth + 1 && r.scrollLeft < r.scrollWidth - r.clientWidth - 4;
+      if (more) r.setAttribute('data-overflow', 'true');
+      else r.removeAttribute('data-overflow');
+    }
+  }
+
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', syncTableAffordance);
     window.addEventListener('load', function () { syncTableAffordance(); });
+    window.addEventListener('resize', syncChipAffordance);
+    window.addEventListener('load', function () { syncChipAffordance(); });
+    // Scrolling a rail re-renders nothing, so listen in the capture
+    // phase: when the user reaches the end, the fade must lift.
+    document.addEventListener('scroll', function (e) {
+      if (e.target && e.target.classList && e.target.classList.contains('chips')) syncChipAffordance();
+    }, true);
   }
 
   function render(opts) {
@@ -1594,6 +1893,24 @@
       gMain.dataset.view = 'gate';
       gMain.innerHTML = '<div class="wrap gate-wrap">' + gate + '</div>';
       if (!opts.keepScroll) window.scrollTo(0, 0);
+      // M050: a pending splash auto-advances after its declared hold
+      // (default 1600ms, shortened under reduced motion). A tap
+      // dismisses it sooner; either path marks it seen for the
+      // session so it never re-appears mid-visit.
+      if (typeof window !== 'undefined') {
+        if (window.__splashTimer) { clearTimeout(window.__splashTimer); window.__splashTimer = null; }
+        if (splashPending()) {
+          var hold = Number((model.splash || {}).holdMs) || 1600;
+          var reduced = false;
+          try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { reduced = false; }
+          if (reduced) hold = Math.min(hold, 500);
+          window.__splashTimer = setTimeout(function () {
+            window.__splashTimer = null;
+            markSplashSeen();
+            render();
+          }, hold);
+        }
+      }
       return;
     }
     var view = currentView();
@@ -1690,10 +2007,13 @@
     if (typeof window !== 'undefined') {
       window.requestAnimationFrame(function () {
         syncTableAffordance();
+        syncChipAffordance();
         window.requestAnimationFrame(syncTableAffordance);
+        window.requestAnimationFrame(syncChipAffordance);
       });
     } else {
       syncTableAffordance();
+      syncChipAffordance();
     }
 
     var sheet = sheetHtml();
@@ -1851,6 +2171,8 @@
       S.view = el.getAttribute('data-view');
       S.confirmCancel = null;
       S.sheet = null;
+      S.searchFocus = false;
+      if (S.view === 'chat') S.chatThread = null;
       render();
     } else if (act === 'open') {
       S.selectedId = el.getAttribute('data-id');
@@ -1922,6 +2244,7 @@
       render();
     } else if (act === 'reset') {
       S.query = '';
+      S.searchFocus = false;
       (model.filters || []).forEach(function (f) { S.filters[f.id] = 'All'; });
       render();
     } else if (act === 'day') {
@@ -2120,6 +2443,16 @@
       var emv = em ? em.value.trim() : '';
       var pwv = pw ? pw.value : '';
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emv)) { S.authError = 'Enter a valid email address.'; render({ keepScroll: true }); return; }
+      // M050: OTP auth trades the password for the digit step.
+      if (model.auth && model.auth.otp) {
+        S.authError = '';
+        S.otpStep = true;
+        S.otpDigits = [];
+        render({ keepScroll: true });
+        var firstBox = $('.otp-box');
+        if (firstBox) firstBox.focus();
+        return;
+      }
       if (!pwv) { S.authError = 'Enter your password.'; render({ keepScroll: true }); return; }
       S.authError = '';
       store.authed = true;
@@ -2127,9 +2460,85 @@
       render();
     } else if (act === 'auth-out') {
       store.authed = false;
+      S.otpStep = false;
+      S.otpDigits = [];
       saveStore();
       S.view = (layout.views[0] && layout.views[0].id) || 'browse';
       render();
+    } else if (act === 'splash-dismiss') {
+      if (typeof window !== 'undefined' && window.__splashTimer) { clearTimeout(window.__splashTimer); window.__splashTimer = null; }
+      markSplashSeen();
+      render();
+    } else if (act === 'perm-allow' || act === 'perm-later') {
+      if (!store.perms) store.perms = {};
+      store.perms[el.getAttribute('data-key')] = act === 'perm-allow' ? 'granted' : 'later';
+      saveStore();
+      render();
+    } else if (act === 'otp-resend') {
+      // Local resend: no message leaves the device; the step restarts
+      // with empty boxes and says a new code is coming, as boards do.
+      S.otpDigits = [];
+      S.authError = '';
+      render({ keepScroll: true });
+      var rb = $('.otp-box');
+      if (rb) rb.focus();
+    } else if (act === 'otp-back') {
+      S.otpStep = false;
+      S.otpDigits = [];
+      S.authError = '';
+      render({ keepScroll: true });
+    } else if (act === 'otp-verify') {
+      var want = otpDigitsWanted();
+      var code = (S.otpDigits || []).join('');
+      // The boxes are the source of truth, as everywhere in this
+      // runtime: read the live DOM in case digits were set without
+      // an input event reaching state.
+      var boxes = $$('.otp-box');
+      if (boxes.length) code = boxes.map(function (b) { return b.value || ''; }).join('');
+      if (code.replace(/\D/g, '').length < want) { S.authError = 'Enter the full ' + want + '-digit code.'; render({ keepScroll: true }); return; }
+      S.authError = '';
+      S.otpStep = false;
+      S.otpDigits = [];
+      store.authed = true;
+      saveStore();
+      render();
+    } else if (act === 'chat-open') {
+      S.chatThread = el.getAttribute('data-id');
+      S.chatDraft = '';
+      render();
+    } else if (act === 'chat-back') {
+      S.chatThread = null;
+      S.chatDraft = '';
+      render();
+    } else if (act === 'chat-send') {
+      var thread = S.chatThread ? chatThreadById(S.chatThread) : null;
+      var input = $('#chat-text');
+      var text = (input ? input.value : S.chatDraft || '').trim();
+      if (thread && text) {
+        if (!store.chatMsgs) store.chatMsgs = {};
+        if (!store.chatMsgs[thread.id]) store.chatMsgs[thread.id] = [];
+        store.chatMsgs[thread.id].push({ from: 'me', text: text });
+        store.chatMsgs[thread.id].push({ from: 'them', text: thread.reply || 'Thanks for your message.' });
+        saveStore();
+      }
+      S.chatDraft = '';
+      render({ keepScroll: true });
+      var againC = $('#chat-text');
+      if (againC) againC.focus();
+    } else if (act === 'suggest') {
+      var sv = el.getAttribute('data-value') || '';
+      S.query = sv;
+      noteRecentSearch(sv);
+      S.searchFocus = false;
+      render({ keepScroll: true });
+    } else if (act === 'order-filter') {
+      S.orderFilter = el.getAttribute('data-value') || 'All';
+      render({ keepScroll: true });
+    } else if (act === 'flow-chip') {
+      var ffid = el.getAttribute('data-field');
+      S.form[ffid] = el.getAttribute('data-value');
+      if (S.errors[ffid]) delete S.errors[ffid];
+      render({ keepScroll: true });
     } else if (act === 'commit') {
       commit();
     }
@@ -2145,7 +2554,29 @@
       if (lab) lab.textContent = money(Number(el.value));
       return;
     }
-    if (el.getAttribute('data-act') === 'search-input') {
+    if (el.getAttribute('data-act') === 'otp-input') {
+      // M050: one digit per box, focus auto-advances; filling the last
+      // box completes the code and verifies it (the Verify button is
+      // the manual path to the same handler).
+      var oi = Number(el.getAttribute('data-i')) || 0;
+      var digit = String(el.value || '').replace(/\D/g, '').slice(-1);
+      el.value = digit;
+      if (!Array.isArray(S.otpDigits)) S.otpDigits = [];
+      S.otpDigits[oi] = digit;
+      var wantN = otpDigitsWanted();
+      if (digit && oi < wantN - 1) {
+        var nxt = $$('.otp-box')[oi + 1];
+        if (nxt) nxt.focus();
+      } else if (digit && oi === wantN - 1) {
+        var full = $$('.otp-box').map(function (b) { return (b.value || '').replace(/\D/g, ''); }).join('');
+        if (full.length >= wantN) {
+          var vb = $('[data-act="otp-verify"]');
+          if (vb) vb.click();
+        }
+      }
+    } else if (el.getAttribute('data-act') === 'chat-input') {
+      S.chatDraft = el.value;
+    } else if (el.getAttribute('data-act') === 'search-input') {
       S.query = el.value;
       render({ keepScroll: true });
       var again = $('[data-act="search-input"]');
@@ -2168,10 +2599,41 @@
     }
   });
 
+  // M050: focusing the catalogue search opens its suggestion state.
+  // The re-render would drop focus, so it is restored to the field —
+  // the same courtesy the live-typing path already pays.
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || !el.getAttribute) return;
+    if (el.getAttribute('data-act') === 'search-input' && !S.searchFocus) {
+      S.searchFocus = true;
+      if (!S.query.trim()) {
+        render({ keepScroll: true });
+        var againF = $('[data-act="search-input"]');
+        if (againF) againF.focus();
+      }
+    }
+  });
+
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && e.target && e.target.getAttribute && e.target.getAttribute('data-act') === 'search-input') {
+    if (!e.target || !e.target.getAttribute) return;
+    if (e.key === 'Enter' && e.target.getAttribute('data-act') === 'search-input') {
       S.query = e.target.value;
+      noteRecentSearch(S.query);
+      S.searchFocus = false;
       render();
+    } else if (e.key === 'Enter' && e.target.getAttribute('data-act') === 'chat-input') {
+      var sendBtn = $('[data-act="chat-send"]');
+      if (sendBtn) sendBtn.click();
+    } else if (e.key === 'Backspace' && e.target.getAttribute('data-act') === 'otp-input') {
+      // An empty box's Backspace steps back to the previous digit.
+      if (!e.target.value) {
+        var bi = Number(e.target.getAttribute('data-i')) || 0;
+        if (bi > 0) {
+          var prev = $$('.otp-box')[bi - 1];
+          if (prev) { prev.focus(); prev.value = ''; if (Array.isArray(S.otpDigits)) S.otpDigits[bi - 1] = ''; }
+        }
+      }
     }
   });
 

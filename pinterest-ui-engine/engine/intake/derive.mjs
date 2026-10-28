@@ -512,6 +512,38 @@ export function deriveBrief(product, evidence) {
   for (const k of ['wallet', 'profile', 'notices', 'faq', 'onboarding', 'auth']) {
     if (product[k]) { brief[k] = product[k]; notes.push(`a ${k} was declared in the product brief`); }
   }
+  // M050: the next declared families — a splash gate, permission
+  // priming, chat, and a dedicated wishlist view. Declared, never
+  // derived from prose, exactly like the M046 families above.
+  if (product.splash) {
+    brief.splash = product.splash === true ? {} : product.splash;
+    notes.push('a splash screen was declared in the product brief');
+  }
+  const perms = product.permissions || product.permissionPriming;
+  if (Array.isArray(perms) && perms.length) {
+    brief.permissions = perms.map(p => (typeof p === 'string'
+      ? { key: slug(p), title: p, benefit: '' }
+      : { key: p.key || slug(p.title || 'permission'), title: p.title || p.key || 'Permission', benefit: p.benefit || p.text || '' }));
+    notes.push(`${brief.permissions.length} permission-priming screen(s) declared in the product brief`);
+  }
+  if (product.chat) {
+    brief.chat = product.chat === true
+      ? { threads: [{ id: 'support', name: 'Support', messages: [{ from: 'them', text: 'Hi! How can we help?' }], reply: 'Thanks — we got your message.' }] }
+      : product.chat;
+    notes.push('chat was declared in the product brief (local-only demo)');
+  }
+  if (product.wishlist) {
+    brief.wishlist = product.wishlist === true ? {} : product.wishlist;
+    notes.push('a dedicated wishlist view was declared in the product brief');
+  }
+  // M050: OTP may be declared on the auth family (auth.otp) or on the
+  // flow; either way it is normalised onto the auth gate the runtime
+  // renders. A bare `otp: true` with no auth family still gets a gate.
+  if (product.otp || (product.flow && product.flow.otp) || (product.auth && product.auth.otp)) {
+    brief.auth = Object.assign({}, brief.auth || {});
+    if (brief.auth.otp == null) brief.auth.otp = product.otp || (product.flow && product.flow.otp) || true;
+    notes.push('OTP verification was declared for the auth gate');
+  }
   if (product.homeHeader) brief.homeHeader = product.homeHeader;
   if (product.showCategories) { brief.showCategories = true; brief.categoriesLabel = product.categoriesLabel || 'Categories'; }
 
@@ -579,6 +611,14 @@ export function deriveBrief(product, evidence) {
     if (!brief.bag && (cap.steps || /\bstart\b|\bplace\b|\badd .* to (an )?order\b/i.test(reqs.join(' ')))) {
       brief.entryAction = { label: product.entryLabel || deriveEntryLabel(reqs, product) || 'Start', testid: 'start-action', action: 'commit' };
     }
+  }
+  // M050: a declared wishlist needs something to save WITH. If the
+  // requirements never asked for a save toggle, declaring the view
+  // declares the toggle too — otherwise the view could only ever be
+  // empty, which is a dead screen, not a family.
+  if (brief.wishlist && !actions.some(a => a.kind === 'toggle')) {
+    actions.push({ id: 'save', label: 'Save', kind: 'toggle', field: 'saved' });
+    notes.push('the wishlist declaration also declares the save toggle that feeds it');
   }
   if (actions.length) brief.actions = actions;
 

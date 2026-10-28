@@ -1,0 +1,532 @@
+{
+  "version": "1.0.0-mission050",
+  "generated": "2026-10-28",
+  "source": "reference/base/*.md — 15 board decodes (249 screens) + Evira PATTERN_LIBRARY.md / inv-01..04.md (162 entries, ~95 unique)",
+  "markerSyntax": "plain = substring in any text file of appDir; 'app:' = app.js/index.html/styles.css only; 'data:' = data.js (the compiled layout+model — the discriminating file, because app.js embeds every runtime renderer whether or not the brief planned it); 're:' after a scope prefix = regex. See engine/reference/base_compliance.mjs header.",
+  "declarationSyntax": "key:<briefKey> = planned if that top-level product-brief key is present/truthy; req:/regex/i = planned if any requirements[] sentence matches; items:<field> = planned if any collection.items[] entry carries a non-empty <field>; empty declarations = no brief key produces this screen in the current engine (only checkable when forced with --screens).",
+  "screens": [
+    {
+      "type": "splash",
+      "anatomy": [
+        "data-testid=\"splash\"",
+        "class=\"splash\""
+      ],
+      "headerStyle": "none — centred brand lockup only, no header",
+      "ctaStyle": "none — no CTA, loader only",
+      "declarations": [
+        "key:splash"
+      ],
+      "exemplars": [
+        "tall-ecommerce",
+        "blue-ecommerce",
+        "fibo",
+        "medica",
+        "staynest"
+      ]
+    },
+    {
+      "type": "onboarding",
+      "anatomy": [
+        "data-testid=\"onboarding\"",
+        "class=\"intro\"",
+        "data-testid=\"intro-next\"",
+        "data:re:\"onboarding\": \\{"
+      ],
+      "headerStyle": "none — Skip text top-right (or logo left + Skip), no back button",
+      "ctaStyle": "solid accent pill bottom (full-width or round arrow bottom-right); Next/Get Started",
+      "declarations": [
+        "key:onboarding"
+      ],
+      "exemplars": [
+        "beefy",
+        "fibo",
+        "orange-food",
+        "staynest",
+        "tall-ecommerce"
+      ]
+    },
+    {
+      "type": "auth",
+      "anatomy": [
+        "data-testid=\"auth\"",
+        "data-testid=\"auth-submit\"",
+        "or continue with",
+        "data:re:\"auth\": \\{"
+      ],
+      "headerStyle": "big left headline (auth/onboarding scale), no back-title bar on the entry screen",
+      "ctaStyle": "solid accent pill, full-width, pinned/low; social discs + 'or continue with' above it when providers declared",
+      "declarations": [
+        "key:auth"
+      ],
+      "exemplars": [
+        "fibo",
+        "medica",
+        "tall-ecommerce",
+        "orange-food",
+        "staynest"
+      ]
+    },
+    {
+      "type": "OTP",
+      "anatomy": [
+        "data-testid=\"otp\"",
+        "class=\"otp-box\"",
+        "Resend"
+      ],
+      "headerStyle": "back + centred small title",
+      "ctaStyle": "solid pill Verify/Continue, disabled until boxes filled; resend is timer text, not a button",
+      "declarations": [],
+      "exemplars": [
+        "fibo",
+        "car-service",
+        "staynest",
+        "tall-ecommerce",
+        "blue-ecommerce"
+      ]
+    },
+    {
+      "type": "permission-priming",
+      "anatomy": [
+        "data-testid=\"permission\"",
+        "perm-allow",
+        "perm-later"
+      ],
+      "headerStyle": "centred illustration/icon disc, no back-title bar",
+      "ctaStyle": "solid pill Allow/Enable + quiet Skip/Not now beneath it",
+      "declarations": [
+        "key:permissions",
+        "key:permissionPriming"
+      ],
+      "exemplars": [
+        "blue-ecommerce",
+        "car-service"
+      ]
+    },
+    {
+      "type": "home",
+      "anatomy": [
+        "data:\"component\": \"app-header\"",
+        "data:\"component\": \"page-heading\"",
+        "app:class=\"brand-name\"",
+        "app:class=\"tabbar\""
+      ],
+      "headerStyle": "ONE identity block: greeting header (avatar+greeting+name+circle buttons) OR brand zone — never both",
+      "ctaStyle": "no page CTA; promo carries one small filled button; tab bar is the navigation",
+      "declarations": [
+        "key:collection"
+      ],
+      "exemplars": [
+        "coffee",
+        "medica",
+        "staynest",
+        "beefy",
+        "swiftgo"
+      ]
+    },
+    {
+      "type": "search+suggestions",
+      "anatomy": [
+        "data:\"component\": \"search-bar\"",
+        "app:data-testid=\"results-count\"",
+        "data-testid=\"recent-search\""
+      ],
+      "headerStyle": "back + pill search field with icon INSIDE, no search button",
+      "ctaStyle": "none — typing is the action; recent/popular rows are tappable text rows",
+      "declarations": [
+        "req:/search/i"
+      ],
+      "exemplars": [
+        "orange-food",
+        "tall-ecommerce",
+        "staynest",
+        "fibo"
+      ]
+    },
+    {
+      "type": "filter-sheet",
+      "anatomy": [
+        "app:data-testid=\"filter-btn\"",
+        "app:Sort &amp; Filter",
+        "app:data-testid=\"filter-apply\"",
+        "app:data-testid=\"sheet\"",
+        "data:\"component\": \"filter-chips\""
+      ],
+      "headerStyle": "sheet head: 'Sort & Filter' title + × close; group labels above wrapped chip rows",
+      "ctaStyle": "quiet Reset + solid Apply pair pinned at sheet foot",
+      "declarations": [
+        "req:/filter/i"
+      ],
+      "exemplars": [
+        "staynest",
+        "tall-ecommerce",
+        "orange-food",
+        "Evira (PATTERN_LIBRARY)"
+      ]
+    },
+    {
+      "type": "catalogue/list",
+      "anatomy": [
+        "data:\"component\": \"entity-collection\"",
+        "app:class=\"card-meta\"",
+        "app:class=\"card-title\"",
+        "app:data-testid=\"empty-state\""
+      ],
+      "headerStyle": "back + centred small title, or tab-root brand/greeting header",
+      "ctaStyle": "no page CTA; per-card quiet add/save only",
+      "declarations": [
+        "key:collection"
+      ],
+      "exemplars": [
+        "coffee",
+        "sneaker-store",
+        "grocery",
+        "tall-ecommerce"
+      ]
+    },
+    {
+      "type": "detail",
+      "anatomy": [
+        "data:\"component\": \"record-header\"",
+        "data:\"component\": \"detail-list\"",
+        "app:data-testid=\"detail-title\"",
+        "app:class=\"rec-media\""
+      ],
+      "headerStyle": "photo-overlay circular back + save/cart discs, or back+centred title; no tab bar",
+      "ctaStyle": "price + solid pill action share the FIXED bottom bar (grammar law 20)",
+      "declarations": [
+        "key:collection"
+      ],
+      "exemplars": [
+        "beefy",
+        "sneaker-store",
+        "coffee",
+        "medica",
+        "Evira (PATTERN_LIBRARY)"
+      ]
+    },
+    {
+      "type": "wishlist",
+      "anatomy": [
+        "data:\"id\": \"saved\"",
+        "save-toggle",
+        "app:class=\"save-btn"
+      ],
+      "headerStyle": "back + centred title (Saved/Favorites count in title on some boards)",
+      "ctaStyle": "no page CTA; heart toggle on each card/row is the only action",
+      "declarations": [
+        "req:/save|favourite|favorite|heart/i"
+      ],
+      "exemplars": [
+        "coffee",
+        "sneaker-store",
+        "tall-ecommerce",
+        "pizza-food"
+      ]
+    },
+    {
+      "type": "bag/cart",
+      "anatomy": [
+        "data:\"component\": \"bag-list\"",
+        "data:\"component\": \"bag-totals\"",
+        "app:class=\"bag-item\"",
+        "app:class=\"stepper\""
+      ],
+      "headerStyle": "back + centred title with item count",
+      "ctaStyle": "solid pill Checkout pinned in bottom bar beside totals",
+      "declarations": [
+        "req:/\\b(bag|cart|basket)\\b/i",
+        "key:bagLabel"
+      ],
+      "exemplars": [
+        "coffee",
+        "tall-ecommerce",
+        "grocery",
+        "beefy"
+      ]
+    },
+    {
+      "type": "checkout",
+      "anatomy": [
+        "data:\"component\": \"step-flow\"",
+        "app:class=\"stepflow\"",
+        "app:data-testid=\"step\"",
+        "app:Continue"
+      ],
+      "headerStyle": "back + small bold form-header title; numbered step indicator",
+      "ctaStyle": "solid pill Continue, solid pill commit (with amount) on the final/review step",
+      "declarations": [
+        "req:/checks out|checkout|check out/i"
+      ],
+      "exemplars": [
+        "grocery",
+        "tall-ecommerce",
+        "swiftgo",
+        "medica"
+      ]
+    },
+    {
+      "type": "payment",
+      "anatomy": [
+        "app:class=\"radio-row\"",
+        "app:radio-",
+        "Payment"
+      ],
+      "headerStyle": "back + small bold form-header title",
+      "ctaStyle": "radio rows are the choice (medallion+name+caption+price+filled radio); solid pill Pay/Confirm at foot",
+      "declarations": [
+        "key:flow"
+      ],
+      "exemplars": [
+        "medica",
+        "blue-ecommerce",
+        "swiftgo",
+        "tall-ecommerce"
+      ]
+    },
+    {
+      "type": "success",
+      "anatomy": [
+        "data:\"component\": \"confirmation\"",
+        "app:class=\"confirm-card\"",
+        "app:class=\"confirm-mark\"",
+        "confirm-ref"
+      ],
+      "headerStyle": "none — centred medallion/check, bold title, one grey line",
+      "ctaStyle": "one solid pill (View order/Done) + one quiet pill (Continue/Home)",
+      "declarations": [
+        "req:/confirmation|placed order|places an order/i"
+      ],
+      "exemplars": [
+        "tall-ecommerce",
+        "blue-ecommerce",
+        "staynest",
+        "quickserve"
+      ]
+    },
+    {
+      "type": "orders+status-tabs",
+      "anatomy": [
+        "data:\"component\": \"collection-manager\"",
+        "app:data-testid=\"order-tracker\"",
+        "app:class=\"cm-item\"",
+        "status-tab"
+      ],
+      "headerStyle": "back + centred title; TEXT tabs (bold + thick underline) Active/Completed/Cancelled — never pills",
+      "ctaStyle": "per-row mini black pill (Track Order / Leave Review); destructive cancel is quiet tint",
+      "declarations": [
+        "key:submissionsLabel",
+        "req:/placed orders/i"
+      ],
+      "exemplars": [
+        "tall-ecommerce",
+        "medica",
+        "coffee"
+      ]
+    },
+    {
+      "type": "tracker",
+      "anatomy": [
+        "app:data-testid=\"order-tracker\"",
+        "app:class=\"tracker\"",
+        "app:class=\"track\"",
+        "app:data-testid=\"receipt\""
+      ],
+      "headerStyle": "back + centred title; map (when live) sits under the header, not over it",
+      "ctaStyle": "quiet contact actions (Call/Message) on the courier/driver card; no primary CTA",
+      "declarations": [
+        "key:submissionsLabel"
+      ],
+      "exemplars": [
+        "coffee",
+        "swiftgo",
+        "blue-ecommerce",
+        "pizza-food"
+      ]
+    },
+    {
+      "type": "wallet",
+      "anatomy": [
+        "data:re:\"wallet\": \\{",
+        "data:\"component\": \"wallet-card\"",
+        "app:data-testid=\"wallet-balance\"",
+        "app:data-testid=\"wallet-topup\"",
+        "app:class=\"txn\""
+      ],
+      "headerStyle": "back + centred title; the black balance card IS the loud element",
+      "ctaStyle": "white/inverted Top Up pill ON the black card; amounts chosen in a top-up sheet with keypad",
+      "declarations": [
+        "key:wallet"
+      ],
+      "exemplars": [
+        "blue-ecommerce",
+        "Evira (PATTERN_LIBRARY)",
+        "staynest"
+      ]
+    },
+    {
+      "type": "loyalty",
+      "anatomy": [
+        "data-testid=\"loyalty\"",
+        "class=\"points\""
+      ],
+      "headerStyle": "back + centred title; points hero card is the loud element",
+      "ctaStyle": "small filled pill on unlock/redeem offers only",
+      "declarations": [],
+      "exemplars": [
+        "coffee",
+        "fibo"
+      ]
+    },
+    {
+      "type": "profile",
+      "anatomy": [
+        "data:re:\"profile\": \\{",
+        "data:\"component\": \"profile-sheet\"",
+        "app:class=\"prof-head\"",
+        "app:class=\"prof-row\""
+      ],
+      "headerStyle": "avatar header (photo/initial disc + name + sub + edit badge), no back-title bar on tab-root profile",
+      "ctaStyle": "rows are the actions (medallion/plain + label + chevron); Logout is quiet/error text at foot",
+      "declarations": [
+        "key:profile"
+      ],
+      "exemplars": [
+        "coffee",
+        "medica",
+        "staynest",
+        "tall-ecommerce"
+      ]
+    },
+    {
+      "type": "settings",
+      "anatomy": [
+        "data:\"component\": \"profile-sheet\"",
+        "app:data-testid=\"prof-toggle\"",
+        "app:class=\"switch\"",
+        "app:class=\"prof-row\""
+      ],
+      "headerStyle": "back + centred title; grouped row list",
+      "ctaStyle": "toggles/radios persist in place — no Save CTA",
+      "declarations": [
+        "key:profile"
+      ],
+      "exemplars": [
+        "fibo",
+        "tall-ecommerce",
+        "staynest"
+      ]
+    },
+    {
+      "type": "notifications",
+      "anatomy": [
+        "data:re:\"notices\": \\[",
+        "data:\"component\": \"notice-list\"",
+        "app:class=\"notice\"",
+        "app:class=\"notices\""
+      ],
+      "headerStyle": "back + centred title; day-group headings (Today/Earlier) in the list",
+      "ctaStyle": "no CTA; rows open their target",
+      "declarations": [
+        "key:notices"
+      ],
+      "exemplars": [
+        "fibo",
+        "swiftgo",
+        "staynest",
+        "quickserve",
+        "tall-ecommerce"
+      ]
+    },
+    {
+      "type": "reviews",
+      "anatomy": [
+        "data:\"component\": \"reviews\"",
+        "app:class=\"stars\"",
+        "review-item"
+      ],
+      "headerStyle": "summary header first (big average + stars + count), then filter chips, then avatar rows",
+      "ctaStyle": "quiet 'Write a review' opens a sheet with star input + Cancel/Submit pair",
+      "declarations": [
+        "items:reviews"
+      ],
+      "exemplars": [
+        "staynest",
+        "car-service",
+        "tall-ecommerce",
+        "Evira (PATTERN_LIBRARY)"
+      ]
+    },
+    {
+      "type": "chat",
+      "anatomy": [
+        "data-testid=\"chat\"",
+        "class=\"chat\""
+      ],
+      "headerStyle": "conversation header: avatar + name + presence, back left",
+      "ctaStyle": "input bar pinned at foot (field + round send disc); bubbles: grey in / solid brand out",
+      "declarations": [
+        "key:chat"
+      ],
+      "exemplars": [
+        "medica",
+        "staynest",
+        "tall-ecommerce",
+        "blue-ecommerce"
+      ]
+    },
+    {
+      "type": "booking",
+      "anatomy": [
+        "data:\"component\": \"availability-picker\"",
+        "app:class=\"daystrip\"",
+        "app:class=\"slots\"",
+        "data:\"component\": \"confirmation\""
+      ],
+      "headerStyle": "back + small bold form-header title; a persistent summary header (doctor/property/service) rides the flow",
+      "ctaStyle": "solid pill Continue/Confirm pinned at foot of every step",
+      "declarations": [
+        "req:/\\bbook|appointment/i"
+      ],
+      "exemplars": [
+        "medica",
+        "staynest",
+        "car-service",
+        "swiftgo"
+      ]
+    },
+    {
+      "type": "map",
+      "anatomy": [
+        "data-testid=\"map\"",
+        "class=\"map\""
+      ],
+      "headerStyle": "full-bleed map is the screen; floating pill search / status pill over it",
+      "ctaStyle": "solid pill on the bottom sheet card (Directions/Book), never floating alone",
+      "declarations": [],
+      "exemplars": [
+        "staynest",
+        "car-service",
+        "swiftgo",
+        "quickserve"
+      ]
+    },
+    {
+      "type": "dashboard",
+      "anatomy": [
+        "data:\"component\": \"metric-row\"",
+        "app:class=\"metric\"",
+        "app:data-testid=\"metric-tile\""
+      ],
+      "headerStyle": "greeting or page heading; KPI/stat trio is the first block",
+      "ctaStyle": "no page CTA; tiles/rows navigate",
+      "declarations": [
+        "req:/dashboard/i"
+      ],
+      "exemplars": [
+        "fibo",
+        "quickserve",
+        "proton-vault"
+      ]
+    }
+  ]
+}

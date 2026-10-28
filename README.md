@@ -1,7 +1,7 @@
 # Pinterest UI Engine — Portable Distribution
 
-**Version:** engine `1.28.0-mission048` (portable distribution; M044
-candidate, repaired out-of-box in Mission 048)
+**Version:** engine `1.30.0-mission050` (portable distribution; M044
+candidate, repaired out-of-box in Mission 048, chip-rail repair in Mission 049)
 **What it does:** give it a product brief — one JSON file describing a
 product in plain language — and it generates a complete, working,
 self-contained mobile web application: catalogue, search, filters,

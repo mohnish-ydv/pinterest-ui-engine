@@ -68,6 +68,9 @@ export const CAPABILITIES = {
   'profile-sheet': { regions: ['page'], repeated: false, extra: false, variants: { sheet: ['field'] } },
   'faq-list': { regions: ['page'], repeated: false, extra: false, variants: { list: ['item'] } },
   'notice-list': { regions: ['page'], repeated: true, extra: false, variants: { list: ['item'] } },
+  // M050: declared chat — its content is the brief's threads plus the
+  // user's own on-device messages, never entity fields.
+  'chat-threads': { regions: ['page'], repeated: true, extra: false, variants: { list: ['item'] } },
 };
 
 /** Does this section render the role natively? */

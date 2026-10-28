@@ -60,6 +60,13 @@ export function buildModel(brief, ir, tokens, composition) {
     faq: brief.faq || null,
     onboarding: brief.onboarding || null,
     auth: brief.auth || null,
+    // M050: the next declared families, same contract — declared in
+    // the brief, carried to the model, rendered by the runtime.
+    // Undeclared, all four are null and nothing changes.
+    splash: brief.splash || null,
+    permissions: brief.permissions || null,
+    chat: brief.chat || null,
+    wishlist: brief.wishlist || null,
     collections: ir.collections || [],
     banners: ir.banners || [],
     actions: ir.actions,

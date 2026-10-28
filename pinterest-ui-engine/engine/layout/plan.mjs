@@ -50,10 +50,17 @@ export function planNavigation(brief) {
   // just the browse view there, so the app had a whole second screen
   // with no way to reach it by tab, unlike every reference app.
   const top = [...(brief.views || ['browse'])];
-  if ((brief.actions || []).some(a => a.kind === 'toggle') && !top.includes('saved')) top.push('saved');
+  // M050: a declared wishlist IS the saved destination — it replaces
+  // the generic 'saved' tab rather than duplicating it.
+  if ((brief.actions || []).some(a => a.kind === 'toggle')) {
+    if (brief.wishlist) { if (!top.includes('wishlist')) top.push('wishlist'); }
+    else if (!top.includes('saved')) top.push('saved');
+  }
   // M039: the bag is a primary destination in a commerce app — the
   // reference carts live in the tab bar, not behind a menu.
   if (brief.bag && !top.includes('bag')) top.push('bag');
+  // M050: declared chat is a primary destination too.
+  if (brief.chat && !top.includes('chat')) top.push('chat');
   for (const c of brief.collections || []) {
     if (c.view && !top.includes(c.view)) top.push(c.view);
   }
@@ -70,11 +77,13 @@ export function planNavigation(brief) {
       // called; a submissions view borrows its collection's short name.
       label: d.label || (i === 0 ? 'Home'
         : v === 'saved' ? 'Saved'
+        : v === 'wishlist' ? ((brief.wishlist && brief.wishlist.label) || 'Wishlist')
+        : v === 'chat' ? 'Chat'
         : v === 'bag' ? (brief.bag && brief.bag.label) || 'Bag'
         : v === 'submissions' ? (collLabel.replace(/^Your\s+/i, '') || 'Submissions').replace(/^./, ch => ch.toUpperCase())
         : v.charAt(0).toUpperCase() + v.slice(1)),
       view: v,
-      icon: d.icon || (i === 0 ? 'home' : v === 'saved' ? 'heart' : v === 'bag' ? 'bag' : v === 'submissions' ? 'clipboard' : 'grid'),
+      icon: d.icon || (i === 0 ? 'home' : v === 'saved' ? 'heart' : v === 'wishlist' ? 'heart' : v === 'chat' ? 'chat' : v === 'bag' ? 'bag' : v === 'submissions' ? 'clipboard' : 'grid'),
       // data-nav is the documented semantic hook the tab bar exposes; the
       // suite under test addresses `.tabbar [data-nav="home"]`, so it is a
       // contract, not an incidental attribute.
@@ -652,6 +661,19 @@ export function planApp(brief, profile, opts) {
   if ((brief.views || []).includes('saved') || (brief.actions || []).some(a => a.kind === 'toggle')) {
     views.push({ id: 'saved', purpose: 'collection', title: 'Saved', sections: savedSections(brief, ent, d, intent) });
   }
+  // M050: the dedicated wishlist view — the same saved collection the
+  // toggle action feeds (source 'saved'), under its own name and tab.
+  if (brief.wishlist) {
+    const wsecs = savedSections(brief, ent, d, intent);
+    const wheading = wsecs.find(s2 => s2.component === 'page-heading');
+    if (wheading) {
+      wheading.props.title = (brief.wishlist && brief.wishlist.label) || 'Wishlist';
+      wheading.props.subtitle = `Everything you saved, in one place.`;
+    }
+    const wcoll = wsecs.find(s2 => s2.component === 'entity-collection');
+    if (wcoll) wcoll.emptyMessage = 'Nothing saved yet. Tap the heart on something you like and it will wait for you here.';
+    views.push({ id: 'wishlist', purpose: 'collection', title: (brief.wishlist && brief.wishlist.label) || 'Wishlist', sections: wsecs });
+  }
   // M039: the bag and its checkout — a tab destination and the flow
   // that completes the journey (items → details → review → confirmed).
   if (brief.bag && commitAction) {
@@ -737,6 +759,15 @@ export function planApp(brief, profile, opts) {
     views.push({ id: 'notices', purpose: 'notices', title: 'Notification', hidden: true, sections: [
       { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: true, testid: 'app-header', backTestid: 'back-btn' } },
       { id: 'notices', component: 'notice-list', props: { testid: 'notice-list', itemTestid: 'notice-item' }, binding: {} },
+    ] });
+  }
+  // M050: declared chat — one view, two states (thread list, open
+  // thread) switched by runtime state, like the board's messages tab.
+  if (brief.chat) {
+    views.push({ id: 'chat', purpose: 'chat', title: 'Messages', sections: [
+      { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: false, testid: 'app-header' } },
+      { id: 'heading', component: 'page-heading', props: { title: 'Messages', subtitle: 'Conversations on this device.' } },
+      { id: 'chat', component: 'chat-threads', props: { testid: 'chat' }, binding: {} },
     ] });
   }
 
@@ -849,6 +880,8 @@ const COMPONENT_PROPS = {
   'profile-sheet': ['testid'],
   'faq-list': ['testid'],
   'notice-list': ['testid', 'itemTestid'],
+  // M050 families.
+  'chat-threads': ['testid'],
 };
 
 export function validateIR(ir, brief) {

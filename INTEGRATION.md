@@ -1,4 +1,4 @@
-# Integration Guide — Pinterest UI Engine 1.28.0
+# Integration Guide — Pinterest UI Engine 1.30.0
 
 For an AI coding agent or developer integrating this engine into
 another system (e.g. Indus AI). Everything here was verified in a
@@ -76,6 +76,15 @@ the three-step checkout sentence; the worked example's
 | `faq` | `[{ q, a }]` — an accordion; rides the profile view when one is declared, else its own Help view. |
 | `onboarding` | `{ slides: [{ headline, text?, image? }], cta }` — a first-run gate in front of the shell: photo/brand hero, headline, dash indicator, Skip/Next. Slide images bundle like record images. |
 | `auth` | `{ providers: [...], titleIn, titleUp }` — a sign-in/sign-up gate after onboarding. Social buttons are discs with the provider's initial. Entirely local: any plausible email + password (or a provider tap) signs in on the device; nothing is verified or sent anywhere. |
+| `splash` (M050) | `true` or `{ title?, tagline?, cta?, holdMs? }` — a brand splash gate in front of every other gate: mark, name and tagline on the brand ground. Auto-advances after `holdMs` (default 1600; shortened under reduced motion) or on any tap; shown once per browser session (sessionStorage). |
+| `permissions` / `permissionPriming` (M050) | `[{ key, title, benefit, glyph? }]` — permission-priming gates after the splash, one per entry: glyph disc, benefit line, **Allow** / **Maybe later**. The choice persists in local state (`perms[key]` = `granted`/`later`) and is never re-asked. |
+| `auth.otp` (M050) | `true`, `{ digits: 4–6 }`, or top-level `otp: true` / `flow.otp` — the auth gate trades its password field for **Send code**, then an OTP step of digit boxes (auto-advancing focus; the last digit verifies). Local and labelled as such: no code is sent, any complete code is accepted on the device. |
+| `chat` (M050) | `true` or `{ threads: [{ id, name, messages: [{ from: "them"\|"me", text }], reply? }] }` — a Messages tab: thread list, thread view (bubbles + composer) and persistence of the user's messages on-device. Sending appends the user's bubble plus the thread's canned `reply`. Labelled in-app as a local demo; no delivery exists. |
+| `wishlist` (M050) | `true` or `{ label? }` — a dedicated Wishlist tab listing the records saved via the save/heart toggles (the existing `saved` collection). It replaces the generic Saved tab (no duplicate), and declaring it also declares the save toggle if the requirements never asked for one. |
+| Flow field `date-strip` (M050) | A `product.flow` form field `{ type: "date-strip", days? , options? }` — horizontal single-select day chips (the next `days` days, default 7, or the declared `options`). Its value validates, reviews and confirms like any other flow field. |
+| Flow field `time-chips` (M050) | A `product.flow` form field `{ type: "time-chips", options: [...] }` — single-select time-slot chips (a default 09:00–17:00 set when no options are declared). Same summary/total path as every other field. |
+| Search suggestions (M050) | No declaration needed beyond the existing search: while the catalogue search input is focused with an empty query, a suggestion state renders — recent searches (persisted on-device), popular terms (first facet's values) and record rows. Tapping one fills and runs the search. |
+| Orders status tabs (M050) | No declaration: the orders (submissions) view of a bag app carries segmented status tabs built from the statuses its orders actually carry (`All` + each present status, a placed bag order being `Placed`), filtering the list. |
 
 **The declared families (Mission 046).** Everything in the second
 half of the table is *declared, never derived*: the engine does not

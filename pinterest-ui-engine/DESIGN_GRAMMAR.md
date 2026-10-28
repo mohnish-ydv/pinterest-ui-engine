@@ -158,3 +158,77 @@ output still read as generated. These rules close the gaps found:
 32. **An undeclared family is an undecided question, not a default.**
     The brief doctor names it before generation (INTAKE.md); an app
     missing a screen should be missing it on purpose.
+
+## Addendum — Mission 049 (the two "All" chips)
+
+33. **A label that repeats must say what it repeats for.** When
+    several facet groups share one chip rail, every group's reset
+    chip is qualified by its facet ("All Type", "All Light") — two
+    identical labels meaning different things is a defect, however
+    tidy the row looks, and a hairline separator is not a label.
+    The reset *value* stays "All" (state and gates key on value,
+    never on visible text); a single-group rail, where nothing can
+    be confused, keeps the plain label. A hidden scrollbar (law 28)
+    removes the scroll affordance, not the knowledge that more
+    exists: while more chips sit to the right, the rail's trailing
+    edge fades, measured — the affordance the data tables already
+    had. Inside the filter sheet the group heading does the visual
+    labelling, and the reset chip still names its facet to a
+    screen reader.
+
+## Addendum — Mission 050 (the remaining families)
+
+34. **A splash is a brand moment, not a screen.** When declared, it
+    is the whole first view — brand mark, name and tagline on the
+    brand ground, nothing else competing — and it leaves on its own
+    after its declared hold or on any tap, whichever comes first.
+    It shows once per session: a return visit in a new session earns
+    it again; a reload mid-visit does not. Under reduced motion it
+    does not animate and does not linger.
+35. **A permission is asked for with its benefit attached.** Priming
+    is one ask per view — a glyph disc, what the permission is for
+    in one plain line, Allow and Maybe later as equals in reach —
+    never a system prompt sprung without a reason, and never a
+    dark-pattern exit. The choice persists: asked once, remembered.
+36. **A code is typed into boxes, one digit each.** The OTP step is
+    a row of 4–6 single-digit boxes; typing advances the focus, the
+    last digit completes the code, and Backspace on an empty box
+    steps back. The step says honestly when it is local: no code
+    was sent, and the screen must not pretend otherwise.
+37. **Chat is a list, a thread and a composer — labelled local.**
+    Threads open to bubbles (mine on the brand, theirs on the
+    ground), the composer appends for real and persists on the
+    device, and a declared canned reply is presented as what it
+    is. A chat that cannot reach another person says so on its
+    own screen ("Local demo · messages stay on this device").
+38. **Saved things live in a view named for them.** A wishlist is
+    not a filter on the catalogue: it is its own destination in
+    the tab bar, fed by the same save toggle the cards and record
+    pages carry, and it replaces the generic Saved tab rather than
+    duplicating it. Declaring the view declares the toggle that
+    feeds it — an always-empty wishlist is a dead screen.
+39. **A booking day is a strip, a booking time is chips.** Flow
+    fields of type `date-strip` (the next days as single-select
+    chips) and `time-chips` (slot chips) choose the way the boards
+    choose — by tapping a visible option, never by typing a date
+    into a blank. The choice is a form value like any other: it
+    validates as required, reviews as the label the user tapped,
+    and lands in the order summary.
+40. **A price range has two handles and both are wired.** The
+    filter sheet's minimum and maximum sliders each bound the
+    catalogue on their side; dragging one, applying, and counting
+    the results is the proof, and a range control that moves
+    nothing is a defect even when it renders. Reset restores both.
+41. **An empty, focused search offers, it does not wait.** While
+    the catalogue search is focused with no query, it shows the
+    suggestion state — recent searches first (the user's own,
+    persisted), popular terms, and tappable record rows. A tap
+    fills the query and runs the same search typing runs. The
+    state exists only in that moment: unfocused or filled, the
+    search is exactly what it was.
+42. **Orders filter by the statuses they actually carry.** The
+    orders view's segmented tabs are built from the statuses
+    present in the order book (All first, then each real status),
+    never an invented lifecycle. One segment, one filtered list;
+    a segment with nothing under it says so in an empty state,
+    it does not borrow another segment's orders.

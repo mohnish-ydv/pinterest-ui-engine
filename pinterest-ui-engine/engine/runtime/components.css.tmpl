@@ -1229,6 +1229,125 @@ body.is-home.greet-home .sect[data-section="search"] .search { background: {{col
 .chips { scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
 .sheet .chips { flex-wrap: wrap; overflow-x: visible; }
+/* M049 (law 33): a hidden scrollbar removes the scroll affordance, it
+   must not remove the knowledge that more exists. While the runtime
+   measures more chips to the right, the rail's trailing edge fades —
+   the same measured affordance the data tables already had. */
+.chips[data-overflow="true"] {
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 34px), transparent 100%);
+  mask-image: linear-gradient(to right, black calc(100% - 34px), transparent 100%);
+}
 .stepflow .panel { background: transparent; border: none; border-radius: 0; box-shadow: none; padding: 0; }
 .med-disc.has-photo { position: relative; overflow: hidden; }
 .medallion.is-on .med-disc.has-photo { box-shadow: 0 0 0 2px {{color.ground}}, 0 0 0 4.5px {{color.ink}}; }
+
+/* ============ MISSION 050 — THE REMAINING FAMILIES ============
+   Splash, permission priming, OTP boxes, chat, search suggestions,
+   booking chip fields and the orders status segment. Every rule
+   below applies only to markup the M050 declarations produce;
+   an app that declares none of it renders exactly as before. */
+
+/* ---- splash: the brand moment, on the brand ground ---- */
+.splash {
+  min-height: 82vh; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px; text-align: center; cursor: pointer;
+  background: {{color.brand}}; color: {{color.onBrand}}; border-radius: 24px;
+  padding: 32px 22px; animation: splash-in 0.45s ease-out;
+}
+@keyframes splash-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .splash { animation: none; } }
+.splash-mark {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: {{color.surface}}; color: {{color.brand}};
+  display: grid; place-items: center; font-weight: 800; font-size: 1.5em;
+}
+.splash-title { font-size: 2em; font-weight: 800; margin: 6px 0 0; line-height: 1.15; }
+.splash-tag { opacity: 0.85; margin: 0; }
+.splash-btn {
+  margin-top: 18px; background: {{color.surface}}; color: {{color.brand}};
+  border-radius: {{radius.pill}}px; padding: 12px 30px; font-weight: 800;
+}
+.splash-hint { opacity: 0.7; font-size: 0.85em; }
+
+/* ---- permission priming: one ask, its benefit, two honest exits ---- */
+.perm { display: flex; flex-direction: column; gap: 13px; padding-top: 8vh; text-align: center; align-items: center; }
+.perm-disc {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: {{color.input}}; color: {{color.ink}}; font-weight: 800; font-size: 1.4em;
+  display: grid; place-items: center;
+}
+.perm-h { font-size: 1.6em; font-weight: 800; margin: 4px 0 0; line-height: 1.2; }
+.perm-benefit { color: {{color.inkSoft}}; margin: 0; max-width: 300px; }
+.perm-count { color: {{color.inkSoft}}; font-size: 0.85em; margin: 0; }
+.perm .cta { width: 100%; margin-top: 12px; }
+.perm-later { width: 100%; }
+
+/* ---- OTP: a row of single-digit boxes ---- */
+.otp-row { display: flex; gap: 9px; justify-content: center; }
+.otp-box {
+  width: 48px; height: 56px; text-align: center; font: inherit; font-size: 1.35em; font-weight: 800;
+  background: {{color.input}}; color: {{color.ink}}; border: 1.5px solid transparent; border-radius: 14px;
+}
+.otp-box:focus { background: {{color.surface}}; border-color: {{color.ink}}; outline: none; }
+.otp-note { color: {{color.inkSoft}}; text-align: center; margin: 0; }
+.otp-back { align-self: center; }
+
+/* ---- chat: list, bubbles, composer ---- */
+.chat-note { color: {{color.inkSoft}}; font-size: 0.85em; margin: 2px 0 10px; }
+.chat-thread {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: none; padding: 11px 2px; color: {{color.ink}};
+}
+.chat-av {
+  width: 46px; height: 46px; border-radius: 50%; flex: none;
+  background: {{color.input}}; color: {{color.ink}}; font-weight: 700;
+  display: grid; place-items: center;
+}
+.chat-main { display: flex; flex-direction: column; margin-right: auto; line-height: 1.3; min-width: 0; }
+.chat-name { font-weight: 700; }
+.chat-last { color: {{color.inkSoft}}; font-size: 0.88em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+.chat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.chat-msgs { display: flex; flex-direction: column; gap: 8px; padding: 8px 0 14px; }
+.chat-row { display: flex; }
+.chat-row.is-mine { justify-content: flex-end; }
+.chat-bubble {
+  max-width: 78%; padding: 10px 14px; border-radius: 18px; line-height: 1.35;
+  background: {{color.input}}; color: {{color.ink}};
+}
+.chat-row.is-mine .chat-bubble { background: {{color.brand}}; color: {{color.onBrand}}; border-bottom-right-radius: 6px; }
+.chat-row.is-theirs .chat-bubble { border-bottom-left-radius: 6px; }
+.chat-composer { display: flex; gap: 9px; align-items: center; }
+.chat-input {
+  flex: 1; min-width: 0; border: none; background: {{color.input}}; color: {{color.ink}};
+  border-radius: {{radius.pill}}px; padding: 13px 16px; font: inherit;
+}
+.chat-send { flex: none; padding-left: 22px; padding-right: 22px; }
+
+/* ---- search suggestions ---- */
+.suggestions { display: flex; flex-direction: column; gap: 7px; padding-top: 12px; }
+.sugg-lb { font-weight: 700; font-size: 0.85em; color: {{color.inkSoft}}; }
+.sugg-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.sugg-chip {
+  padding: 8px 14px; border-radius: {{radius.pill}}px;
+  background: {{color.input}}; color: {{color.ink}}; font-weight: 600;
+}
+.sugg-rows { display: flex; flex-direction: column; }
+.sugg-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: none; padding: 10px 2px; color: {{color.ink}};
+}
+.sugg-name { font-weight: 600; margin-right: auto; }
+.sugg-meta { color: {{color.inkSoft}}; }
+
+/* ---- booking chip fields (date-strip / time-chips) ---- */
+.flow-chips { display: flex; gap: 9px; flex-wrap: wrap; overflow-x: visible; }
+.flow-chips.date-strip { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+.flow-chip { flex: none; }
+
+/* ---- orders status segment ---- */
+.seg-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.seg-btn {
+  padding: 9px 16px; border-radius: {{radius.pill}}px;
+  background: {{color.input}}; color: {{color.ink}}; font-weight: 600;
+}
+.seg-btn.is-on { background: {{color.ink}}; color: {{color.surface}}; }

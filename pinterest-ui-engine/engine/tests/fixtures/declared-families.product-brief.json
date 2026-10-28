@@ -10,6 +10,21 @@
     "titleUp": "Create your Account"
   },
   "bagLabel": "Cart",
+  "chat": {
+    "threads": [
+      {
+        "id": "support",
+        "messages": [
+          {
+            "from": "them",
+            "text": "Hi! Ask us anything about sizing, leather care or delivery."
+          }
+        ],
+        "name": "Evira Support",
+        "reply": "Thanks — we will reply here shortly. (Local demo: this reply is canned.)"
+      }
+    ]
+  },
   "collection": {
     "items": [
       {
@@ -561,7 +576,18 @@
     "title": "Get a discount for every order",
     "image": "assets/shoes1.jpg"
   },
+  "permissions": [
+    {
+      "benefit": "We only message when your order moves.",
+      "key": "notifications",
+      "title": "Order updates, not noise"
+    }
+  ],
   "referencePrefix": "EV",
+  "splash": {
+    "holdMs": 1600,
+    "tagline": "Everything you love, delivered."
+  },
   "requirements": [
     "The home screen is a gallery of every product in the store.",
     "Customers can search products by name.",
@@ -576,6 +602,7 @@
   "showCategories": true,
   "submissionsLabel": "My Orders",
   "tagline": "Everything you love, delivered.",
+  "wishlist": true,
   "wallet": {
     "balance": 9379,
     "label": "My E-Wallet",
