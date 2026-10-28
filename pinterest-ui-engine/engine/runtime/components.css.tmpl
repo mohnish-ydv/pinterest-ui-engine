@@ -1216,3 +1216,19 @@ body.is-home.greet-home .sect[data-section="search"] { background: transparent; 
 body.is-home.greet-home .sect[data-section="search"] .search { background: {{color.input}}; }
 .cm-item:has(.tracker) .track { display: none; }
 .receipt .barcode { max-width: 220px; }
+
+/* ---------- MISSION 047: the Bazaar corrections ----------
+   Evidence: a classifieds app built from v1.26 by another AI, judged
+   against the board on a real phone. Five repairs:
+   28. Chip rails never show a scrollbar; inside a sheet, chips WRAP
+       (the board's sheet chips sit in rows, they do not scroll away).
+   29. A form sits on the ground. The step panel's box — surface,
+       border, radius — is gone; the filled fields are the boxes.
+   30. A selected photo medallion keeps its photo and takes a ring;
+       the ink fill is only for initial discs. */
+.chips { scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.sheet .chips { flex-wrap: wrap; overflow-x: visible; }
+.stepflow .panel { background: transparent; border: none; border-radius: 0; box-shadow: none; padding: 0; }
+.med-disc.has-photo { position: relative; overflow: hidden; }
+.medallion.is-on .med-disc.has-photo { box-shadow: 0 0 0 2px {{color.ground}}, 0 0 0 4.5px {{color.ink}}; }

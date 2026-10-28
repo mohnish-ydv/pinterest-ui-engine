@@ -35,6 +35,17 @@ function regionPlanned(section, fieldId) {
  *  mechanism? Role capability is not binding: a stat-strip that renders
  *  SOME stat does not place THIS stat. */
 function fieldBoundAnywhere(ir, fieldId) {
+  // M047: when a medallion home suppresses the chip rails, the facets
+  // beyond the first are bound by the browse view's FILTER SHEET —
+  // runtime chrome declared in ir.filters and reachable through the
+  // filter button the medallion/chip section guarantees. A facet in
+  // ir.filters with such a section present is bound, by the sheet.
+  if ((ir.filters || []).some(f => f.field === fieldId)) {
+    for (const v of ir.views) {
+      const host = v.sections.find(s => s.component === 'filter-chips' || s.component === 'category-medallions');
+      if (host) return { component: 'filter-sheet' };
+    }
+  }
   for (const v of ir.views) {
     for (const s of v.sections) {
       if (regionPlanned(s, fieldId)) return s;

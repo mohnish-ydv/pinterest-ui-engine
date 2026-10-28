@@ -139,3 +139,22 @@ output still read as generated. These rules close the gaps found:
     from the order reference, wide; the reference itself is never
     printed under it. An order's stages are one icon tracker —
     never two stage rows saying the same thing.
+
+## Addendum — Mission 047 (the intake, and the Bazaar corrections)
+
+28. **Chip rails never show a scrollbar; sheet chips wrap.** Scrolling
+    is invisible or it does not happen: rails hide their scrollbar,
+    and inside a sheet the chips sit in wrapped rows like the board's.
+29. **A form sits on the ground.** The step panel has no box — no
+    surface, border or radius of its own; the filled fields are the
+    boxes, the ground is the page.
+30. **A medallion wears a photograph when the catalogue can lend one**
+    — the first photographed record in the facet value. A selected
+    photo medallion keeps its photo and takes a ring; the ink fill is
+    only for initial discs.
+31. **One home, one filter furniture.** When category medallions are
+    declared, no chip rails are planned beside them; every facet
+    lives in the filter sheet.
+32. **An undeclared family is an undecided question, not a default.**
+    The brief doctor names it before generation (INTAKE.md); an app
+    missing a screen should be missing it on purpose.

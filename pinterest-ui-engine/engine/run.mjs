@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { deriveBrief } from './intake/derive.mjs';
+import { doctorSummary } from './intake/brief_doctor.mjs';
 
 const ENGINE = dirname(fileURLToPath(import.meta.url));
 const dir = process.argv[2];
@@ -43,6 +44,16 @@ const step = (label, file, args) => {
   const product = JSON.parse(readFileSync(join(dir, 'product-brief.json'), 'utf8'));
   let evidence = null;
   try { evidence = JSON.parse(readFileSync(join(dir, 'reference-evidence.json'), 'utf8')); } catch { /* no reference */ }
+  // M047: the intake doctor reads the drafted brief before anything
+  // is built and names the decisions it never made (see INTAKE.md).
+  // Notes only — generation proceeds; the gaps are the author's to fix.
+  try {
+    const doc = doctorSummary(product);
+    for (const f of doc.findings.slice(0, 8)) {
+      console.log(`  intake ${f.level}: [${f.qid}] ${f.message}`);
+    }
+    if (doc.findings.length > 8) console.log(`  intake: …and ${doc.findings.length - 8} more`);
+  } catch { /* the doctor never blocks generation */ }
   const brief = deriveBrief(product, evidence);
   writeFileSync(join(dir, 'brief.json'), JSON.stringify(brief, null, 2) + '\n');
   const sc = brief._derived?.scoped?.counts || {};

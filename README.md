@@ -27,6 +27,13 @@ binary; point the engine at it with `CHROME_PATH=/path/to/chrome`
 
 ## Make your own app
 
+**Starting with a person, not a pipeline? Begin with `INTAKE.md`.**
+The engine interviews the user first (questions in
+`intake-questions.json`), drafts the brief from their answers, and
+checks it with the brief doctor — because its best screens are
+declared, never derived, and a brief written straight from a one-line
+prompt silently omits them.
+
 1. Create a folder, e.g. `cases/my-shop/`.
 2. Write `product-brief.json` in it (contract: INTEGRATION.md §Input).
 3. Optional: drop photos in `cases/my-shop/assets/` and reference
@@ -44,6 +51,7 @@ binary; point the engine at it with `CHROME_PATH=/path/to/chrome`
 | `pinterest-ui-engine/DESIGN_GRAMMAR.md` | The design laws the engine obeys. |
 | `examples/fern-and-co/` | A complete worked example (brief + photo assets). |
 | `bench*/cases/`, `mission020/` | The regression corpus: historical case fixtures that nine engine suites read. Test tooling only — generation never touches them. |
+| `INTAKE.md` + `intake-questions.json` | The intake interview: the questions the engine asks before a brief is written, and the brief doctor that checks it. |
 | `INTEGRATION.md` | The full contract for integrating agents: inputs, outputs, environment, guarantees, limits. |
 
 ## Verify your install

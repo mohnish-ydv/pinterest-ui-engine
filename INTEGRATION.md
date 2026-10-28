@@ -1,9 +1,21 @@
-# Integration Guide — Pinterest UI Engine 1.26.0
+# Integration Guide — Pinterest UI Engine 1.27.0
 
 For an AI coding agent or developer integrating this engine into
 another system (e.g. Indus AI). Everything here was verified in a
 clean-room run (Mission 044): a fresh directory, only the commands in
 this document, a brief the engine had never seen.
+
+## 0. Before the entry point: the intake interview (Mission 047)
+
+If a human user is starting an app (rather than a pipeline calling the
+engine), **begin with `INTAKE.md`**: the engine interviews the user
+(questions in `intake-questions.json`), drafts the brief from their
+answers, and checks it with the brief doctor
+(`node pinterest-ui-engine/engine/intake/brief_doctor.mjs <case>/product-brief.json`)
+before generation. The engine's Evira families are declared, never
+derived — a brief written straight from a one-line prompt silently
+omits them, and the resulting app is visibly thinner. Generation also
+prints any remaining decisions as `intake:` notes.
 
 ## 1. Entry point
 

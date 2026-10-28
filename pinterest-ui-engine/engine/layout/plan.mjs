@@ -149,10 +149,14 @@ function browseSections(brief, ent, d, intent) {
   // M046: when medallions are planned (below) they ARE the first facet's
   // home control — the board's home carries medallions, not a chip rail
   // duplicating them. The facet still lives in the filter sheet.
+  // M047 (Bazaar evidence): the same logic covers EVERY facet — a real
+  // build shipped with a locality chip rail AND medallions stacked on
+  // one home. When the board's home is declared, no chip rails are
+  // planned at all; all facets live in the filter sheet.
   const medallionField = (brief.filters || []).length ? allFields(ent).find(x => x.id === brief.filters[0].field) : null;
   const medallionsPlanned = !!(brief.showCategories && medallionField && (medallionField.options || []).length);
   for (const [fi2, f] of (brief.filters || []).slice(0, 2).entries()) {
-    if (medallionsPlanned && fi2 === 0) continue;
+    if (medallionsPlanned) continue;
     const field = allFields(ent).find(x => x.id === f.field);
     sections.push({
       id: `filter-${f.id}`, component: 'filter-chips',

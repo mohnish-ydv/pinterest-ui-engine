@@ -772,7 +772,9 @@
     var items = collectionItems(s.binding.collection);
     if (!items.length) {
       return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' +
-        '<div class="empty" data-testid="empty-state"><p>' + esc(s.emptyMessage || 'Nothing here yet.') + '</p></div></div>';
+        '<div class="empty" data-testid="empty-state">' +
+        (model.bag ? '<svg class="empty-art" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11L5.5 8Z"/><path d="M9 10.5V6.5a3 3 0 0 1 6 0v4"/></svg>' : '') +
+        '<p>' + esc(s.emptyMessage || 'Nothing here yet.') + '</p></div></div>';
     }
     return '<div class="wrap"><h1 class="page-title">' + esc(s.props.label) + '</h1>' +
       '<div class="cm-list" data-testid="' + esc(s.props.testid) + '">' +
@@ -1189,9 +1191,20 @@
     return '<div class="wrap"><div class="medallions" data-testid="' + esc(s.props.testid) + '">' +
       opts.map(function (o) {
         var on = o === active;
+        // M047: the board's medallions are photographs. The first
+        // record carrying a photo inside this facet value lends it;
+        // a value with no photographed record keeps its initial disc.
+        var photo = '';
+        if (o !== 'All' && s.binding.field) {
+          var hit = (model.records || []).filter(function (rec) { return String(rec[s.binding.field]) === o && rec.image; })[0];
+          if (hit) photo = hit.image;
+        }
+        var disc = photo
+          ? '<span class="med-disc has-photo" aria-hidden="true"><img class="media-img" src="' + esc(photo) + '" alt="" onerror="this.remove()"></span>'
+          : '<span class="med-disc" aria-hidden="true">' + esc(initials(o === 'All' ? 'All' : o)) + '</span>';
         return '<button class="medallion' + (on ? ' is-on' : '') + '" data-act="filter" data-filter="' + esc(fid) + '"' +
           ' data-value="' + esc(o) + '" data-testid="' + esc(s.props.itemTestid) + '" aria-pressed="' + on + '">' +
-          '<span class="med-disc" aria-hidden="true">' + esc(initials(o === 'All' ? 'All' : o)) + '</span>' +
+          disc +
           '<span class="med-lb">' + esc(o) + '</span></button>';
       }).join('') + '</div></div>';
   };
