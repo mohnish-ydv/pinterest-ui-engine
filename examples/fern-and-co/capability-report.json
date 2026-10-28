@@ -1,0 +1,598 @@
+{
+  "preflightVersion": "1.0.0",
+  "caseId": "fern-and-co",
+  "app": "Fern & Co",
+  "variant": "card",
+  "listRolesRendered": [
+    "title",
+    "subtitle",
+    "meta",
+    "price",
+    "stat",
+    "badge",
+    "status"
+  ],
+  "decision": "proceed",
+  "summary": {
+    "total": 25,
+    "byCategory": {
+      "content": {
+        "total": 8,
+        "required": 8
+      },
+      "layout": {
+        "total": 3,
+        "required": 3
+      },
+      "interaction": {
+        "total": 7,
+        "required": 7
+      },
+      "navigation": {
+        "total": 1,
+        "required": 1
+      },
+      "responsive": {
+        "total": 2,
+        "required": 2
+      },
+      "accessibility": {
+        "total": 4,
+        "required": 4
+      }
+    }
+  },
+  "counts": {
+    "supported": 25,
+    "disclosed": 0,
+    "unsupported": 0
+  },
+  "supported": [
+    "FERN-AND-CO-C-name-list",
+    "FERN-AND-CO-C-name-detail",
+    "FERN-AND-CO-C-size-list",
+    "FERN-AND-CO-C-size-detail",
+    "FERN-AND-CO-C-price-list",
+    "FERN-AND-CO-C-price-detail",
+    "FERN-AND-CO-C-rating-list",
+    "FERN-AND-CO-C-rating-detail",
+    "FERN-AND-CO-L-collection",
+    "FERN-AND-CO-L-detail",
+    "FERN-AND-CO-L-steps",
+    "FERN-AND-CO-I-search",
+    "FERN-AND-CO-I-facet-type",
+    "FERN-AND-CO-I-facet-light",
+    "FERN-AND-CO-I-validate",
+    "FERN-AND-CO-I-commit",
+    "FERN-AND-CO-I-steps-progress",
+    "FERN-AND-CO-I-save",
+    "FERN-AND-CO-N-view-plants",
+    "FERN-AND-CO-R-narrow",
+    "FERN-AND-CO-R-wide",
+    "FERN-AND-CO-A-contrast",
+    "FERN-AND-CO-A-labels",
+    "FERN-AND-CO-A-heading",
+    "FERN-AND-CO-A-targets"
+  ],
+  "unsupported": [],
+  "risks": [],
+  "capabilities": {
+    "implementedComponents": [
+      "app-header",
+      "page-heading",
+      "search-bar",
+      "filter-chips",
+      "entity-collection",
+      "record-header",
+      "stat-strip",
+      "detail-list",
+      "option-grid",
+      "availability-picker",
+      "form-fields",
+      "primary-action",
+      "collection-manager",
+      "bag-list",
+      "bag-totals",
+      "bag-checkout",
+      "bag-add",
+      "promo-banner",
+      "related-rail",
+      "status-banner",
+      "metric-row",
+      "data-table",
+      "article",
+      "step-flow",
+      "confirmation",
+      "category-medallions",
+      "variant-selectors",
+      "reviews",
+      "wallet-card",
+      "txn-list",
+      "profile-sheet",
+      "faq-list",
+      "notice-list",
+      "chat-threads"
+    ],
+    "declared": [
+      "collection.list",
+      "record.detail",
+      "control.search",
+      "control.facet",
+      "control.choice",
+      "control.availability",
+      "form.fields",
+      "action.commit",
+      "view.confirmation",
+      "collection.manage",
+      "banner.status",
+      "toggle.save",
+      "collection.bag"
+    ],
+    "gaps": [
+      {
+        "id": "aggregates",
+        "label": "KPI / aggregate row",
+        "limitation": "No surface can render several metrics side by side, or compute aggregates over a collection.",
+        "resolvedBy": "metric-row",
+        "open": false
+      },
+      {
+        "id": "table",
+        "label": "Dense data table",
+        "limitation": "No surface can show more than title, subtitle, meta, price and status per record.",
+        "resolvedBy": "data-table",
+        "open": false
+      },
+      {
+        "id": "article",
+        "label": "Long-form article",
+        "limitation": "No surface renders prose with a measured line length, standfirst or byline.",
+        "resolvedBy": "article",
+        "open": false
+      },
+      {
+        "id": "ranges",
+        "label": "Time-range control",
+        "limitation": "No global time-range control exists. A facet filters records by a field value; a range control needs a date field to filter on, and the data model has no date type.",
+        "resolvedBy": "range-filter",
+        "open": true
+      },
+      {
+        "id": "steps",
+        "label": "Multi-step flow",
+        "limitation": "A commit action is a single form; there is no step progression, indicator or back navigation.",
+        "resolvedBy": "step-flow",
+        "open": false
+      }
+    ]
+  },
+  "ledger": {
+    "ledgerVersion": "1.0.0",
+    "caseId": "fern-and-co",
+    "app": "Fern & Co",
+    "domain": "plant shop",
+    "variant": "card",
+    "listRolesRendered": [
+      "title",
+      "subtitle",
+      "meta",
+      "price",
+      "stat",
+      "badge",
+      "status"
+    ],
+    "detailRolesAvailable": [
+      "title",
+      "subtitle",
+      "price",
+      "stat",
+      "meta",
+      "badge",
+      "status"
+    ],
+    "requirements": [
+      {
+        "id": "FERN-AND-CO-C-name-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Plant\" (title) is visible in the Plants list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "plants",
+          "where": "list",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-C-name-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Plant\" (title) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "name",
+          "role": "title",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "FERN-AND-CO-C-size-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Size\" (subtitle) is visible in the Plants list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "plants",
+          "where": "list",
+          "field": "size",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-C-size-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Size\" (subtitle) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "size",
+          "role": "subtitle",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "FERN-AND-CO-C-price-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Price\" (price) is visible in the Plants list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "plants",
+          "where": "list",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-C-price-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Price\" (price) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "price",
+          "role": "price",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "FERN-AND-CO-C-rating-list",
+        "category": "content",
+        "required": true,
+        "expectation": "Every record's \"Rating\" (stat) is visible in the Plants list.",
+        "satisfiedBy": "entity-collection (card variant)",
+        "verification": {
+          "method": "dom-text",
+          "view": "plants",
+          "where": "list",
+          "field": "rating",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-C-rating-detail",
+        "category": "content",
+        "required": true,
+        "expectation": "A record's \"Rating\" (stat) is visible in its detail view.",
+        "satisfiedBy": "record-header / stat-strip / detail-list",
+        "verification": {
+          "method": "dom-text",
+          "view": "detail",
+          "where": "detail",
+          "field": "rating",
+          "role": "stat",
+          "recordIndex": 0
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "FERN-AND-CO-L-collection",
+        "category": "layout",
+        "required": true,
+        "expectation": "The entry view presents all 6 records.",
+        "satisfiedBy": "entity-collection",
+        "verification": {
+          "method": "dom-count",
+          "view": "plants",
+          "selector": "item",
+          "expected": 6
+        },
+        "status": "supported",
+        "capability": "collection.list",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-L-detail",
+        "category": "layout",
+        "required": true,
+        "expectation": "A record detail view exists and is reachable.",
+        "satisfiedBy": "record-header",
+        "verification": {
+          "method": "dom-visible",
+          "view": "detail",
+          "selector": "detail-title"
+        },
+        "status": "supported",
+        "capability": "record.detail",
+        "component": "record-header"
+      },
+      {
+        "id": "FERN-AND-CO-L-steps",
+        "category": "layout",
+        "required": true,
+        "expectation": "A 3-step flow with a visible step indicator.",
+        "satisfiedBy": "step-flow",
+        "verification": {
+          "method": "dom-count",
+          "view": "detail",
+          "selector": "step",
+          "expected": 3
+        },
+        "status": "supported",
+        "capability": "steps",
+        "component": "step-flow"
+      },
+      {
+        "id": "FERN-AND-CO-I-search",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Search narrows the collection to matching records.",
+        "satisfiedBy": "search-bar",
+        "verification": {
+          "method": "interaction",
+          "act": "search",
+          "expect": "narrowed"
+        },
+        "status": "supported",
+        "capability": "control.search",
+        "component": "search-bar"
+      },
+      {
+        "id": "FERN-AND-CO-I-facet-type",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Type\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "type",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "FERN-AND-CO-I-facet-light",
+        "category": "interaction",
+        "required": true,
+        "expectation": "The \"Light\" facet filters the collection.",
+        "satisfiedBy": "filter-chips",
+        "verification": {
+          "method": "interaction",
+          "act": "facet",
+          "field": "light",
+          "expect": "filtered"
+        },
+        "status": "supported",
+        "capability": "control.facet",
+        "component": "filter-chips"
+      },
+      {
+        "id": "FERN-AND-CO-I-validate",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Invalid input is refused with a visible error and no commit.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "interaction",
+          "act": "validate",
+          "expect": "refused"
+        },
+        "status": "supported",
+        "capability": "form.fields",
+        "component": "form-fields"
+      },
+      {
+        "id": "FERN-AND-CO-I-commit",
+        "category": "interaction",
+        "required": true,
+        "expectation": "A valid submission issues a FC-###### reference.",
+        "satisfiedBy": "primary-action",
+        "verification": {
+          "method": "interaction",
+          "act": "commit",
+          "expect": "reference"
+        },
+        "status": "supported",
+        "capability": "action.commit",
+        "component": "primary-action"
+      },
+      {
+        "id": "FERN-AND-CO-I-steps-progress",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Next advances and Back returns, preserving entered data.",
+        "satisfiedBy": "step-flow",
+        "verification": {
+          "method": "interaction",
+          "act": "steps",
+          "expect": "progression"
+        },
+        "status": "supported",
+        "capability": "steps",
+        "component": "step-flow"
+      },
+      {
+        "id": "FERN-AND-CO-I-save",
+        "category": "interaction",
+        "required": true,
+        "expectation": "Saving persists across a reload and appears in the saved view.",
+        "satisfiedBy": "entity-collection (save toggle)",
+        "verification": {
+          "method": "interaction",
+          "act": "save",
+          "expect": "persisted"
+        },
+        "status": "supported",
+        "capability": "toggle.save",
+        "component": "entity-collection"
+      },
+      {
+        "id": "FERN-AND-CO-N-view-plants",
+        "category": "navigation",
+        "required": true,
+        "expectation": "The \"plants\" destination is reachable.",
+        "satisfiedBy": "navigation",
+        "verification": {
+          "method": "dom-visible",
+          "view": "plants",
+          "selector": "main"
+        },
+        "status": "supported",
+        "capability": "navigation"
+      },
+      {
+        "id": "FERN-AND-CO-R-narrow",
+        "category": "responsive",
+        "required": true,
+        "expectation": "No horizontal overflow at 390×844.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "no-h-overflow"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "FERN-AND-CO-R-wide",
+        "category": "responsive",
+        "required": true,
+        "expectation": "The interface renders without breakage at 1440×900.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "metric": "renders"
+        },
+        "status": "supported",
+        "capability": "responsive"
+      },
+      {
+        "id": "FERN-AND-CO-A-contrast",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Rendered text meets AA (≥4.5:1) in every measured state.",
+        "satisfiedBy": "token gate + component CSS",
+        "verification": {
+          "method": "axe",
+          "rule": "color-contrast"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "FERN-AND-CO-A-labels",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Form inputs have associated labels.",
+        "satisfiedBy": "form-fields",
+        "verification": {
+          "method": "axe",
+          "rule": "label"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "FERN-AND-CO-A-heading",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Each view has exactly one h1.",
+        "satisfiedBy": "page-heading / record-header",
+        "verification": {
+          "method": "axe",
+          "rule": "page-has-heading-one"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      },
+      {
+        "id": "FERN-AND-CO-A-targets",
+        "category": "accessibility",
+        "required": true,
+        "expectation": "Interactive targets are at least 44px tall.",
+        "satisfiedBy": "component CSS",
+        "verification": {
+          "method": "layout-metric",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "metric": "min-target-44"
+        },
+        "status": "supported",
+        "capability": "accessibility"
+      }
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "fulfilVersion": "1.0.0",
+  "outcomes": [
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "search-bar binds this field",
+      "id": "SR-001-field",
+      "subject": "name",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "filter-sheet binds this field",
+      "id": "SR-002-field",
+      "subject": "type",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "filter-sheet binds this field",
+      "id": "SR-003-field",
+      "subject": "light",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "search-bar binds this field",
+      "id": "SR-004-field",
+      "subject": "name",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "search-bar binds this field",
+      "id": "SR-005-field",
+      "subject": "name",
+      "kind": "field",
+      "scope": {
+        "view": "either",
+        "cardinality": "one",
+        "region": "any",
+        "evidence": "no scope phrase found; the requirement is unplaced"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "record-header renders \"title\"",
+      "id": "SR-006-field",
+      "subject": "name",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "record-header renders \"subtitle\"",
+      "id": "SR-007-field",
+      "subject": "size",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "record-header renders \"price\"",
+      "id": "SR-008-field",
+      "subject": "price",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "stat-strip renders \"stat\"",
+      "id": "SR-009-field",
+      "subject": "rating",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "detail-list renders \"detail\"",
+      "id": "SR-010-field",
+      "subject": "note",
+      "kind": "field",
+      "scope": {
+        "view": "detail",
+        "cardinality": "selected",
+        "region": "record",
+        "evidence": "\"Opening\" places the requirement on the selected record's view"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a commit action carries UI, validation and feedback",
+      "id": "SR-011-behaviour",
+      "subject": "commit",
+      "kind": "behaviour",
+      "scope": {
+        "view": "confirmation",
+        "cardinality": "one",
+        "region": "feedback"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a commit action carries UI, validation and feedback",
+      "id": "SR-012-behaviour",
+      "subject": "commit",
+      "kind": "behaviour",
+      "scope": {
+        "view": "confirmation",
+        "cardinality": "one",
+        "region": "feedback"
+      }
+    },
+    {
+      "outcome": "satisfied",
+      "resolution": "A",
+      "detail": "a commit action carries UI, validation and feedback",
+      "id": "SR-013-behaviour",
+      "subject": "commit",
+      "kind": "behaviour",
+      "scope": {
+        "view": "confirmation",
+        "cardinality": "one",
+        "region": "feedback"
+      }
+    }
+  ],
+  "counts": {
+    "satisfied": 13
+  },
+  "total": 13,
+  "passes": 13,
+  "blocking": [],
+  "resolutionCounts": {
+    "A": 13
+  }
+}

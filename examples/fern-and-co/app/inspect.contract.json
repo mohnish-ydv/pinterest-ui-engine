@@ -1,0 +1,176 @@
+{
+  "id": "plant-generated",
+  "app": "app",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 900
+  },
+  "derivedFrom": "layout IR v2 (planner 2.1.0)",
+  "steps": [
+    {
+      "shot": "browse-390"
+    },
+    {
+      "measure": "cardTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"plant-card\"] .card-title, [data-testid=\"plant-card\"] .row-title",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "measure": "cardSub",
+      "kind": "rest",
+      "selector": "[data-testid=\"plant-card\"] .card-sub, [data-testid=\"plant-card\"] .row-sub",
+      "sequence": [
+        "initial render"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"type-chip\"][data-type=\"Foliage\"]"
+    },
+    {
+      "click": "[data-testid=\"type-chip\"][data-type=\"Foliage\"]",
+      "settleMs": 250
+    },
+    {
+      "measure": "chipSelected",
+      "kind": "selected",
+      "selector": "[data-testid=\"type-chip\"][data-type=\"Foliage\"]",
+      "sequence": [
+        "select filter"
+      ]
+    },
+    {
+      "shot": "browse-filtered-390"
+    },
+    {
+      "click": "[data-testid=\"type-chip\"][data-type=\"All\"]",
+      "settleMs": 250
+    },
+    {
+      "centre": "[data-testid=\"plant-card\"][data-id=\"p1\"]"
+    },
+    {
+      "click": "[data-testid=\"plant-card\"][data-id=\"p1\"]",
+      "settleMs": 350
+    },
+    {
+      "shot": "detail-390"
+    },
+    {
+      "measure": "detailTitle",
+      "kind": "rest",
+      "selector": "[data-testid=\"detail-title\"]",
+      "sequence": [
+        "open first record"
+      ]
+    },
+    {
+      "measure": "ctaRest",
+      "kind": "rest",
+      "selector": "[data-testid=\"confirm-btn\"]",
+      "sequence": [
+        "detail view, pointer away"
+      ]
+    },
+    {
+      "centre": "[data-testid=\"confirm-btn\"]"
+    },
+    {
+      "hover": "[data-testid=\"confirm-btn\"]",
+      "settleMs": 300
+    },
+    {
+      "measure": "ctaHover",
+      "kind": "hover",
+      "selector": "[data-testid=\"confirm-btn\"]",
+      "sequence": [
+        "hover the primary action"
+      ]
+    },
+    {
+      "click": "[data-testid=\"confirm-btn\"]",
+      "settleMs": 350
+    },
+    {
+      "measure": "errorText",
+      "kind": "error",
+      "selector": "[data-testid=\"error-your-name\"]",
+      "sequence": [
+        "submit an empty form"
+      ]
+    },
+    {
+      "shot": "detail-errors-390"
+    },
+    {
+      "setValues": [
+        {
+          "selector": "[data-testid=\"field-your-name\"]",
+          "value": "Test Your Name"
+        },
+        {
+          "selector": "[data-testid=\"field-phone\"]",
+          "value": "9876543210"
+        },
+        {
+          "selector": "[data-testid=\"field-your-delivery-address\"]",
+          "value": "Test Your Delivery Address"
+        }
+      ]
+    },
+    {
+      "centre": "[data-testid=\"confirm-btn\"]"
+    },
+    {
+      "click": "[data-testid=\"confirm-btn\"]",
+      "settleMs": 450
+    },
+    {
+      "shot": "confirmation-390"
+    },
+    {
+      "measure": "confirmRef",
+      "kind": "post-action",
+      "selector": "[data-testid=\"confirm-ref\"]",
+      "sequence": [
+        "complete a submission"
+      ]
+    },
+    {
+      "axe": "plants"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "click": "[data-act=\"nav\"][data-view=\"plants\"], [data-act=\"go\"][data-view=\"plants\"]",
+      "settleMs": 350,
+      "optional": true
+    },
+    {
+      "shot": "browse-1440"
+    },
+    {
+      "centre": "[data-testid=\"plant-card\"][data-id=\"p1\"]"
+    },
+    {
+      "click": "[data-testid=\"plant-card\"][data-id=\"p1\"]",
+      "settleMs": 300
+    },
+    {
+      "shot": "detail-1440"
+    },
+    {
+      "axe": "detail"
+    }
+  ]
+}

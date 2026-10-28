@@ -1,0 +1,25 @@
+{
+  "id": ".",
+  "name": "Fern & Co",
+  "short_name": "Fern & Co",
+  "description": "Plants that forgive beginners.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#FBF6EE",
+  "theme_color": "#8C2B1B",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

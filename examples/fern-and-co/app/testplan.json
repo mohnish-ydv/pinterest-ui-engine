@@ -1,0 +1,310 @@
+{
+  "app": "Fern & Co",
+  "entity": "plant",
+  "entryView": "plants",
+  "recordCount": 6,
+  "derivedFrom": "layout IR v2 (planner 2.1.0)",
+  "steps": [
+    {
+      "id": "T1",
+      "desc": "the plants list renders all 6 records",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T2",
+      "desc": "the collection container is present",
+      "act": "visible",
+      "sel": "[data-testid=\"plant-list\"]",
+      "eq": true
+    },
+    {
+      "id": "T3",
+      "desc": "filtering by Type = Foliage shows 4",
+      "act": "click",
+      "sel": "[data-testid=\"type-chip\"][data-type=\"Foliage\"]"
+    },
+    {
+      "id": "T4",
+      "desc": "only 4 record(s) remain after filtering",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 4
+    },
+    {
+      "id": "T5",
+      "desc": "the filter chip reports pressed state",
+      "act": "attr",
+      "sel": "[data-testid=\"type-chip\"][data-type=\"Foliage\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T6",
+      "desc": "the All chip restores every record",
+      "act": "click",
+      "sel": "[data-testid=\"type-chip\"][data-type=\"All\"]"
+    },
+    {
+      "id": "T7",
+      "desc": "all records are back",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T8",
+      "desc": "searching \"Monstera Deliciosa\" narrows to 1",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": "Monstera Deliciosa"
+    },
+    {
+      "id": "T9",
+      "desc": "search yields 1 record(s)",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T10",
+      "desc": "clearing search restores every record",
+      "act": "type",
+      "sel": "[data-testid=\"search\"]",
+      "value": ""
+    },
+    {
+      "id": "T11",
+      "desc": "all records are back after clearing search",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 6
+    },
+    {
+      "id": "T12",
+      "desc": "opening the first record shows its detail",
+      "act": "click",
+      "sel": "[data-testid=\"plant-card\"][data-id=\"p1\"]"
+    },
+    {
+      "id": "T13",
+      "desc": "the detail heading is the record title",
+      "act": "text",
+      "sel": "[data-testid=\"detail-title\"]",
+      "eq": "Monstera Deliciosa"
+    },
+    {
+      "id": "T14",
+      "desc": "the detail view is the active view",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "detail"
+    },
+    {
+      "id": "T15",
+      "desc": "the record is not saved yet",
+      "act": "attr",
+      "sel": "[data-testid=\"save-toggle\"]",
+      "attr": "aria-pressed",
+      "eq": "false"
+    },
+    {
+      "id": "T16",
+      "desc": "tapping save marks the record saved",
+      "act": "click",
+      "sel": "[data-testid=\"save-toggle\"]"
+    },
+    {
+      "id": "T17",
+      "desc": "the save control reports pressed",
+      "act": "attr",
+      "sel": "[data-testid=\"save-toggle\"]",
+      "attr": "aria-pressed",
+      "eq": "true"
+    },
+    {
+      "id": "T18",
+      "desc": "the saved collection lists the record",
+      "act": "goto",
+      "view": "saved"
+    },
+    {
+      "id": "T19",
+      "desc": "one record is saved",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T20",
+      "desc": "reload keeps the saved record",
+      "act": "reload"
+    },
+    {
+      "id": "T21",
+      "desc": "the saved record survives a reload",
+      "act": "goto",
+      "view": "saved"
+    },
+    {
+      "id": "T22",
+      "desc": "still one saved record after reload",
+      "act": "count",
+      "sel": "[data-testid=\"plant-card\"]",
+      "eq": 1
+    },
+    {
+      "id": "T23",
+      "desc": "returning to the catalogue for the bag flow",
+      "act": "goto",
+      "view": "plants"
+    },
+    {
+      "id": "T24",
+      "desc": "adding the first record to the bag",
+      "act": "click",
+      "sel": "[data-testid=\"plant-list\"] [data-act=\"add\"][data-id=\"p1\"]"
+    },
+    {
+      "id": "T25",
+      "desc": "opening the bag",
+      "act": "goto",
+      "view": "bag"
+    },
+    {
+      "id": "T26",
+      "desc": "starting checkout",
+      "act": "click",
+      "sel": "[data-testid=\"checkout-btn\"]"
+    },
+    {
+      "id": "T27",
+      "desc": "the flow shows 3 steps",
+      "act": "count",
+      "sel": "[data-testid=\"step\"]",
+      "eq": 3
+    },
+    {
+      "id": "T28",
+      "desc": "the first step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"1\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T29",
+      "desc": "filling Your Name",
+      "act": "type",
+      "sel": "[data-testid=\"field-your-name\"]",
+      "value": "Test Your Name"
+    },
+    {
+      "id": "T30",
+      "desc": "filling Phone",
+      "act": "type",
+      "sel": "[data-testid=\"field-phone\"]",
+      "value": "9876543210"
+    },
+    {
+      "id": "T31",
+      "desc": "Continue advances the flow",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T32",
+      "desc": "step 2 is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"2\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T33",
+      "desc": "Back returns to the first step",
+      "act": "click",
+      "sel": "[data-testid=\"step-back\"]"
+    },
+    {
+      "id": "T34",
+      "desc": "the first step is current again",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"1\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T35",
+      "desc": "Continue advances the flow again",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T36",
+      "desc": "the second step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"2\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T37",
+      "desc": "filling Your Delivery Address",
+      "act": "type",
+      "sel": "[data-testid=\"field-your-delivery-address\"]",
+      "value": "Test Your Delivery Address"
+    },
+    {
+      "id": "T38",
+      "desc": "Continue to step 3",
+      "act": "click",
+      "sel": "[data-testid=\"step-next\"]"
+    },
+    {
+      "id": "T39",
+      "desc": "step 3 is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"3\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T40",
+      "desc": "the final step is current",
+      "act": "attr",
+      "sel": "[data-testid=\"step\"][data-step=\"3\"]",
+      "attr": "data-state",
+      "eq": "current"
+    },
+    {
+      "id": "T41",
+      "desc": "committing issues a reference",
+      "act": "click",
+      "sel": "[data-testid=\"confirm-btn\"]"
+    },
+    {
+      "id": "T42",
+      "desc": "the confirmation is shown",
+      "act": "attr",
+      "sel": "#main",
+      "attr": "data-view",
+      "eq": "confirmation"
+    },
+    {
+      "id": "T43",
+      "desc": "a reference is issued in the declared format",
+      "act": "match",
+      "sel": "[data-testid=\"confirm-ref\"]",
+      "pattern": "^FC-\\d{6}$"
+    },
+    {
+      "id": "T44",
+      "desc": "no page or console errors occurred",
+      "act": "console",
+      "eq": 0
+    }
+  ]
+}

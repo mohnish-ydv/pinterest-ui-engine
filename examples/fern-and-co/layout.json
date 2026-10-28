@@ -1,0 +1,846 @@
+{
+  "irVersion": 2,
+  "meta": {
+    "plannerVersion": "2.1.0",
+    "app": "Fern & Co",
+    "domain": "plant shop",
+    "family": "fern-co",
+    "density": "balanced",
+    "densityBasis": "composition=gallery → balanced: a gallery trades records-per-screen against the media it exists to show",
+    "referenceDensity": "comfortable",
+    "generatedFrom": [
+      "brief.json",
+      "(no profile)"
+    ]
+  },
+  "entity": {
+    "id": "plant",
+    "label": "Plant",
+    "plural": "Plants",
+    "media": true,
+    "fields": [
+      {
+        "id": "name",
+        "label": "Plant",
+        "type": "text",
+        "role": "title",
+        "roleSource": "derived",
+        "requiredIn": "either",
+        "scopeSource": "The home screen is a photo-led gallery of every plant on the shelf."
+      },
+      {
+        "id": "type",
+        "label": "Type",
+        "options": [
+          "Foliage",
+          "Flowering",
+          "Palm"
+        ],
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "requiredIn": "either",
+        "scopeSource": "Customers can filter plants by type."
+      },
+      {
+        "id": "light",
+        "label": "Light",
+        "options": [
+          "Bright",
+          "Medium",
+          "Low"
+        ],
+        "type": "enum",
+        "role": "facet",
+        "roleSource": "derived",
+        "requiredIn": "either",
+        "scopeSource": "Customers can filter plants by light."
+      },
+      {
+        "id": "size",
+        "label": "Size",
+        "type": "text",
+        "role": "subtitle",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a plant shows its care notes, price, rating and size."
+      },
+      {
+        "id": "price",
+        "label": "Price",
+        "type": "money",
+        "role": "price",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a plant shows its care notes, price, rating and size."
+      },
+      {
+        "id": "rating",
+        "label": "Rating",
+        "type": "number",
+        "role": "stat",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a plant shows its care notes, price, rating and size."
+      },
+      {
+        "id": "note",
+        "label": "Care",
+        "type": "text",
+        "role": "detail",
+        "roleSource": "derived",
+        "requiredIn": "detail",
+        "scopeSource": "Opening a plant shows its care notes, price, rating and size."
+      }
+    ],
+    "titleClass": "plant-name"
+  },
+  "search": {
+    "fields": [
+      "name",
+      "size"
+    ],
+    "placeholder": "Search plants",
+    "testid": "search"
+  },
+  "filters": [
+    {
+      "id": "type",
+      "field": "type",
+      "label": "Type",
+      "testid": "type-chip",
+      "dataAttr": "data-type",
+      "allLabel": "All",
+      "options": [
+        "Foliage",
+        "Flowering",
+        "Palm"
+      ],
+      "fieldType": "enum"
+    },
+    {
+      "id": "light",
+      "field": "light",
+      "label": "Light",
+      "testid": "light-chip",
+      "dataAttr": "data-light",
+      "allLabel": "All",
+      "options": [
+        "Bright",
+        "Medium",
+        "Low"
+      ],
+      "fieldType": "enum"
+    }
+  ],
+  "availability": null,
+  "actions": [
+    {
+      "id": "save",
+      "label": "Save",
+      "kind": "toggle",
+      "field": "saved"
+    },
+    {
+      "id": "commit",
+      "label": "Confirm",
+      "kind": "commit",
+      "testid": "confirm-btn",
+      "form": [
+        {
+          "id": "your-name",
+          "label": "Your Name",
+          "type": "text",
+          "required": true,
+          "testid": "field-your-name",
+          "errorTestid": "error-your-name",
+          "message": "Enter your name."
+        },
+        {
+          "id": "phone",
+          "label": "Phone",
+          "type": "tel",
+          "pattern": "^\\d{10}$",
+          "stripWhitespace": true,
+          "message": "Enter a 10-digit mobile number.",
+          "required": true,
+          "testid": "field-phone",
+          "errorTestid": "error-phone"
+        },
+        {
+          "id": "your-delivery-address",
+          "label": "Your Delivery Address",
+          "type": "text",
+          "required": true,
+          "testid": "field-your-delivery-address",
+          "errorTestid": "error-your-delivery-address",
+          "message": "Enter your delivery address."
+        }
+      ],
+      "result": {
+        "collection": "submissions",
+        "referencePrefix": "FC",
+        "title": "Order placed",
+        "referenceTestid": "confirm-ref",
+        "summaryTestid": "confirm-summary"
+      },
+      "steps": [
+        {
+          "id": "your-name-and-phone",
+          "label": "Your Name and Phone",
+          "fields": [
+            "your-name",
+            "phone"
+          ]
+        },
+        {
+          "id": "your-delivery-address",
+          "label": "Your Delivery Address",
+          "fields": [
+            "your-delivery-address"
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "fields": [],
+          "review": true
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "id": "submissions",
+      "view": "submissions",
+      "label": "Your orders",
+      "listTestid": "submission-list",
+      "itemTestid": "submission-item",
+      "backTestid": "back-btn",
+      "fields": [
+        "ref",
+        "items",
+        "total",
+        "your-name",
+        "phone"
+      ],
+      "emptyMessage": "Nothing here yet."
+    }
+  ],
+  "banners": [],
+  "navigation": {
+    "pattern": "tabbar",
+    "items": [
+      {
+        "id": "nav-plants",
+        "label": "Home",
+        "view": "plants",
+        "icon": "home",
+        "dataNav": "plants"
+      },
+      {
+        "id": "nav-saved",
+        "label": "Saved",
+        "view": "saved",
+        "icon": "heart",
+        "dataNav": "saved"
+      },
+      {
+        "id": "nav-bag",
+        "label": "Crate",
+        "view": "bag",
+        "icon": "bag",
+        "dataNav": "bag"
+      },
+      {
+        "id": "nav-submissions",
+        "label": "Orders",
+        "view": "submissions",
+        "icon": "clipboard",
+        "dataNav": "submissions"
+      }
+    ],
+    "basis": "4 top-level destinations, mobile-first"
+  },
+  "views": [
+    {
+      "id": "plants",
+      "purpose": "browse",
+      "title": "Plants that forgive beginners.",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "testid": "app-header",
+            "variant": null,
+            "profileName": ""
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Plants that forgive beginners.",
+            "subtitle": "A small indoor-plant shop: browse the greenhouse shelf, build your crate, check out, and track your orders."
+          }
+        },
+        {
+          "id": "search",
+          "component": "search-bar",
+          "props": {
+            "placeholder": "Search plants",
+            "testid": "search"
+          },
+          "binding": {
+            "entity": "plant",
+            "fields": [
+              "name",
+              "size"
+            ]
+          }
+        },
+        {
+          "id": "filter-type",
+          "component": "filter-chips",
+          "props": {
+            "label": "Type",
+            "testid": "type-chip",
+            "allLabel": "All",
+            "valueAttr": "data-type"
+          },
+          "binding": {
+            "entity": "plant",
+            "filterId": "type",
+            "field": "type",
+            "options": [
+              "Foliage",
+              "Flowering",
+              "Palm"
+            ]
+          }
+        },
+        {
+          "id": "filter-light",
+          "component": "filter-chips",
+          "props": {
+            "label": "Light",
+            "testid": "light-chip",
+            "allLabel": "All",
+            "valueAttr": "data-light"
+          },
+          "binding": {
+            "entity": "plant",
+            "filterId": "light",
+            "field": "light",
+            "options": [
+              "Bright",
+              "Medium",
+              "Low"
+            ]
+          }
+        },
+        {
+          "id": "promo",
+          "component": "promo-banner",
+          "props": {
+            "testid": "promo",
+            "title": "Monsoon Greens Sale",
+            "subtitle": "Flat 15% off palms, this week only.",
+            "image": "assets/promo.jpg",
+            "recordId": "p6",
+            "cta": "Shop the sale",
+            "percent": ""
+          },
+          "binding": {
+            "entity": "plant"
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "props": {
+            "testid": "plant-list",
+            "itemTestid": "plant-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showChip": true,
+            "entryExtra": [],
+            "forbiddenRoles": [],
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "openTestid": "plant-open"
+          },
+          "binding": {
+            "entity": "plant",
+            "source": "records",
+            "standfirstField": null
+          },
+          "controls": [
+            "search",
+            "filter:type",
+            "filter:light"
+          ],
+          "states": [
+            "populated",
+            "empty"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "saved",
+      "purpose": "collection",
+      "title": "Saved",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Saved",
+            "subtitle": "Your shortlisted plants."
+          }
+        },
+        {
+          "id": "collection",
+          "component": "entity-collection",
+          "variant": "card",
+          "binding": {
+            "entity": "plant",
+            "source": "saved"
+          },
+          "props": {
+            "testid": "plant-list",
+            "itemTestid": "plant-card",
+            "columns": {
+              "mobile": 1,
+              "desktop": 2
+            },
+            "showMedia": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle"
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing saved yet. Tap the heart on something you like."
+        }
+      ]
+    },
+    {
+      "id": "bag",
+      "purpose": "collection",
+      "title": "Crate",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "back": false,
+            "testid": "app-header"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Crate",
+            "subtitle": "Review what you have added, then check out."
+          }
+        },
+        {
+          "id": "bag-list",
+          "component": "bag-list",
+          "props": {
+            "testid": "bag-list",
+            "itemTestid": "bag-item",
+            "emptyMessage": "Your crate is empty."
+          },
+          "binding": {
+            "entity": "plant"
+          },
+          "states": [
+            "empty",
+            "populated"
+          ]
+        },
+        {
+          "id": "bag-totals",
+          "component": "bag-totals",
+          "props": {
+            "testid": "bag-totals",
+            "subtotalTestid": "bag-subtotal",
+            "deliveryTestid": "bag-delivery",
+            "totalTestid": "bag-total"
+          },
+          "binding": {
+            "entity": "plant"
+          },
+          "states": [
+            "populated"
+          ]
+        },
+        {
+          "id": "bag-checkout",
+          "component": "bag-checkout",
+          "props": {
+            "testid": "checkout-btn",
+            "label": "Checkout"
+          },
+          "binding": {
+            "entity": "plant"
+          },
+          "states": [
+            "populated"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "purpose": "form",
+      "title": "Checkout",
+      "hidden": true,
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "heading",
+          "component": "page-heading",
+          "props": {
+            "title": "Checkout",
+            "subtitle": "A few details and your order is placed."
+          }
+        },
+        {
+          "id": "steps",
+          "component": "step-flow",
+          "props": {
+            "testid": "stepflow",
+            "commitTestid": "confirm-btn",
+            "commitLabel": "Confirm"
+          },
+          "binding": {
+            "entity": "plant",
+            "steps": [
+              {
+                "id": "your-name-and-phone",
+                "label": "Your Name and Phone",
+                "fields": [
+                  "your-name",
+                  "phone"
+                ]
+              },
+              {
+                "id": "your-delivery-address",
+                "label": "Your Delivery Address",
+                "fields": [
+                  "your-delivery-address"
+                ]
+              },
+              {
+                "id": "review",
+                "label": "Review",
+                "fields": [],
+                "review": true
+              }
+            ]
+          },
+          "states": [
+            "current",
+            "done",
+            "todo",
+            "error"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "submissions",
+      "purpose": "collection",
+      "title": "Your orders",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "back": false,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "manager",
+          "component": "collection-manager",
+          "props": {
+            "label": "Your orders",
+            "testid": "submission-list",
+            "itemTestid": "submission-item",
+            "cancelTestid": "cancel-btn",
+            "confirmTestid": "cancel-confirm",
+            "confirmLabel": "Confirm cancel",
+            "keepLabel": "Keep",
+            "cancelLabel": "Cancel"
+          },
+          "binding": {
+            "collection": "submissions",
+            "fields": [
+              "ref",
+              "items",
+              "total",
+              "your-name",
+              "phone"
+            ]
+          },
+          "states": [
+            "populated",
+            "empty"
+          ],
+          "emptyMessage": "Nothing here yet."
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "purpose": "record",
+      "title": "Plant",
+      "sections": [
+        {
+          "id": "header",
+          "component": "app-header",
+          "props": {
+            "brand": "Fern & Co",
+            "context": "Indiranagar, Bengaluru",
+            "back": true,
+            "testid": "app-header",
+            "backTestid": "back-btn"
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-header",
+          "props": {
+            "showMedia": true,
+            "showChip": true,
+            "showStatus": false,
+            "showSave": true,
+            "saveTestid": "save-toggle",
+            "titleClass": "plant-name"
+          },
+          "binding": {
+            "entity": "plant",
+            "title": "name",
+            "subtitle": "size",
+            "price": "price"
+          }
+        },
+        {
+          "id": "stats",
+          "component": "stat-strip",
+          "props": {
+            "testid": "stat-strip"
+          },
+          "binding": {
+            "entity": "plant",
+            "fields": [
+              "rating"
+            ]
+          }
+        },
+        {
+          "id": "details",
+          "component": "detail-list",
+          "props": {
+            "testid": "detail-list"
+          },
+          "binding": {
+            "entity": "plant",
+            "fields": [
+              "note"
+            ]
+          }
+        },
+        {
+          "id": "bag-add",
+          "component": "bag-add",
+          "props": {
+            "testid": "add-to-bag",
+            "label": "Add to crate"
+          },
+          "binding": {
+            "entity": "plant"
+          }
+        },
+        {
+          "id": "related",
+          "component": "related-rail",
+          "props": {
+            "testid": "related-list",
+            "itemTestid": "related-item",
+            "title": "You may also like"
+          },
+          "binding": {
+            "entity": "plant",
+            "field": "type"
+          }
+        }
+      ],
+      "hidden": true
+    },
+    {
+      "id": "confirmation",
+      "purpose": "confirmation",
+      "title": "Confirmed",
+      "sections": [
+        {
+          "id": "confirm",
+          "component": "confirmation",
+          "props": {
+            "title": "Order placed",
+            "testid": "confirm-ref",
+            "summaryTestid": "confirm-summary",
+            "referenceLabel": "Reference",
+            "continueTo": null,
+            "continueLabel": null
+          },
+          "binding": {
+            "entity": "plant",
+            "referencePrefix": "FC"
+          }
+        }
+      ],
+      "hidden": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": "browse-to-detail",
+      "from": "plants",
+      "to": "detail",
+      "trigger": "open",
+      "preconditions": [
+        "recordExists"
+      ]
+    },
+    {
+      "id": "detail-to-browse",
+      "from": "detail",
+      "to": "plants",
+      "trigger": "back"
+    },
+    {
+      "id": "toggle-save",
+      "from": "detail",
+      "trigger": "toggle",
+      "collection": "saved",
+      "persists": true
+    },
+    {
+      "id": "commit",
+      "from": "detail",
+      "to": "confirmation",
+      "trigger": "commit",
+      "creates": "submissions",
+      "preconditions": [
+        "formValid",
+        "optionSelected"
+      ],
+      "persists": true
+    }
+  ],
+  "decisions": [
+    {
+      "id": "density",
+      "value": "comfortable",
+      "basis": "no reference profile supplied — default",
+      "source": "reference"
+    },
+    {
+      "id": "navigation",
+      "value": "tabbar",
+      "basis": "4 top-level destinations, mobile-first",
+      "source": "rule"
+    },
+    {
+      "id": "composition",
+      "value": "gallery",
+      "basis": "compiled from design-spec prose",
+      "source": "reference"
+    },
+    {
+      "id": "collectionVariant",
+      "value": "card",
+      "basis": "the entity declares media, so records lead with an image",
+      "source": "brief"
+    },
+    {
+      "id": "desktopColumns",
+      "value": "2",
+      "basis": "density \"comfortable\" sets 2 columns",
+      "source": "rule"
+    },
+    {
+      "id": "collectionSurface",
+      "value": "entity-collection",
+      "basis": "no table declared",
+      "source": "brief"
+    },
+    {
+      "id": "commitShape",
+      "value": "step-flow",
+      "basis": "3 declared steps replace a single form",
+      "source": "brief"
+    },
+    {
+      "id": "sectionOrder",
+      "value": "app-header -> page-heading -> search-bar -> filter-chips -> filter-chips -> promo-banner -> entity-collection",
+      "basis": "entry view reads header, heading, search, facets, aggregates, collection — broad to narrow",
+      "source": "rule"
+    }
+  ],
+  "a11y": {
+    "landmarks": [
+      "banner",
+      "main",
+      "navigation"
+    ],
+    "headingLevels": "one h1 per view; sections use h2",
+    "minTargetPx": 44,
+    "keyboard": [
+      "Enter activates the focused control",
+      "Tab order follows reading order",
+      "disabled controls are not focusable"
+    ]
+  }
+}
