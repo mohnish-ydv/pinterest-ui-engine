@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { planApp, planNavigation, densityFromProfile, validateIR, PLANNER_VERSION } from '../layout/plan.mjs';
 import { planTestplan, planInspectContract, availabilityStates } from '../layout/gates.mjs';
 import { buildModel } from '../layout/compile.mjs';
+import { deriveBrief } from '../intake/derive.mjs';
 import { validateContract } from '../lib/contract.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -100,7 +101,20 @@ for (const c of ['a-pulse', 'd-ledger', 'e-marginalia']) {
   const p = join(ROOT, 'bench', 'cases', c, 'v3', 'layout.json');
   if (existsSync(p)) { try { v3irs.push(JSON.parse(readFileSync(p, 'utf8'))); } catch (e) {} }
 }
-const used = [...new Set([irStay, irCare, irCareFull, ...v3irs].filter(Boolean).flatMap(ir => ir.views.flatMap(v => v.sections.map(s => s.component))))];
+// M048: the vocabulary corpus must include a brief that declares the
+// M039–M046 families (bag, promo, medallions, variants, reviews, wallet,
+// profile, FAQ, notices). The old corpus (StayNest, CarePoint, three v3
+// bench cases) predates all of them, so every one of those components
+// read as "implemented but never used" and this suite sat at 40/41 from
+// Mission 039 on. The fixture is a real product brief (the M046 Evira
+// showcase); it is derived and planned here, by the engine itself, so
+// the corpus is planner output — not a hand-written layout.
+let irDeclared = null;
+try {
+  const product = JSON.parse(readFileSync(join(HERE, 'fixtures', 'declared-families.product-brief.json'), 'utf8'));
+  irDeclared = planApp(deriveBrief(product, null), null);
+} catch (e) { check('plan: declared-families fixture brief plans', false, e.message); }
+const used = [...new Set([irStay, irCare, irCareFull, irDeclared, ...v3irs].filter(Boolean).flatMap(ir => ir.views.flatMap(v => v.sections.map(s => s.component))))];
   const missing = used.filter(c => !implemented.includes(c));
   check('vocabulary: every planned component is implemented by the runtime',
     missing.length === 0, missing.length ? 'missing: ' + missing.join(', ') : `${used.length} components, ${implemented.length} implemented`);

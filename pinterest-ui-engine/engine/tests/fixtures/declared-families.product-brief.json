@@ -1,0 +1,601 @@
+{
+  "about": "Evira is a fashion and accessories store: browse the collection, filter and sort it, choose colours and sizes, pay from your wallet, and track every order.",
+  "auth": {
+    "providers": [
+      "Google",
+      "Apple",
+      "Facebook"
+    ],
+    "titleIn": "Login to your Account",
+    "titleUp": "Create your Account"
+  },
+  "bagLabel": "Cart",
+  "collection": {
+    "items": [
+      {
+        "category": "Shoes",
+        "id": "p1",
+        "image": "assets/shoes1.jpg",
+        "images": [
+          "assets/shoes1.jpg",
+          "assets/shoes2.jpg",
+          "assets/shoes3.jpg"
+        ],
+        "name": "Suga Leather Shoes",
+        "note": "Full-grain leather derby on a cushioned sole. Handmade finish, stitched welt, and a lining that breathes through a full day.",
+        "price": 7499,
+        "rating": 4.8,
+        "reviews": [
+          {
+            "date": "Dec 12, 2024",
+            "name": "Jane Cooper",
+            "rating": 5,
+            "text": "The leather quality is superb for the price. Broke in within two days and goes with everything."
+          },
+          {
+            "date": "Dec 10, 2024",
+            "name": "Jenny Wilson",
+            "rating": 5,
+            "text": "Bought these for my husband, the fit is true to size and the finish looks far more expensive."
+          },
+          {
+            "date": "Dec 8, 2024",
+            "name": "Robert Fox",
+            "rating": 4,
+            "text": "Comfortable from day one. One star off because delivery took a day longer than promised."
+          }
+        ],
+        "variants": [
+          {
+            "label": "Colour",
+            "options": [
+              {
+                "color": "#b07d4f",
+                "label": "Tan",
+                "value": "Tan"
+              },
+              {
+                "color": "#1c1c22",
+                "label": "Black",
+                "value": "Black"
+              },
+              {
+                "color": "#6b4226",
+                "label": "Brown",
+                "value": "Brown"
+              }
+            ],
+            "style": "swatch"
+          },
+          {
+            "label": "Size",
+            "options": [
+              "7",
+              "8",
+              "9",
+              "10"
+            ],
+            "style": "circles"
+          }
+        ]
+      },
+      {
+        "category": "Audio",
+        "id": "p2",
+        "image": "assets/headphones1.jpg",
+        "images": [
+          "assets/headphones1.jpg"
+        ],
+        "name": "Vinia Headphone",
+        "note": "Over-ear wireless headphones with active noise cancellation, 40 hours of battery, and memory foam cushions.",
+        "price": 5999,
+        "rating": 4.7,
+        "reviews": [
+          {
+            "date": "Dec 11, 2024",
+            "name": "Esther Howard",
+            "rating": 5,
+            "text": "The noise cancellation on my commute is night and day. Battery genuinely lasts the week."
+          },
+          {
+            "date": "Dec 9, 2024",
+            "name": "Jacob Jones",
+            "rating": 4,
+            "text": "Great sound, slightly tight on larger heads for the first few wears."
+          }
+        ],
+        "variants": [
+          {
+            "label": "Colour",
+            "options": [
+              {
+                "color": "#1c1c22",
+                "label": "Black",
+                "value": "Black"
+              },
+              {
+                "color": "#f0f0ee",
+                "label": "White",
+                "value": "White"
+              },
+              {
+                "color": "#33549e",
+                "label": "Blue",
+                "value": "Blue"
+              }
+            ],
+            "style": "swatch"
+          }
+        ]
+      },
+      {
+        "category": "Bags",
+        "id": "p3",
+        "image": "assets/bag1.jpg",
+        "images": [
+          "assets/bag1.jpg"
+        ],
+        "name": "Mini Leather Bag",
+        "note": "A compact crossbody in grained leather with an adjustable strap and room for phone, cards and keys.",
+        "price": 4299,
+        "rating": 4.6,
+        "reviews": [
+          {
+            "date": "Dec 7, 2024",
+            "name": "Guy Hawkins",
+            "rating": 5,
+            "text": "Small but fits everything I actually carry. The strap hardware feels solid."
+          }
+        ],
+        "variants": [
+          {
+            "label": "Colour",
+            "options": [
+              {
+                "color": "#1c1c22",
+                "label": "Black",
+                "value": "Black"
+              },
+              {
+                "color": "#e07b39",
+                "label": "Orange",
+                "value": "Orange"
+              },
+              {
+                "color": "#b3352c",
+                "label": "Red",
+                "value": "Red"
+              }
+            ],
+            "style": "swatch"
+          }
+        ]
+      },
+      {
+        "category": "Watches",
+        "id": "p4",
+        "image": "assets/watch1.jpg",
+        "images": [
+          "assets/watch1.jpg"
+        ],
+        "name": "Zonio Super Watch",
+        "note": "A 41mm steel watch with a sapphire-coated face, Japanese movement and 5 ATM water resistance.",
+        "price": 8999,
+        "rating": 4.9,
+        "reviews": [
+          {
+            "date": "Dec 12, 2024",
+            "name": "Kristin Watson",
+            "rating": 5,
+            "text": "Looks even better in person. Keeps perfect time after a month."
+          },
+          {
+            "date": "Dec 6, 2024",
+            "name": "Devon Lane",
+            "rating": 5,
+            "text": "The weight is just right and the bracelet adjusted in minutes."
+          }
+        ]
+      },
+      {
+        "category": "Clothing",
+        "id": "p5",
+        "name": "Venesia Long Shirt",
+        "note": "A relaxed long shirt in washed cotton with corozo buttons and a curved hem.",
+        "price": 2199,
+        "rating": 4.5,
+        "variants": [
+          {
+            "label": "Size",
+            "options": [
+              "S",
+              "M",
+              "L",
+              "XL"
+            ],
+            "style": "circles"
+          }
+        ]
+      },
+      {
+        "category": "Shoes",
+        "id": "p6",
+        "name": "Court Runner Sneakers",
+        "note": "Low-top court sneakers in white leather with a gum sole and padded collar.",
+        "price": 3499,
+        "rating": 4.4,
+        "variants": [
+          {
+            "label": "Size",
+            "options": [
+              "7",
+              "8",
+              "9",
+              "10",
+              "11"
+            ],
+            "style": "circles"
+          }
+        ]
+      },
+      {
+        "category": "Accessories",
+        "id": "p7",
+        "name": "Aviator Sunglasses",
+        "note": "Polarised aviators with a brushed steel frame and UV400 lenses.",
+        "price": 1999,
+        "rating": 4.3
+      },
+      {
+        "category": "Bags",
+        "id": "p8",
+        "name": "Canvas Field Tote",
+        "note": "A heavyweight canvas tote with leather handles and an inside zip pocket.",
+        "price": 1499,
+        "rating": 4.2
+      }
+    ],
+    "label": "Product",
+    "media": true,
+    "plural": "Products"
+  },
+  "commitTitle": "Order Successful!",
+  "currency": "₹",
+  "deliveryFee": 49,
+  "domain": "fashion store",
+  "faq": [
+    {
+      "a": "Open My Orders from your profile and tap Track Order on any ongoing order. You will see each stage, from placed to delivered, with dates.",
+      "q": "How do I track my order?"
+    },
+    {
+      "a": "Unused items can be returned within 30 days for a full refund to your E-Wallet or original payment method.",
+      "q": "What is the return policy?"
+    },
+    {
+      "a": "Open the wallet from your profile, tap Top Up, choose or key in an amount, and confirm. The balance updates immediately.",
+      "q": "How do I top up my E-Wallet?"
+    },
+    {
+      "a": "E-Wallet balance, cards, UPI and cash on delivery, depending on the item.",
+      "q": "Which payment methods do you accept?"
+    }
+  ],
+  "fields": [
+    {
+      "id": "name",
+      "label": "Product",
+      "type": "text"
+    },
+    {
+      "id": "category",
+      "label": "Category",
+      "options": [
+        "Shoes",
+        "Audio",
+        "Bags",
+        "Watches",
+        "Clothing",
+        "Accessories"
+      ],
+      "type": "enum"
+    },
+    {
+      "id": "rating",
+      "label": "Rating",
+      "type": "rating"
+    },
+    {
+      "id": "price",
+      "label": "Price",
+      "type": "money"
+    },
+    {
+      "id": "note",
+      "label": "Description",
+      "type": "text"
+    }
+  ],
+  "flow": {
+    "form": [
+      {
+        "errorTestid": "error-name",
+        "id": "fullName",
+        "label": "Your name",
+        "message": "Enter your name.",
+        "minLength": 2,
+        "required": true,
+        "testid": "field-name",
+        "type": "text"
+      },
+      {
+        "errorTestid": "error-phone",
+        "id": "phone",
+        "label": "Mobile number",
+        "message": "Enter a 10-digit mobile number.",
+        "pattern": "^\\d{10}$",
+        "required": true,
+        "stripWhitespace": true,
+        "testid": "field-phone",
+        "type": "tel"
+      },
+      {
+        "errorTestid": "error-address",
+        "id": "address",
+        "label": "Delivery address",
+        "message": "Enter your delivery address.",
+        "minLength": 8,
+        "required": true,
+        "testid": "field-address",
+        "type": "text"
+      },
+      {
+        "errorTestid": "error-delivery",
+        "id": "delivery",
+        "label": "Choose Shipping",
+        "message": "Choose a delivery method.",
+        "options": [
+          {
+            "caption": "Arrives in 3–5 days",
+            "label": "Standard",
+            "price": 0,
+            "value": "Standard"
+          },
+          {
+            "caption": "Tomorrow by 9 pm",
+            "label": "Express",
+            "price": 79,
+            "value": "Express"
+          },
+          {
+            "caption": "Collect it yourself",
+            "label": "Store pickup",
+            "price": 0,
+            "value": "Store pickup"
+          }
+        ],
+        "required": true,
+        "testid": "field-delivery",
+        "type": "enum"
+      },
+      {
+        "errorTestid": "error-payment",
+        "id": "payment",
+        "label": "Payment Method",
+        "message": "Choose how to pay.",
+        "options": [
+          {
+            "caption": "Balance ₹9,379",
+            "label": "E-Wallet",
+            "value": "E-Wallet"
+          },
+          {
+            "caption": "Pay at your door",
+            "label": "Cash on delivery",
+            "value": "Cash on delivery"
+          }
+        ],
+        "required": true,
+        "testid": "field-payment",
+        "type": "enum"
+      }
+    ],
+    "steps": [
+      {
+        "fields": [
+          "fullName",
+          "phone"
+        ],
+        "id": "details",
+        "label": "Your details"
+      },
+      {
+        "fields": [
+          "address",
+          "delivery"
+        ],
+        "id": "delivery",
+        "label": "Delivery"
+      },
+      {
+        "fields": [
+          "payment"
+        ],
+        "id": "payment",
+        "label": "Payment"
+      },
+      {
+        "fields": [],
+        "id": "review",
+        "label": "Review",
+        "review": true
+      }
+    ]
+  },
+  "freeAbove": 1999,
+  "homeHeader": "greeting",
+  "location": "Bengaluru, Karnataka",
+  "name": "Evira",
+  "notices": [
+    {
+      "text": "Get 30% off on your first order above ₹2,000.",
+      "title": "30% Special Discount!",
+      "when": "Today"
+    },
+    {
+      "text": "Your wallet was topped up with ₹500.",
+      "title": "Top Up E-Wallet Successful!",
+      "when": "Today"
+    },
+    {
+      "text": "Express delivery is now live in your area.",
+      "title": "New Services Available!",
+      "when": "Yesterday"
+    },
+    {
+      "text": "Your card was connected for faster checkout.",
+      "title": "Credit Card Connected!",
+      "when": "Yesterday"
+    }
+  ],
+  "onboarding": {
+    "cta": "Get Started",
+    "slides": [
+      {
+        "headline": "Welcome to Evira",
+        "image": "assets/ob2.jpg",
+        "text": "The best e-commerce app of the century for your daily needs!"
+      },
+      {
+        "headline": "We provide high quality products just for you",
+        "image": "assets/ob1.jpg",
+        "text": ""
+      },
+      {
+        "headline": "Your satisfaction is our number one priority",
+        "text": ""
+      },
+      {
+        "headline": "Let's fulfill your daily needs right now!",
+        "text": ""
+      }
+    ]
+  },
+  "profile": {
+    "name": "Andrew Ainsley",
+    "sections": [
+      {
+        "rows": [
+          {
+            "kind": "link",
+            "label": "Edit Profile"
+          },
+          {
+            "kind": "link",
+            "label": "Address"
+          },
+          {
+            "kind": "link",
+            "label": "Notification",
+            "view": "notices"
+          },
+          {
+            "kind": "link",
+            "label": "Payment"
+          },
+          {
+            "kind": "link",
+            "label": "E-Wallet",
+            "view": "wallet"
+          },
+          {
+            "kind": "link",
+            "label": "My Orders",
+            "view": "submissions"
+          }
+        ]
+      },
+      {
+        "rows": [
+          {
+            "kind": "toggle",
+            "label": "Notifications",
+            "value": true
+          },
+          {
+            "kind": "toggle",
+            "label": "Sound",
+            "value": true
+          },
+          {
+            "kind": "toggle",
+            "label": "Special offers",
+            "value": false
+          }
+        ],
+        "title": "Preferences"
+      },
+      {
+        "rows": [
+          {
+            "kind": "radio",
+            "label": "Language",
+            "options": [
+              "English (US)",
+              "English (UK)",
+              "Hindi"
+            ],
+            "value": "English (US)"
+          }
+        ],
+        "title": "Language"
+      }
+    ],
+    "sub": "andrew.ainsley@yourdomain.com"
+  },
+  "promo": {
+    "cta": "Shop now",
+    "percent": "30%",
+    "recordId": "p1",
+    "subtitle": "Today's Special",
+    "title": "Get a discount for every order",
+    "image": "assets/shoes1.jpg"
+  },
+  "referencePrefix": "EV",
+  "requirements": [
+    "The home screen is a gallery of every product in the store.",
+    "Customers can search products by name.",
+    "Customers can filter products by category.",
+    "A customer can save a product to favourites with a heart toggle.",
+    "Customers add products to a cart from the home screen and from each product's page, and adjust quantities in the cart before ordering.",
+    "Opening a product shows its description and price.",
+    "A customer checks out from the cart and places an order.",
+    "A placed order ends with a confirmation showing a reference the customer can quote.",
+    "Customers can review their placed orders and cancel an order they no longer want."
+  ],
+  "showCategories": true,
+  "submissionsLabel": "My Orders",
+  "tagline": "Everything you love, delivered.",
+  "wallet": {
+    "balance": 9379,
+    "label": "My E-Wallet",
+    "transactions": [
+      {
+        "amount": 500,
+        "kind": "topup",
+        "label": "Top Up Wallet",
+        "when": "Dec 12, 2024 · 4:48 PM"
+      },
+      {
+        "amount": -7499,
+        "label": "Suga Leather Shoes",
+        "when": "Dec 12, 2024 · 1:24 PM"
+      },
+      {
+        "amount": -4299,
+        "label": "Mini Leather Bag",
+        "when": "Dec 10, 2024 · 9:02 AM"
+      }
+    ]
+  }
+}

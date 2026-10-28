@@ -1,8 +1,8 @@
-# Integration Guide — Pinterest UI Engine 1.27.0
+# Integration Guide — Pinterest UI Engine 1.28.0
 
 For an AI coding agent or developer integrating this engine into
 another system (e.g. Indus AI). Everything here was verified in a
-clean-room run (Mission 044): a fresh directory, only the commands in
+clean-room run (Missions 044 and 048): a fresh directory, only the commands in
 this document, a brief the engine had never seen.
 
 ## 0. Before the entry point: the intake interview (Mission 047)
@@ -119,7 +119,8 @@ favourites, orders) persists in the browser's localStorage.
 | Requirement | Needed for | Notes |
 |---|---|---|
 | Node.js ≥ 18 (developed/tested on 24) | everything | ESM throughout. |
-| `npm install` (puppeteer-core 25.16.0) | tests, inspection, test-plan execution | **Not** needed for generation. No other dependency exists — everything else is Node stdlib. |
+| `npm install` (puppeteer-core 25.16.0, pinned by `package-lock.json`) | tests, inspection, test-plan execution | **Not** needed for generation. No other dependency exists — everything else is Node stdlib. |
+| axe-core 4.14.0 | inspection, accessibility checks | **Vendored in the tree** at `vendor/axe-core/` — no install step. (It was dropped by the Mission 044 slimming and restored in Mission 048; `verify:env` hard-fails without it.) |
 | Chromium/Chrome binary + `CHROME_PATH` env var | tests, inspection, screenshots | Generation never launches a browser. `engine/lib/chrome.mjs` also probes PATH and a few conventional install locations if `CHROME_PATH` is unset. |
 | Python 3 + Pillow (`PIL`) | app icons only | Optional: without it the build succeeds and writes the manifest without icons. |
 | Network | `npm install` only | Generation and the generated app are offline. |

@@ -1,0 +1,1 @@
+axe-core 4.14.0 (vendored from the original environment; MPL-2.0 — see LICENSE)

@@ -2,7 +2,7 @@
   "dependencies": {
     "puppeteer-core": "25.16.0"
   },
-  "description": "Brief-to-app engine: give it a product brief (JSON), get a complete, self-contained mobile web application. Includes the M042 design grammar, M043 composition layer and M045 Evira corrections. See INTEGRATION.md for the contract.\u2014 M047 Bazaar corrections + intake interview",
+  "description": "Brief-to-app engine: give it a product brief (JSON), get a complete, self-contained mobile web application. Includes the M042 design grammar, M043 composition layer, M045 Evira corrections, M046 declared families, M047 intake interview and the M048 out-of-box repair (vendored axe-core restored). See INTEGRATION.md for the contract.",
   "engines": {
     "node": ">=18"
   },
@@ -16,5 +16,5 @@
     "test:fixtures": "node run-suites.mjs fixtures",
     "verify:env": "node pinterest-ui-engine/engine/verify_env.mjs"
   },
-  "version": "1.27.0-mission047"
+  "version": "1.28.0-mission048"
 }

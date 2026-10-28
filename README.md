@@ -1,6 +1,7 @@
 # Pinterest UI Engine — Portable Distribution
 
-**Version:** engine `1.24.0-mission043` · portable candidate 1 (Mission 044)
+**Version:** engine `1.28.0-mission048` (portable distribution; M044
+candidate, repaired out-of-box in Mission 048)
 **What it does:** give it a product brief — one JSON file describing a
 product in plain language — and it generates a complete, working,
 self-contained mobile web application: catalogue, search, filters,
@@ -53,16 +54,21 @@ prompt silently omits them.
 | `bench*/cases/`, `mission020/` | The regression corpus: historical case fixtures that nine engine suites read. Test tooling only — generation never touches them. |
 | `INTAKE.md` + `intake-questions.json` | The intake interview: the questions the engine asks before a brief is written, and the brief doctor that checks it. |
 | `INTEGRATION.md` | The full contract for integrating agents: inputs, outputs, environment, guarantees, limits. |
+| `vendor/axe-core/` | The vendored axe-core build (4.14.0, MPL-2.0) used by inspection and accessibility checks. Ships in the tree; never install it by hand. |
+| `package-lock.json`, `requirements.txt` | The pinned npm dependency and the optional Pillow pin for reference analysis. |
 
 ## Verify your install
 
 ```bash
 export CHROME_PATH=/path/to/chrome   # only needed for tests
+npm run verify:env       # environment checklist — expect "ENV RESULT: ready"
 npm run test:core        # engine suites
-npm run test:design      # design-grammar + composition suites (M036–M043)
+npm run test:design      # design-grammar + composition suites (M036–M048)
 npm run test:fixtures    # the four fixture apps' behavioural test plans
 ```
 
-One known, pre-existing failure: `layout.test.mjs` reports 40/41 —
-its fixed vocabulary corpus predates the bag component (disclosed
-since Mission 039; the check, not the engine, is stale).
+Everything the engine needs ships in the tree: axe-core is vendored
+at `vendor/axe-core/` (no manual step — if `verify:env` ever says it
+is missing, the tree was extracted incompletely), and the one npm
+dependency is pinned by `package-lock.json` (`npm ci` works).
+All suites are expected to pass in full.
