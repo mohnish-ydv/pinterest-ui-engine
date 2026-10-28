@@ -18,7 +18,10 @@ export function planComposition({ brief, product, evidence, transfer }) {
   const prohibited = (brief.intent && brief.intent.prohibited) || [];
   const entity = brief.entity || {};
   const fields = entity.fields || [];
-  const numeric = fields.filter(f => f.role === 'stat' || f.role === 'price').length;
+  // M051: count money fields as numeric by type too — in non-commerce
+  // archetypes they no longer carry the 'price' role, but they are
+  // still numbers for composition purposes.
+  const numeric = fields.filter(f => f.role === 'stat' || f.role === 'price' || f.type === 'money').length;
   const textFields = fields.filter(f => f.type === 'text').length;
 
   const inf = (evidence && evidence.inferred) || {};

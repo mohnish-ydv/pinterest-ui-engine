@@ -88,6 +88,38 @@
       "why": "Selects the design world and the default vocabulary (listings, dishes, appointments…)."
     },
     {
+      "ask": "What does the main list hold — things people buy, people, bookings, or records?",
+      "briefPath": "archetype",
+      "default": "records",
+      "group": "idea",
+      "id": "q-archetype",
+      "options": [
+        {
+          "label": "Things people buy — a shop or marketplace",
+          "value": "commerce"
+        },
+        {
+          "label": "People — members, patients, students, a team",
+          "value": "roster"
+        },
+        {
+          "label": "Bookings / appointments people make",
+          "value": "service"
+        },
+        {
+          "label": "Records, entries, documents",
+          "value": "records"
+        },
+        {
+          "label": "Reading — articles, stories, posts",
+          "value": "content"
+        }
+      ],
+      "required": true,
+      "type": "choice",
+      "why": "The archetype decides how the main list renders. A roster renders people (avatar, relation, status chip) and its money fields are labelled values — never prices. Commerce renders products with prices and a bag. Before M051 the engine never asked, and a family app came out as a marketplace (the Kutumb failure). A money field alone does not make a shop."
+    },
+    {
       "ask": "Where does it operate — city or region? And which currency?",
       "briefPath": "location",
       "default": "Bengaluru, Karnataka",
@@ -600,5 +632,5 @@
       "why": "Wishlist plans the wishlist screen type and the save requirement sentence ('save ... with a heart toggle') that derives favourites. Without the sentence the toggle never appears."
     }
   ],
-  "version": 2
+  "version": "2.1-mission051"
 }

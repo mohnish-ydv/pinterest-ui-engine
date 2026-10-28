@@ -66,14 +66,43 @@ export function doctorBrief(product) {
     }
   }
 
+  // M051: the archetype decisions (grammar laws 43/44). The Kutumb
+  // failure — a family roster rendered as a shop — happened because
+  // nothing ever asked what kind of app this was.
+  const PEOPLE = /^(member|patient|student|player|employee|staff|resident|guest|person|people|teacher|tenant|driver|volunteer|athlete|child|kid|baby|client|customer)s?$/i;
+  const collLabel = String((p.collection && p.collection.label) || '').trim();
+  const peopleLike = PEOPLE.test(collLabel);
+  const moneyFields = fields.filter(f => f.type === 'money');
+  const commerceSignals = /\b(bag|cart|basket|buy|sell|shop|checkout|purchase)\b/.test(reqs);
+  if (peopleLike && (p.archetype === 'commerce' || (commerceSignals && p.archetype === 'commerce'))) {
+    gap('q-archetype', `the collection holds people ("${collLabel}") but the archetype is commerce — members will render as products with prices. Declare archetype "roster" (the Kutumb failure, M051).`);
+  }
+  if (peopleLike && p.archetype && p.archetype !== 'roster' && p.archetype !== 'service') {
+    gap('q-archetype', `the collection holds people ("${collLabel}") but archetype "${p.archetype}" is declared — a people collection is a roster. Declare archetype "roster", or say why not.`);
+  }
+  if (moneyFields.length && !p.archetype && !peopleLike && !commerceSignals) {
+    gap('q-archetype', `a money field ("${moneyFields[0].label || moneyFields[0].id}") exists but nothing decides what kind of app this is — no archetype declared, the collection is not clearly people, and the requirements carry no commerce signals. Answer the archetype question: a money field alone does not make a shop (M051).`);
+  }
+  if (p.archetype === 'roster' && /\b(cart|checkout|delivery fee|shop now)\b/.test(reqs)) {
+    gap('q-archetype', 'archetype is "roster" but the requirements use commerce vocabulary (cart/checkout/delivery) — a roster has no cart. Remove the shop words, or the archetype is wrong.');
+  }
+  if (!p.archetype && peopleLike) {
+    tip('q-archetype', `no archetype declared — the engine will infer "roster" from the people collection ("${collLabel}"). Declaring archetype: "roster" makes the decision explicit.`);
+  }
+  if (!p.archetype && commerceSignals) {
+    tip('q-archetype', 'no archetype declared — the engine will infer "commerce" from the bag/cart requirements. Declaring archetype: "commerce" makes the decision explicit.');
+  }
+
   if (p.collection && p.collection.media && items.length && !items.some(r => r.image)) {
     tip('q-photos', 'media is on but no item carries a photo — every card will use substituted initials-on-tint media.');
   }
-  if (!p.promo) tip('q-families', 'no promo declared — the home opens without its offer card.');
+  // M051: a promo offer card is commerce furniture — never nag a
+  // roster about its missing offer card.
+  if (!p.promo && p.archetype !== 'roster' && !peopleLike) tip('q-families', 'no promo declared — the home opens without its offer card.');
   if (bagImplied && /marketplace|classified/.test(domain) && p.uniqueItems !== true) {
     tip('q-unique', 'a marketplace with a bag usually sells one-of-one items — without uniqueItems: true a used phone can be quantity-8 in the cart (the M045 lesson).');
   }
-  if (bagImplied && items.length && !items.some(r => Array.isArray(r.reviews) && r.reviews.length)) {
+  if (bagImplied && p.archetype !== 'roster' && !peopleLike && items.length && !items.some(r => Array.isArray(r.reviews) && r.reviews.length)) {
     tip('q-families', 'no item carries reviews — product pages will have no social proof section.');
   }
   if (/fashion/.test(domain) && items.length && !items.some(r => Array.isArray(r.variants) && r.variants.length)) {

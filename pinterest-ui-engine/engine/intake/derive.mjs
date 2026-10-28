@@ -13,7 +13,17 @@
 // Public input (product-brief.json) has NO roles, NO capability keys, NO
 // functionalContract, NO intent block. Only what a product person would state.
 
-const ROLE_BY_TYPE = { money: 'price', rating: 'meta', bool: 'badge', image: 'media' };
+const ROLE_BY_TYPE = { rating: 'meta', bool: 'badge', image: 'media' };
+// M051 (grammar law 43): money is NOT a role. Before M051 this table
+// mapped every money field to 'price' unconditionally, so any app with
+// a money field — a member's fund contribution, a patient's fee — was
+// rendered as a shop: the money became the card's price line (a child
+// member rendered as "₹0"). Since M051 the role of a money field is
+// decided by the app ARCHETYPE (see deriveArchetype): 'price' only in
+// a commerce app, or when the brief explicitly declares the field's
+// role as "price"; everywhere else the field is a labelled value
+// (role 'meta', excluded from card meta lines by the runtime) that
+// renders on detail views and in tables — never as a price.
 
 /** Which composition does the requirement prose ask for? */
 function deriveComposition(reqs, prohibited) {
@@ -25,8 +35,40 @@ function deriveComposition(reqs, prohibited) {
   return { value: null, evidence: 'no composition named in the requirements' };
 }
 
+/** M051: what kind of app is this? The engine's one collection pattern
+ *  used to be a shop catalogue, so people, patients and records were
+ *  all rendered as products. The archetype is the brief's answer:
+ *  declared outright (`archetype` in the product brief), or inferred
+ *  conservatively. A money field ALONE never implies commerce — that
+ *  was the Kutumb failure. Inference order is deliberate: a people
+ *  collection (Member, Patient, Student…) is a roster even when it
+ *  carries money or a booking flow; a bag/cart the requirements ask
+ *  the user to ADD to is commerce; availability/appointment signals
+ *  make a service; reading matter makes content; anything else is
+ *  records — a neutral list, not a shop. */
+export const ARCHETYPES = ['commerce', 'roster', 'service', 'records', 'content'];
+const PEOPLE_LABEL = /^(member|patient|student|player|employee|staff|resident|guest|person|people|teacher|tenant|driver|volunteer|athlete|child|kid|baby|client|customer)s?$/i;
+const PRODUCT_LABEL = /^(product|item|listing|dish|meal|plant|shoe|book|gadget|vehicle|car|property|room|ticket|course)s?$/i;
+
+export function deriveArchetype(product, cap) {
+  const declared = String((product && product.archetype) || '').toLowerCase();
+  if (ARCHETYPES.includes(declared)) return { value: declared, source: 'declared', evidence: 'declared in the product brief' };
+  const label = String((product && product.collection && product.collection.label) || '').trim();
+  const reqs = ((product && product.requirements) || []).join(' ');
+  if (PEOPLE_LABEL.test(label)) return { value: 'roster', source: 'inferred', evidence: `the collection holds people ("${label}")` };
+  if (cap && cap.bag) return { value: 'commerce', source: 'inferred', evidence: 'the requirements ask for a bag/cart the user adds to' };
+  if (PRODUCT_LABEL.test(label) && /\b(buy|sell|shop|order|purchase|price|checkout)\b/i.test(reqs)) {
+    return { value: 'commerce', source: 'inferred', evidence: `the collection holds purchasable things ("${label}") and the requirements use commerce verbs` };
+  }
+  if ((product && product.availability) || /\b(appointment|booking|reserve a|slot)\b/i.test(reqs)) {
+    return { value: 'service', source: 'inferred', evidence: 'the app is built around bookings/appointments' };
+  }
+  if (/^(article|essay|story|post|chapter)s?$/i.test(label)) return { value: 'content', source: 'inferred', evidence: `the collection is reading matter ("${label}")` };
+  return { value: 'records', source: 'inferred', evidence: 'no commerce, people, booking or reading signals — a neutral records list' };
+}
+
 /** Roles for a plain field list. First text is the title, second the subtitle. */
-function deriveRoles(fields, reqs) {
+function deriveRoles(fields, reqs, archetype) {
   const out = [];
   let textSeen = 0;
   let statSeen = 0;
@@ -51,6 +93,10 @@ function deriveRoles(fields, reqs) {
     } else if (f.type === 'number') {
       statSeen += 1;
       role = statSeen <= 2 ? 'stat' : 'meta';
+    } else if (f.type === 'money') {
+      // M051 money rule (law 43): price only in commerce, or when the
+      // brief explicitly declares this field's role as "price".
+      role = (archetype === 'commerce' || f.role === 'price') ? 'price' : 'meta';
     } else {
       role = ROLE_BY_TYPE[f.type] || 'meta';
     }
@@ -157,7 +203,7 @@ function parseAggregateRequirements(reqs, fields, entity = {}) {
       const threshold = byLabel(cm[2]);
       if (threshold) {
         const below = /below|under/i.test(cm[1]);
-        const subject = fields.find(f => f.id !== threshold.id && f.type === threshold.type && (f.role === 'stat' || f.role === 'price'))
+        const subject = fields.find(f => f.id !== threshold.id && f.type === threshold.type && (f.role === 'stat' || f.role === 'price' || f.type === 'money'))
           || fields.find(f => f.id !== threshold.id && f.type === threshold.type);
         if (subject) found.push({ idx: cm.index, agg: {
           id: 'count-' + threshold.id,
@@ -184,7 +230,11 @@ function parseAggregateRequirements(reqs, fields, entity = {}) {
     const vm = /total value(?:\s+of\s+([a-z][a-z ]*?))?(?:,|\.|$)/i.exec(s);
     if (vm && !found.some(f => f.agg.op === 'sumProduct')) {
       const qty = fields.find(f => f.unitField) || fields.find(f => f.role === 'stat');
-      const money = fields.find(f => f.role === 'price');
+      // M051: semantic lookup by TYPE — the money rule governs how a
+      // money field RENDERS (price chrome only in commerce), not
+      // whether aggregate math may use it. A stock-records app still
+      // totals qty × unit price.
+      const money = fields.find(f => f.type === 'money');
       if (qty && money) found.push({ idx: vm.index, agg: {
         id: 'total-value',
         label: 'Total value' + (vm[1] ? ' of ' + vm[1].trim() : ''),
@@ -324,8 +374,22 @@ function deriveEntryLabel(reqs, product) {
 export function deriveBrief(product, evidence) {
   const reqs = product.requirements || [];
   const notes = [];
-  const fields = deriveRoles(product.fields || [], reqs);
   const cap = deriveCapabilities(reqs);
+  // M051: the archetype is decided BEFORE roles — it is what decides
+  // whether a money field is a price (law 43).
+  const archetype = deriveArchetype(product, cap);
+  const fields = deriveRoles(product.fields || [], reqs, archetype.value);
+  notes.push(`archetype: ${archetype.value} (${archetype.source} — ${archetype.evidence})`);
+  // M051: in a roster, one enum field is the person's visible STATE —
+  // where they are / what their status is. Designate it (the field
+  // stays a filter facet too); the runtime renders it as a status
+  // chip on the person card, which is the roster's core signal.
+  if (archetype.value === 'roster') {
+    const statusy = fields.filter(f => f.type === 'enum');
+    const designated = statusy.find(f => /^(where|place|location|status|state|check-?in|availability)$/i.test(f.id) || /where|place|location|status|state|check-?in/i.test(f.label || ''))
+      || statusy.find(f => f.role === 'status');
+    if (designated) { designated.statusField = true; notes.push(`roster status field designated: "${designated.id}" (renders as the status chip on person cards)`); }
+  }
   const comp = { value: null };
   const compositionPlan = null;
 
@@ -351,6 +415,7 @@ export function deriveBrief(product, evidence) {
     currency: product.currency || '',
     unit: product.unit || '',
     domain: product.domain || 'general',
+    archetype: archetype.value,
     family: product.family || slug(product.name),
     views: [slug(plural)],
     _derived: {
@@ -424,7 +489,7 @@ export function deriveBrief(product, evidence) {
       brief.aggregates = parsed;
       notes.push(`aggregates derived from the requirement wording: ${parsed.map(a => a.label).join('; ')}`);
     } else {
-      const stats = fields.filter(f => f.role === 'stat' || f.role === 'price');
+      const stats = fields.filter(f => f.role === 'stat' || f.role === 'price' || f.type === 'money');
       brief.aggregates = stats.slice(0, 3).map(f => ({
         id: f.id, label: `Total ${f.label || f.id}`, op: f.type === 'number' || f.type === 'money' ? 'sum' : 'count', field: f.id,
         format: f.type === 'money' ? 'money' : 'plain',
@@ -449,7 +514,7 @@ export function deriveBrief(product, evidence) {
     const cols = [];
     const pushCol = (f) => {
       if (f && !cols.some(c => c.field === f.id)) {
-        cols.push({ field: f.id, label: f.label || f.id, align: ['stat', 'price'].includes(f.role) ? 'right' : undefined });
+        cols.push({ field: f.id, label: f.label || f.id, align: ['stat', 'price'].includes(f.role) || f.type === 'money' ? 'right' : undefined });
       }
     };
     pushCol(fields.find(f => f.role === 'title'));
@@ -481,7 +546,11 @@ export function deriveBrief(product, evidence) {
     notes.push(`a reading requirement was detected but the composition is "${brief.intent.composition}", so no article was declared`);
   }
   if (cap.bag) {
-    const priceField = fields.find(f => f.role === 'price') || fields.find(f => f.type === 'money');
+    // M051: the money fallback is commerce-only. Before M051 ANY money
+    // field became the bag's price field; in a non-commerce archetype
+    // a bag (if one was somehow derived) must not invent prices.
+    const priceField = fields.find(f => f.role === 'price')
+      || (archetype.value === 'commerce' ? fields.find(f => f.type === 'money') : null);
     brief.bag = {
       label: product.bagLabel || 'Bag',
       priceField: priceField ? priceField.id : null,
@@ -523,7 +592,11 @@ export function deriveBrief(product, evidence) {
   if (Array.isArray(perms) && perms.length) {
     brief.permissions = perms.map(p => (typeof p === 'string'
       ? { key: slug(p), title: p, benefit: '' }
-      : { key: p.key || slug(p.title || 'permission'), title: p.title || p.key || 'Permission', benefit: p.benefit || p.text || '' }));
+      // M051: the declared glyph must survive into the model — before
+      // M051 this mapping dropped it, so the priming disc fell back to
+      // the title's initials ("SW") and builders "fixed" it by
+      // renaming the title. The glyph is the design; keep it.
+      : { key: p.key || slug(p.title || 'permission'), title: p.title || p.key || 'Permission', benefit: p.benefit || p.text || '', glyph: p.glyph || p.icon || '' }));
     notes.push(`${brief.permissions.length} permission-priming screen(s) declared in the product brief`);
   }
   if (product.chat) {

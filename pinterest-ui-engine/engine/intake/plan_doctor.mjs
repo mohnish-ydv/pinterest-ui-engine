@@ -77,6 +77,24 @@ export function doctorPlan(planDir) {
     }
   }
 
+  // M051: the archetype in PLAN.json, the brief and DESIGN_DIRECTION
+  // must be the SAME decision. A plan that plans a roster but designs
+  // a catalogue is the Kutumb failure at plan stage.
+  {
+    let briefArch = null;
+    try { briefArch = JSON.parse(read('product-brief.json') || '{}').archetype || null; } catch { /* brief doctor reports parse issues separately */ }
+    if (plan.archetype && briefArch && plan.archetype !== briefArch)
+      gap(`archetype mismatch: PLAN.json says "${plan.archetype}" but product-brief.json declares "${briefArch}". One decision, everywhere.`);
+    const arch = plan.archetype || briefArch;
+    if (arch && design && !design.toLowerCase().includes('archetype'))
+      gap(`archetype "${arch}" is declared but DESIGN_DIRECTION.md never names an archetype — the composition decision (M051) is undocumented.`);
+    if (arch === 'roster' && design && !/roster composition/i.test(design))
+      gap('archetype is "roster" but DESIGN_DIRECTION.md does not specify the ROSTER composition (person cards, status chip, no price lines) — the catalogue composition would take over by default.');
+    const funcText = read('FUNCTIONALITY.md');
+    if (arch === 'roster' && funcText && !/roster/i.test(funcText))
+      gap('archetype is "roster" but FUNCTIONALITY.md never mentions the roster — the plan pack disagrees with itself.');
+  }
+
   const art = read('ART_DIRECTION.md');
   if (!art) gap('ART_DIRECTION.md is missing.');
   else if (!/base reference|reference source|user[:\s]|user reference|decode/i.test(art))

@@ -1,4 +1,4 @@
-# Integration Guide — Pinterest UI Engine 1.30.0
+# Integration Guide — Pinterest UI Engine 1.31.0
 
 For an AI coding agent or developer integrating this engine into
 another system (e.g. Indus AI). Everything here was verified in a
@@ -62,6 +62,8 @@ The same pattern — plain capability sentences — drives search,
 filters, favourites (a "save … with a heart toggle" sentence) and
 the three-step checkout sentence; the worked example's
 `requirements` are safe templates to copy and adapt.
+| `archetype` (M051) | `"commerce" \| "roster" \| "service" \| "records" \| "content"` — what the main list IS. It decides the money rule and the collection's composition (below). Declared in intake (`q-archetype`); undeclared, it is inferred conservatively: a people collection (Member, Patient, Student…) is a roster, a bag the requirements ask the user to add to is commerce, booking/availability signals make a service, reading matter is content, anything else is records. **A money field alone never implies commerce.** |
+| Field `role: "price"` (M051) | A field in `fields` may declare `role: "price"` explicitly — the one way a money field becomes a price outside a commerce archetype. |
 | `promo` | Optional `{ title, subtitle, cta, recordId, image? }` banner. `percent` (e.g. `"30%"`) makes it the board's percent-led card. |
 | `commitTitle`, `referencePrefix`, `submissionsLabel` | Optional flow wording (confirmation title, order-reference prefix, orders tab label). |
 | `flow` | Optional declared checkout: `{ form: [...], steps: [...] }` in the same shape a parsed flow produces. Declared beats derived. An `enum` form field whose `options` are objects `{ label, value, caption?, price? }` renders as priced **radio rows** (delivery/payment choices) and its `price` joins the order total. |
@@ -85,6 +87,44 @@ the three-step checkout sentence; the worked example's
 | Flow field `time-chips` (M050) | A `product.flow` form field `{ type: "time-chips", options: [...] }` — single-select time-slot chips (a default 09:00–17:00 set when no options are declared). Same summary/total path as every other field. |
 | Search suggestions (M050) | No declaration needed beyond the existing search: while the catalogue search input is focused with an empty query, a suggestion state renders — recent searches (persisted on-device), popular terms (first facet's values) and record rows. Tapping one fills and runs the search. |
 | Orders status tabs (M050) | No declaration: the orders (submissions) view of a bag app carries segmented status tabs built from the statuses its orders actually carry (`All` + each present status, a placed bag order being `Placed`), filtering the list. |
+
+**The archetype system and the money rule (Mission 051, grammar
+laws 43–45).** Before M051 the engine had exactly one collection
+pattern — a shop catalogue — and one money rule: every money field
+was the price. A family app (Kutumb) whose members carry a "Fund
+contribution" money field was therefore rendered as a marketplace:
+member cards with ₹2,000 / ₹1,500 / ₹0 price lines. Since M051:
+
+- **Money rule.** A money field is the card **price** only when the
+  archetype is `commerce`, or the field declares `role: "price"`.
+  In every other archetype the field's role is a labelled value: it
+  renders on the detail/profile view as a labelled row ("Fund
+  contribution — ₹2,000") and right-aligned in tables, and it is
+  excluded from card price lines, card meta lines and add/stepper
+  affordances. The bag's price field follows the same rule.
+- **Roster composition.** With archetype `roster`, the collection
+  renders people: person cards with avatar (photo or initials),
+  name, relation · role as the meta line, and a **status chip** for
+  the designated status field (the enum field whose id/label is
+  where/place/status/state-like — e.g. "Where" → *School*, *Work*,
+  *Home*, *Out*) — derive marks it `statusField: true` on the field;
+  it keeps its facet role so it still filters. The detail view is a
+  person profile: avatar hero, the status chip, and labelled rows
+  for every fact. No price line, no `+` add button, no promo banner
+  unless a promo is explicitly declared.
+- **Vocabulary guard.** Engine chrome in non-commerce archetypes
+  carries no shop words: no Delivery row in totals without a
+  declared delivery fee, no price sorts in the filter sheet of an
+  app with no prices, the detail rail reads "Other members" /
+  "Related records", never "You may also like", over people.
+- **Labels, signs, glyphs (law 45).** Committed enum/chip values
+  render as option LABELS in the flow review, the confirmation and
+  the submissions log (object and string options alike). Wallet
+  transaction signs come from the transaction `kind` (`debit` is
+  negative even when the stored amount is positive). A permission's
+  declared `glyph` survives into the model and renders in the
+  priming disc; with no glyph the disc shows a neutral mark, never
+  the title's initials.
 
 **The declared families (Mission 046).** Everything in the second
 half of the table is *declared, never derived*: the engine does not
@@ -115,13 +155,26 @@ After a successful run, `<caseDir>/` contains the pipeline reports
   assets/               your supplied photos, copied in
   icon-192.png  icon-512.png   (when Python+PIL is available)
   manifest.webmanifest
+  sw.js                 (M051) offline service worker — cache-first app
+                        shell, registered by index.html on http(s)
   testplan.json         a generated behavioural test plan for the app
 ```
 
 **The app is fully self-contained static files.** No imports, no
-runtime dependency on this engine, no build step. Host it on any
-static host or open `index.html` via `file://`. State (bag,
+runtime dependency on this engine, no build step. State (bag,
 favourites, orders) persists in the browser's localStorage.
+
+**M051 — it is an app, packaged two ways.** Every generated app
+carries a standalone web manifest (name, short_name, theme/background
+colours, 192+512 icons) and the `sw.js` offline worker above: hosted
+over HTTPS it is an installable, offline-capable app. The same bundle
+drops unchanged into the Android WebView shell at
+`pinterest-ui-engine/app-shell/` to build an APK. Full steps:
+`APP_PACKAGING.md` at the tree root. Check any generated app with
+`node pinterest-ui-engine/engine/tools/app_readiness.mjs <caseDir>/app`
+(PASS/GAP per item, exit 1 on gaps). "Open it in a browser" is a
+testing step, never the handover: the deliverable is the installable
+app (see INTAKE.md Stage 6).
 
 ## 4. Environment
 

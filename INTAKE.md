@@ -32,7 +32,18 @@ answer to that one question seeds the interview.
 Ask the questions in `intake-questions.json` (v2), group by group, in
 this staged order:
 
-1. **Idea** (`idea`) — name, pitch, domain, place/currency.
+1. **Idea** (`idea`) — name, pitch, domain, place/currency, and the
+   **archetype** (`q-archetype`, new in M051): what does the main list
+   hold — things people buy (`commerce`), people (`roster`), bookings
+   (`service`), records (`records`), or reading (`content`)? This one
+   answer decides how the whole app renders. **Ask it early, and
+   never let a money field answer it for you** — a member's fund
+   contribution is not a price, and before M051 the engine treated
+   every money field as one and built a family app as a marketplace
+   (the Kutumb failure). The answer lands in the brief as
+   `archetype`, in PLAN.json, and in the plan's FUNCTIONALITY and
+   DESIGN_DIRECTION (the roster composition is specified there when
+   the archetype is `roster`).
 2. **Catalogue** (`catalogue`) — item word, facts, photos, item source.
 3. **Commerce** (`commerce`) — buying model, bag name, uniqueness,
    checkout shape, delivery fee.
@@ -49,7 +60,7 @@ the marked default; accept "you decide" (take the default and say so);
 never ask a question whose `when` condition is unmet (don't ask the
 bag's name when there is no bag; don't ask booking detail for a pure
 store). Keep it conversational — this is an interview, not a form dump.
-Group the questions; do not fire all 24 at once.
+Group the questions; do not fire all 25 at once.
 
 **Reference choice handling.** If the user picks their own reference
 (or has attached screenshots / a board / a Figma export), record
@@ -156,6 +167,17 @@ After confirmation, build **per the roadmap and per milestone**:
 4. When all milestones are checked off, run the full verification
    (fulfilment, brief doctor, plan doctor) and hand over the app plus
    the completed plan pack.
+5. **Hand over an APP, not a website (M051).** The deliverable is an
+   installable app: the generated folder is a PWA (manifest +
+   service worker — verify with
+   `node pinterest-ui-engine/engine/tools/app_readiness.mjs <appDir>`)
+   and `APP_PACKAGING.md` describes how it becomes an Android APK
+   via `pinterest-ui-engine/app-shell/`. Never tell the user to
+   "open index.html in a browser" or "host this folder" as the
+   delivery — a browser open is how YOU test it, not what they
+   receive. Say instead: *"Here is your app — install it on your
+   phone (PWA) or install the APK; it works offline, and its data
+   lives on the device."*
 
 ---
 
@@ -163,6 +185,7 @@ After confirmation, build **per the roadmap and per milestone**:
 
 | Answer | Lands in the brief as |
 | --- | --- |
+| Archetype *(M051)* | `archetype` at the brief's top level — `commerce` / `roster` / `service` / `records` / `content`. It decides whether money fields are prices (commerce only) and how the main list composes (a roster renders people: avatar, relation · role, status chip). Undeclared, the engine infers conservatively — a people collection is a roster, a bag the user adds to is commerce — and a money field alone NEVER implies commerce. The brief doctor GAPs the undecidable cases (money + no signals) and the Kutumb shape (people + commerce) |
 | Commerce = bag | A requirement sentence using a trigger word — "Customers add products to a **cart** they can review…" (the word bag/cart/basket + an add-verb is what derives the bag; the on-screen name is `bagLabel`, independent of it) |
 | Commerce = contact / none | No bag sentence at all. Say what the primary action is instead ("Buyers contact the seller to arrange a purchase") — do not leave a stray "cart" word anywhere in the requirements |
 | One-of-one items | `uniqueItems: true` (bag caps at 1, no steppers) |

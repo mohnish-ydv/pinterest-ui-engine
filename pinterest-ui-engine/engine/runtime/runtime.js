@@ -60,6 +60,46 @@
   var metaFs = byRoleAll('meta');
   var statFs = byRoleAll('stat');
 
+  // M051: the app archetype (law 43/44). Anything that is not commerce
+  // must not be rendered as a shop: money fields are labelled values,
+  // not prices, and shop vocabulary stays out of the chrome.
+  var ARCHETYPE = model.archetype || 'commerce';
+  var IS_COMMERCE = ARCHETYPE === 'commerce';
+  // The roster's designated status field (derive marks it; it keeps
+  // its facet role so it still filters). Falls back to a status role.
+  var statusField = model.entity.fields.filter(function (f) { return f.statusField; })[0] || statusF;
+  // Money fields that are NOT the price (non-commerce archetypes):
+  // excluded from every card/row/header meta line — they belong on
+  // the detail view as labelled rows.
+  function isLooseMoney(f) { return f && f.type === 'money' && f.role !== 'price'; }
+
+  // M051 (law 45): a stored enum value is data, not prose. Everywhere
+  // a committed value is shown back to the user — flow review,
+  // confirmation, the submissions/orders log — it must render as the
+  // LABEL of the option that was chosen, for object options
+  // ({label, value}) and string options alike, and for booking chip
+  // fields (date-strip / time-chips) whose stored value is a key.
+  function optionLabelFor(f, v) {
+    if (!f || v === null || v === undefined || v === '') return v;
+    if (isChipField(f)) {
+      var hit = chipFieldOptions(f).filter(function (o) { return String(o.value) === String(v); })[0];
+      return hit ? hit.label : v;
+    }
+    var opts = f.options || [];
+    for (var i = 0; i < opts.length; i++) {
+      var o = opts[i];
+      var ov = (o && typeof o === 'object') ? o.value : o;
+      if (String(ov) === String(v)) return (o && typeof o === 'object') ? (o.label || ov) : o;
+    }
+    return v;
+  }
+  function fieldByIdAnywhere(fid) {
+    var af = (commitAction() && commitAction().form) || [];
+    for (var i = 0; i < af.length; i++) if (af[i].id === fid) return af[i];
+    return FIELDS[fid] || null;
+  }
+  function displayValue(fid, v) { return optionLabelFor(fieldByIdAnywhere(fid), v); }
+
   function fmt(field, rec) {
     // A quantity with a unit must never render as the bare number: "2 kg" is
     // the fact, "2" is a rounding error in the reader's head.
@@ -565,6 +605,11 @@
       var saved = isSaved(rec.id);
       var badge = sBadgeF && rec[sBadgeF.id] ? '<span class="badge">' + esc(fmt(sBadgeF, rec)) + '</span>' : '';
       var status = sStatusF && rec[sStatusF.id] ? '<span class="pill">' + esc(fmt(sStatusF, rec)) + '</span>' : '';
+      // M051: a roster row shows the designated status field as its
+      // pill when no field carries the status role outright.
+      if (!status && ARCHETYPE === 'roster' && statusField && rec[statusField.id]) {
+        status = '<span class="pill status-chip tone-' + statusTone(rec[statusField.id]) + '" data-field="' + esc(statusField.id) + '" data-record="' + esc(rec.id) + '" data-testid="status-chip">' + esc(fmt(statusField, rec)) + '</span>';
+      }
       // A typographic index: no card chrome, no media, no initials. The
       // composition exists because a spec asked for it and the planner had no
       // way to honour the request.
@@ -573,7 +618,7 @@
           ? (FIELDS[s.binding.standfirstField] || null) : null;
         var standfirst = sff && rec[sff.id] ? '<p class="idx-standfirst">' + esc(fmt(sff, rec)) + '</p>' : '';
         var metaLine = [sSubF ? fmt(sSubF, rec) : ''].concat(
-          sMetaFs.map(function (f) { return fmt(f, rec); })).filter(Boolean).join(' \u00b7 ');
+          sMetaFs.filter(function (f) { return !isLooseMoney(f); }).map(function (f) { return fmt(f, rec); })).filter(Boolean).join(' \u00b7 ');
         var idxExtra = (s.props.entryExtra || []).map(function (id2) { var f2 = FIELDS[id2]; return f2 && rec[id2] != null ? fmt(f2, rec) : ''; }).filter(Boolean).join(' \u00b7 ');
         return '<div class="idx-row' + (rec === recs[0] ? ' idx-lead' : '') + '" data-act="open" data-id="' + esc(rec.id) + '" data-testid="' + esc(s.props.itemTestid) + '">' +
           '<h2 class="idx-title" data-field="' + esc(sTitleF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(sTitleF, rec)) + '</h2>' +
@@ -587,17 +632,36 @@
         // the first facet (what it is) and the first statistic (how
         // good / how much signal) outrank everything else; any
         // remaining slot backfills in priority order.
+        // M051: a loose money field (non-commerce) is NEVER a card
+        // fact — it is a labelled value for the detail view, not a
+        // price and not a meta fragment.
         var _present = function (f) { return rec[f.id] != null && String(rec[f.id]) !== ''; };
-        var _facetFs = byRoleAll('facet').filter(_present);
-        var _ordered = _facetFs.concat(sStatFs.filter(_present)).concat(sMetaFs.filter(_present)).concat(sSubF && _present(sSubF) ? [sSubF] : []);
+        var _facetFs = byRoleAll('facet').filter(_present).filter(function (f) { return !isLooseMoney(f); });
+        var _ordered = _facetFs.concat(sStatFs.filter(_present)).concat(sMetaFs.filter(_present).filter(function (f) { return !isLooseMoney(f); })).concat(sSubF && _present(sSubF) ? [sSubF] : []);
         var _picks = [];
-        if (_facetFs.length) _picks.push(_facetFs[0]);
-        if (sStatFs.filter(_present).length) _picks.push(sStatFs.filter(_present)[0]);
+        if (ARCHETYPE === 'roster') {
+          // M051 roster card: the two facts about a PERSON are who
+          // they are to you (subtitle: relation) and what they are in
+          // the group (first non-status facet: role). Their state is
+          // not a meta fragment — it gets the status chip below.
+          if (sSubF && _present(sSubF)) _picks.push(sSubF);
+          var _roleFacet = _facetFs.filter(function (f) { return f !== statusField; })[0];
+          if (_roleFacet && _picks.indexOf(_roleFacet) === -1) _picks.push(_roleFacet);
+        }
+        if (_facetFs.length && _picks.indexOf(_facetFs[0]) === -1 && _picks.length < 2 && ARCHETYPE !== 'roster') _picks.push(_facetFs[0]);
+        if (sStatFs.filter(_present).length && _picks.length < 2) _picks.push(sStatFs.filter(_present)[0]);
         for (var _i = 0; _i < _ordered.length && _picks.length < 2; _i++) {
           if (_picks.indexOf(_ordered[_i]) === -1) _picks.push(_ordered[_i]);
         }
         var _metaHtml = _picks.length
           ? '<span class="card-meta">' + _picks.map(function (f) { return esc(fmt(f, rec)).replace(/ /g, '\u00a0'); }).filter(Boolean).join(' \u00b7 ') + '</span>'
+          : '';
+        // M051: the roster status chip — the person's state (Where:
+        // School / Work / Home / Out; Status: Waiting / Done) as a
+        // tinted chip on the card. This is the roster's core signal;
+        // before M051 it was buried as the second meta fragment.
+        var _statusChip = (ARCHETYPE === 'roster' && statusField && _present(statusField))
+          ? '<span class="status-chip tone-' + statusTone(rec[statusField.id]) + '" data-field="' + esc(statusField.id) + '" data-record="' + esc(rec.id) + '" data-testid="status-chip">' + esc(fmt(statusField, rec)) + '</span>'
           : '';
         return '<article class="card">' +
           '<button class="card-open" data-act="open" data-id="' + esc(rec.id) + '" data-testid="' + esc(s.props.itemTestid) + '">' +
@@ -605,6 +669,7 @@
             '<span class="card-body">' +
               '<span class="card-top"><span class="card-title" data-field="' + esc(sTitleF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(sTitleF, rec)) + '</span>' + badge + '</span>' +
               _metaHtml +
+              (_statusChip ? '<span class="card-status">' + _statusChip + '</span>' : '') +
               ((s.props.entryExtra || []).length ? '<span class="card-extra">' + (s.props.entryExtra || []).map(function (id2) { var f2 = FIELDS[id2]; return f2 && rec[id2] != null ? esc(fmt(f2, rec)) : ''; }).filter(Boolean).join(' \u00b7 ') + '</span>' : '') +
               (sPriceF ? '<span class="card-price" data-field="' + esc(sPriceF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(sPriceF, rec)) + '</span>' : '') +
             '</span>' +
@@ -637,11 +702,14 @@
       // A field can be both a filter facet and something the row should show —
       // "whether it is free" is filterable AND required on the row.
       var facetFs = byRoleAll('facet').filter(function (f) { return rec[f.id] != null && String(rec[f.id]) !== ''; });
+      // M051: in a roster row the designated status facet is the
+      // pill — it must not also repeat inside the meta line.
+      if (ARCHETYPE === 'roster' && statusField) facetFs = facetFs.filter(function (f) { return f !== statusField; });
       // Fields the brief requires in every entry, even when the surface has no
       // native slot for their role. Introduced as a region rather than dropped.
       var extraFs = (s.props.entryExtra || []).map(function (id) { return FIELDS[id]; })
         .filter(function (f) { return f && rec[f.id] != null && String(rec[f.id]) !== ''; });
-      var rowMeta = sMetaFs.concat(facetFs).map(function (f) { var t = fmt(f, rec); return t ? '<span data-field="' + esc(f.id) + '" data-record="' + esc(rec.id) + '">' + esc(t) + '</span>' : ''; }).filter(Boolean).join(' \u00b7 ');
+      var rowMeta = sMetaFs.concat(facetFs).filter(function (f) { return !isLooseMoney(f); }).map(function (f) { var t = fmt(f, rec); return t ? '<span data-field="' + esc(f.id) + '" data-record="' + esc(rec.id) + '">' + esc(t) + '</span>' : ''; }).filter(Boolean).join(' \u00b7 ');
       var extraLine = extraFs.map(function (f) {
         var t = fmt(f, rec); return t ? '<span data-field="' + esc(f.id) + '" data-record="' + esc(rec.id) + '">' + esc(t) + '</span>' : '';
       }).filter(Boolean).join(' \u00b7 ');
@@ -699,9 +767,12 @@
         '<h1 class="' + esc(titleCls) + '" data-testid="detail-title" data-field="' + esc(titleF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(titleF, rec)) + '</h1>' +
         (badgeF && rec[badgeF.id] ? '<p class="rec-badges"><span class="badge">' + esc(fmt(badgeF, rec)) + '</span></p>' : '') +
         (subF ? '<p class="rec-sub" data-field="' + esc(subF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(subF, rec)) + '</p>' : '') +
-        (metaFs.length ? '<p class="rec-meta">' + metaFs.map(function (f) { return esc(fmt(f, rec)); }).filter(Boolean).join(' \u00b7 ') + '</p>' : '') +
+        (metaFs.length ? '<p class="rec-meta">' + metaFs.filter(function (f) { return !isLooseMoney(f); }).map(function (f) { return esc(fmt(f, rec)); }).filter(Boolean).join(' \u00b7 ') + '</p>' : '') +
         (priceF ? '<p class="rec-price" data-testid="detail-price" data-field="' + esc(priceF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(priceF, rec)) + '</p>' : '') +
         (statusF && rec[statusF.id] ? '<p><span class="pill">' + esc(fmt(statusF, rec)) + '</span></p>' : '') +
+        // M051: the roster person's state, on their profile, as a chip.
+        (ARCHETYPE === 'roster' && statusField && statusField !== statusF && rec[statusField.id]
+          ? '<p><span class="pill status-chip tone-' + statusTone(rec[statusField.id]) + '" data-testid="status-chip">' + esc(fmt(statusField, rec)) + '</span></p>' : '') +
       '</div>' +
       (s.props.showMedia ? '' : saveBtn) +
       '</div>';
@@ -941,6 +1012,8 @@
           var val = it[fid];
           if (fid === 'slot' && it.dayLabel) val = it.dayLabel + ' \u00b7 ' + it.slot;
           if (fid === 'id') val = (model.records.filter(function (r) { return r.id === it.id; })[0] || {})[titleF ? titleF.id : 'id'] || it.id;
+          // M051 (law 45): the log shows labels, not raw enum values.
+          else if (fid !== 'slot') val = displayValue(fid, val);
           if (val === undefined || val === null || val === '') return '';
           return '<div class="dl-row"><span class="dl-label">' + esc(label) + '</span><span class="dl-value">' + esc(val) + '</span></div>';
         }).join('');
@@ -1034,9 +1107,14 @@
     if (!bagEntries().length) return '';
     var t = bagTotals();
     var delivery = t.subtotal === 0 ? money(0) : (t.free ? 'Free' : money(t.delivery));
+    // M051 (law 44): a "Delivery" row belongs to commerce. A service
+    // app that books visits does not deliver anything — the row only
+    // renders outside commerce when a delivery fee was explicitly
+    // declared in the brief.
+    var showDelivery = IS_COMMERCE || (model.bag && typeof model.bag.deliveryFee === 'number');
     return '<div class="wrap"><div class="bag-totals" data-testid="' + esc(s.props.testid) + '"><div class="dl">' +
       '<div class="dl-row"><span class="dl-label">Subtotal</span><span class="dl-value" data-testid="' + esc(s.props.subtotalTestid) + '">' + esc(money(t.subtotal)) + '</span></div>' +
-      '<div class="dl-row"><span class="dl-label">Delivery</span><span class="dl-value" data-testid="' + esc(s.props.deliveryTestid) + '">' + esc(delivery) + '</span></div>' +
+      (showDelivery ? '<div class="dl-row"><span class="dl-label">Delivery</span><span class="dl-value" data-testid="' + esc(s.props.deliveryTestid) + '">' + esc(delivery) + '</span></div>' : '') +
       '<div class="dl-row dl-total"><span class="dl-label">Total</span><span class="dl-value" data-testid="' + esc(s.props.totalTestid) + '">' + esc(money(t.total)) + '</span></div>' +
       '</div></div></div>';
   };
@@ -1282,10 +1360,10 @@
         var v = S.form[f.id] == null ? '' : String(S.form[f.id]);
         // M050: a booking chip field reviews as the label the user
         // tapped ("Today 29 Oct"), not the stored value ("2026-10-29").
-        if (v && isChipField(f)) {
-          var hit = chipFieldOptions(f).filter(function (o) { return String(o.value) === v; })[0];
-          if (hit) v = hit.label;
-        }
+        // M051 (law 45): EVERY optioned field reviews as its label —
+        // before M051 a plain enum showed the raw stored value
+        // ("followup", "today") instead of "Follow-up visit", "Today".
+        if (v) v = String(optionLabelFor(f, v));
         return v ? '<div class="dl-row"><span>' + esc(f.label) + '</span><span>' + esc(v) + '</span></div>' : '';
       }).join('') + '</div>';
     }
@@ -1315,6 +1393,8 @@
           var label = (model.fieldLabels && model.fieldLabels[k]) || (FIELDS[k] && FIELDS[k].label) || k;
           var val = c.booking[k];
           if (k === 'slot' && c.booking.dayLabel) val = c.booking.dayLabel + ' \u00b7 ' + c.booking.slot;
+          // M051 (law 45): enum values confirm as labels, not raw keys.
+          else val = displayValue(k, val);
           return '<div class="dl-row"><span class="dl-label">' + esc(label) + '</span><span class="dl-value">' + esc(val) + '</span></div>';
         }).join('') +
         '</div>';
@@ -1457,12 +1537,20 @@
     return '<div class="wrap"><h2 class="sect-title">' + esc(s.props.title) + '</h2>' +
       '<div class="txns" data-testid="' + esc(s.props.testid) + '">' +
       w.txns.map(function (t) {
-        var amt = Number(t.amount) || 0;
+        // M051 (law 45): the sign of a transaction is its KIND, not
+        // the sign the brief happened to store. A debit declared with
+        // a positive amount printed as a credit before M051 (the
+        // Kutumb fund: "School fees" showed +₹3,200 until a builder
+        // hand-signed the data). kind wins; the stored sign is only
+        // the fallback for kindless transactions.
+        var raw = Number(t.amount) || 0;
+        var neg = t.kind === 'debit' ? true : (t.kind === 'credit' || t.kind === 'topup') ? false : raw < 0;
+        var amt = Math.abs(raw);
         return '<div class="txn" data-testid="' + esc(s.props.itemTestid) + '">' +
           '<span class="txn-disc" aria-hidden="true">' + (t.kind === 'topup' ? '\u2193' : esc(initials(t.label || 'T'))) + '</span>' +
           '<span class="txn-main"><span class="txn-name">' + esc(t.label || '') + '</span>' +
           (t.when ? '<span class="txn-when">' + esc(t.when) + '</span>' : '') + '</span>' +
-          '<span class="txn-amt ' + (amt < 0 ? 'is-neg' : 'is-pos') + '">' + (amt < 0 ? '\u2212' : '+') + esc(money(Math.abs(amt))) + '</span></div>';
+          '<span class="txn-amt ' + (neg ? 'is-neg' : 'is-pos') + '">' + (neg ? '\u2212' : '+') + esc(money(amt)) + '</span></div>';
       }).join('') + '</div></div>';
   };
 
@@ -1625,8 +1713,14 @@
             return '<button class="chip' + (on ? ' chip-on' : '') + '" data-act="fx-rating" data-value="' + pair[0] + '">\u2605 ' + pair[1] + '</button>';
           }).join('') + '</div></div>'
         : '';
+      // M051 (law 44): sort vocabulary follows the archetype's data —
+      // "Price: low to high" in an app with no prices (a roster, a
+      // records list) is shop chrome leaking into a non-shop app.
+      var sortPairs = [['', 'Featured']]
+        .concat(priceF ? [['price-asc', 'Price: low to high'], ['price-desc', 'Price: high to low']] : [])
+        .concat(ratingF ? [['rating', 'Top rated']] : []);
       var sortGroup = '<div class="sheet-group"><span class="sheet-lb">Sort by</span><div class="chips">' +
-        [['', 'Featured'], ['price-asc', 'Price: low to high'], ['price-desc', 'Price: high to low'], ['rating', 'Top rated']].map(function (pair) {
+        sortPairs.map(function (pair) {
           return '<button class="chip' + (fx.sort === pair[0] ? ' chip-on' : '') + '" data-act="fx-sort" data-value="' + pair[0] + '">' + pair[1] + '</button>';
         }).join('') + '</div></div>';
       body = '<div class="sheet-head"><span class="sheet-title">Sort &amp; Filter</span>' +
@@ -1705,7 +1799,10 @@
       var pm = pending[0];
       var doneCount = perms.length - pending.length;
       return '<div class="perm" data-testid="permission-priming" data-key="' + esc(pm.key) + '">' +
-        '<span class="perm-disc" aria-hidden="true">' + esc(pm.glyph || initials(pm.title || 'P')) + '</span>' +
+        // M051 (law 45): the disc carries the declared glyph, or a
+        // neutral mark — never the title's initials (a location
+        // permission titled "Share whereabouts" rendered "SW").
+        '<span class="perm-disc" aria-hidden="true">' + esc(pm.glyph || '\u2726') + '</span>' +
         '<h1 class="perm-h" data-testid="permission">' + esc(pm.title || '') + '</h1>' +
         (pm.benefit ? '<p class="perm-benefit">' + esc(pm.benefit) + '</p>' : '') +
         (perms.length > 1 ? '<p class="perm-count">' + (doneCount + 1) + ' of ' + perms.length + '</p>' : '') +

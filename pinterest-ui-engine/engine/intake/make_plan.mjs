@@ -124,6 +124,17 @@ export function buildPlan(answers) {
   const referenceChoice = String(pick(a, 'referenceChoice', 'q-reference-choice') || 'base');
   const journeyPrimary = String(pick(a, 'journey.primary', 'journey', 'q-journey-primary') || '');
   const mustHave = asArray(pick(a, 'mustHaveScreens', 'q-must-have-screens') || []);
+  // M051: the archetype answer (q-archetype) — what the main list
+  // holds. It is written into the brief as a declaration, named in
+  // FUNCTIONALITY/ART_DIRECTION, and it picks the composition:
+  // a roster renders people, commerce renders products. When the
+  // interview never asked, the commerce model is the fallback —
+  // and the plan says so.
+  const ARCHETYPES = ['commerce', 'roster', 'service', 'records', 'content'];
+  const archRaw = String(pick(a, 'archetype', 'q-archetype') || '');
+  const archetype = ARCHETYPES.includes(archRaw) ? archRaw
+    : (commerce === 'bag' ? 'commerce' : commerce === 'booking' ? 'service' : 'records');
+  const archetypeSource = ARCHETYPES.includes(archRaw) ? 'intake answer (q-archetype)' : 'fallback from the commerce answer — the archetype question was not asked';
   const needBooking = String(pick(a, 'needs.booking', 'q-booking-need') || (commerce === 'booking' ? 'yes' : 'no'));
   const needChat = String(pick(a, 'needs.chat', 'q-chat-need') || 'no');
   const needWishlist = String(pick(a, 'needs.wishlist', 'q-wishlist-need') || 'no');
@@ -163,13 +174,23 @@ export function buildPlan(answers) {
   }
 
   // ---- requirements ----
+  // M051: requirement prose follows the archetype. The old template
+  // wrote shop prose for every app ("Customers…", "its price"), and
+  // the derivation downstream believed it — that is how a family
+  // roster acquired prices. Roster prose speaks of members and
+  // labelled facts; a money fact is never called a price.
+  const actor = archetype === 'roster' ? 'Members' : archetype === 'commerce' ? 'Customers' : 'Users';
   const reqs = [
-    `The home screen is a photo-led gallery of every ${itemLabel.toLowerCase()} in the catalogue.`,
-    `Customers can search ${itemPlural.toLowerCase()} by name.`,
+    archetype === 'roster'
+      ? `The home screen is a roster of every ${itemLabel.toLowerCase()} in the group, each card showing where they are as a status chip.`
+      : `The home screen is a photo-led gallery of every ${itemLabel.toLowerCase()} in the catalogue.`,
+    `${actor} can search ${itemPlural.toLowerCase()} by name.`,
   ];
-  if (hasFacet) reqs.push(`Customers can filter ${itemPlural.toLowerCase()} by category.`);
+  if (hasFacet) reqs.push(`${actor} can filter ${itemPlural.toLowerCase()} by category.`);
   if (needWishlist === 'yes' || needWishlist === 'toggle-only') reqs.push(`A customer can save a ${itemLabel.toLowerCase()} to favourites with a heart toggle.`);
-  reqs.push(`Opening a ${itemLabel.toLowerCase()} shows its details, price and description.`);
+  reqs.push(archetype === 'roster'
+    ? `Opening a ${itemLabel.toLowerCase()} shows their note and their labelled facts — money appears as a labelled value, never as a price.`
+    : `Opening a ${itemLabel.toLowerCase()} shows its details, price and description.`);
   if (commerce === 'bag') {
     reqs.push(`Customers add ${itemPlural.toLowerCase()} to a cart they can review and adjust quantities in before ordering.`);
     reqs.push(`A customer checks out from the bag and places an order in three steps: your name and phone, then your delivery address, then review.`);
@@ -186,7 +207,7 @@ export function buildPlan(answers) {
   // ---- brief ----
   const brief = {
     name, tagline: tagline || `${name} — ${domainRaw}`, about: tagline || undefined,
-    domain, location, currency,
+    domain, location, currency, archetype,
     collection: { label: itemLabel, plural: itemPlural, media: mediaSel !== 'none', items },
     fields, requirements: reqs,
   };
@@ -256,7 +277,7 @@ export function buildPlan(answers) {
 
   const refSource = referenceChoice.startsWith('user') ? referenceChoice : 'base';
   const worldName = world !== 'auto' ? world : (String(domainRaw).includes('food') ? 'warm market' : String(domainRaw).includes('service') ? 'clinical calm' : 'mono (base board world)');
-  return { name, tagline, domain, domainRaw, world, worldName, location, currency, itemLabel, itemPlural, commerce, bagLabel, checkout, homeHeader, personName, families: [...fam], referenceChoice, refSource, journeyPrimary, mustHave, needBooking, needChat, needWishlist, brief, screens, milestones, hasFacet };
+  return { name, tagline, domain, domainRaw, world, worldName, location, currency, itemLabel, itemPlural, commerce, bagLabel, checkout, homeHeader, personName, families: [...fam], referenceChoice, refSource, journeyPrimary, mustHave, needBooking, needChat, needWishlist, brief, screens, milestones, hasFacet, archetype, archetypeSource };
 }
 
 export function renderPlan(plan, baseInfo) {
@@ -276,10 +297,10 @@ export function renderPlan(plan, baseInfo) {
 
   const art = `# ART DIRECTION — ${name}\n\n## Reference source\n\nThis direction is justified from the **${refLabel}**. ${plan.refSource === 'base' ? 'No user reference was attached, so the base reference governs every screen.' : 'The user reference governs the screens it covers (see REFERENCE_PLAN.md); the base reference governs the rest.'}\n\n## World\n\n${plan.worldName} — chosen ${plan.world === 'auto' ? 'automatically from the domain' : 'explicitly in intake'} for a ${plan.domainRaw} app. The world sets the ground, the brand colour and the type voice before any screen is drawn.\n\n## Palette\n\n- Ground: the reference world's ground (base board: white in the mono world; photography carries colour).\n- Brand / accent: exactly one accent, per the engine grammar — never two competing brand colours.\n- Text: near-black on light ground; secondary text one step quieter, never a second hue.\n- Media: ${plan.brief.collection.media ? 'real/sample photography is the colour of the app; cards without photos fall back to initials on tint, labelled honestly.' : 'no photography — initials on tint over the ground, by explicit intake choice.'}\n\n## Type\n\nOne sans for working type (the board's voice); display weight reserved for the home greeting and detail titles. No serif in working UI unless the chosen world is editorial.\n\n## Shape & composition\n\nPill search with the icon inside; quiet chips; cards content-first with priority-ordered meta that wraps before it truncates; shadow OR outline, never both (engine grammar). Category medallions on the home when facets are declared.\n`;
 
-  const design = `# DESIGN DIRECTION — ${name}\n\nEvery screen below is mapped to a base-reference screen type. Anatomy follows that type in the ${refLabel}.\n\n` +
+  const design = `# DESIGN DIRECTION — ${name}\n\nEvery screen below is mapped to a base-reference screen type. Anatomy follows that type in the ${refLabel}.\n\nArchetype: \`${plan.archetype}\` (${plan.archetypeSource}). ${plan.archetype === 'roster' ? 'Composition for the catalogue/detail screens is the ROSTER composition (M051): person cards — avatar (photo or initials), name, relation · role as the meta line, and the designated status field as a tinted status chip on the card; the detail is a person profile with labelled rows for every fact. No price line, no add-to-bag button, no promo banner, no shop vocabulary anywhere in the chrome. Money fields render as labelled values on the profile only.' : plan.archetype === 'commerce' ? 'Composition for the catalogue/detail screens is the COMMERCE composition: product cards with price lines, bag affordances and the checkout journey.' : `Composition follows the ${plan.archetype} archetype: the collection renders as ${plan.archetype === 'service' ? 'bookable services with an appointment flow' : plan.archetype === 'content' ? 'reading matter in an index/editorial composition' : 'neutral records — list rows with labelled facts, no shop chrome'}; money fields are labelled values, never unlabelled prices (M051 law 43).`}\n\n` +
     screens.map(s => `## ${s.name} (\`${s.id}\`)\n\n- Reference screen type: \`${s.referenceType}\`\n- Why it exists: ${s.why}\n- Anatomy: header zone (title / greeting as the type requires), primary content region in the type's canonical order, primary action in the type's action position, empty + loading + error states in the type's pattern.\n- States: default, empty, and (where the screen holds user data) populated — all three are built, not just the happy path.\n`).join('\n');
 
-  const functionality = `# FUNCTIONALITY — ${name}\n\n## Features (each traces to a brief declaration)\n\n` +
+  const functionality = `# FUNCTIONALITY — ${name}\n\n## Archetype\n\n\`${plan.archetype}\` — ${plan.archetypeSource}. The archetype is a load-bearing decision (M051): it decides whether money fields are prices (commerce only) and how the main list composes (${plan.archetype === 'roster' ? 'people: avatar, relation · role, status chip' : plan.archetype === 'commerce' ? 'products: price line, bag, checkout' : 'labelled facts, no shop chrome'}). The brief carries it as \`archetype: "${plan.archetype}"\` so the engine never has to guess.\n\n## Features (each traces to a brief declaration)\n\n` +
     plan.brief.requirements.map(r => `- ${r}`).join('\n') +
     `\n\n## Declared families\n\n${plan.families.length ? plan.families.map(f => `- ${f}`).join('\n') : '- None declared — the app is catalogue + primary action only.'}\n\n## Data model\n\n- Collection: \`${plan.itemLabel}\` — fields: ${plan.brief.fields.map(f => `\`${f.id}:${f.type}\``).join(', ')}.\n- Catalogue items in plan: ${plan.brief.collection.items.length} (labelled samples unless the user supplied real items).\n- User state (bag/favourites/orders/bookings, wallet balance, profile toggles) persists in browser localStorage on the device.\n\n## Flows\n\n- Primary flow: see USER_JOURNEY.md.\n- Commerce model: \`${plan.commerce}\`${plan.commerce === 'bag' ? ` (bag label "${plan.bagLabel}", checkout "${plan.checkout}"${plan.brief.uniqueItems ? ', one-of-one items' : ''})` : ''}.\n- Booking need: \`${plan.needBooking}\`. Chat need: \`${plan.needChat}\`. Wishlist need: \`${plan.needWishlist}\`.\n\n## States\n\nEmpty catalogue, empty bag/wishlist, no-results search, no-orders, and first-run (onboarding/auth if declared) are all specified states — not afterthoughts.\n\n## Honest local-only limits\n\n- The engine generates front-ends with local state. Accounts, real payments, push notifications, live chat delivery, maps/geocoding and multi-device sync are services an integrator must supply — the app does not fake them.\n- Wallet, chat and booking (where planned) are on-device simulations with real local state changes, labelled as such in the app where a user could mistake them for live services.\n- Photography is the user's to supply; without it the engine renders branded gradient / initials media.\n`;
 
@@ -294,7 +315,7 @@ export function renderPlan(plan, baseInfo) {
     screens.map(s => `| ${s.id} | ${s.referenceType} | ${plan.refSource === 'base' ? 'base' : `${plan.referenceChoice} if covered, else base`} |`).join('\n') +
     `\n\nRule: a screen with no governing reference is not built. If the user reference does not cover a screen type, the base reference type of the same name governs it — the fallback is named here, never silent.\n`;
 
-  const planJson = { status: 'awaiting_confirmation', app: name, referenceChoice: plan.referenceChoice, screens, milestones: milestones.map(m => ({ id: m.id, title: m.title, screens: m.screens, outcome: m.outcome })), journey: plan.journeyPrimary, mustHaveScreens: plan.mustHave };
+  const planJson = { status: 'awaiting_confirmation', app: name, archetype: plan.archetype, referenceChoice: plan.referenceChoice, screens, milestones: milestones.map(m => ({ id: m.id, title: m.title, screens: m.screens, outcome: m.outcome })), journey: plan.journeyPrimary, mustHaveScreens: plan.mustHave };
   return { roadmap, todo, art, design, functionality, journey, refPlan, planJson };
 }
 

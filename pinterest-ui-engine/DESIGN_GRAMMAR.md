@@ -232,3 +232,35 @@ output still read as generated. These rules close the gaps found:
     never an invented lifecycle. One segment, one filtered list;
     a segment with nothing under it says so in an empty state,
     it does not borrow another segment's orders.
+43. **Money is not a price until the archetype says so.** A money
+    field becomes a card price only in a commerce app (archetype
+    `commerce`), or when the brief explicitly declares that field's
+    role as "price". In every other archetype — roster, service,
+    records, content — a money field is a LABELLED value: it renders
+    on the detail/profile view and in tables with its label attached
+    ("Fund contribution — ₹2,000"), and it never appears as an
+    unlabelled price line on a card, in a card meta line, or with
+    add/stepper affordances. A money field alone is never evidence
+    of commerce. (M051: before this law, every money field was the
+    price, and a family app rendered its members as products — a
+    child at ₹0.)
+44. **The collection renders its archetype, not the shop's.** Every
+    app declares (or is conservatively inferred) an archetype —
+    commerce, roster, service, records, content — and the main list
+    composes accordingly. A ROSTER renders people: avatar (photo or
+    initials), name, relation · role as the meta line, and the
+    designated status field as a tinted status chip on the card —
+    the person's state is the roster's core signal, never a buried
+    meta fragment. The detail is a person profile with labelled
+    rows. In non-commerce archetypes, engine chrome carries no shop
+    vocabulary: no "Cart" unless a bag is declared, no "Delivery"
+    row without a declared delivery fee, no price sorts in an app
+    with no prices, no "You may also like" over a list of people.
+45. **Stored values are data; shown values are labels.** A committed
+    enum or chip-field value renders everywhere it is shown back —
+    flow review, confirmation, submissions/orders log, wallet — as
+    the LABEL of the chosen option, for object and string options
+    alike. A wallet transaction's sign is its KIND (debit renders
+    negative regardless of the sign the amount was stored with).
+    A permission disc carries the declared glyph, or a neutral
+    mark — never the initials of the permission's title.

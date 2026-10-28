@@ -252,6 +252,10 @@ function browseSections(brief, ent, d, intent) {
   const entryRequired = allFields(ent).filter(f => f.requiredIn === 'entry').map(f => f.id);
   const variantNow = (intent && intent.composition === 'index') ? 'index'
     : (intent && intent.composition === 'gallery' && !bansCards(brief)) ? 'card'
+    // M051: a row-list composition is a decision, not an absence of
+    // one — media must not silently promote it to cards (the plan
+    // then hard-fails CI-001 against its own intent).
+    : (intent && intent.composition === 'row-list') ? 'row'
     : (ent.media && !bansCards(brief) ? 'card' : 'row');
   const NATIVE = {
     row: ['title', 'subtitle', 'meta', 'stat', 'price', 'status', 'badge', 'facet'],
@@ -290,6 +294,7 @@ function browseSections(brief, ent, d, intent) {
 
   const collectionVariant = (intent && intent.composition === 'index') ? 'index'
     : (intent && intent.composition === 'gallery' && !bansCards(brief)) ? 'card'
+    : (intent && intent.composition === 'row-list') ? 'row'
     : (ent.media && !bansCards(brief) ? 'card' : 'row');
   sections.push({
     id: 'collection', component: 'entity-collection',
@@ -339,6 +344,7 @@ function savedSections(brief, ent, d, intent) {
     // composition is stated does the entity's shape decide.
     variant: intent && intent.composition === 'index' ? 'index'
       : intent && intent.composition === 'gallery' ? 'card'
+      : intent && intent.composition === 'row-list' ? 'row'
       : (ent.media ? 'card' : 'row'),
       binding: intent && intent.composition === 'index'
         ? { entity: ent.id, source: 'records',
@@ -724,7 +730,9 @@ export function planApp(brief, profile, opts) {
   if ((brief.entity.records || []).length > 2) {
     detailSecs.push({
       id: 'related', component: 'related-rail',
-      props: { testid: 'related-list', itemTestid: 'related-item', title: 'You may also like' },
+      // M051 (law 44): "You may also like" is shop vocabulary. A
+      // roster's rail is the rest of the group; records are "Related".
+      props: { testid: 'related-list', itemTestid: 'related-item', title: brief.archetype === 'roster' ? `Other ${ent.plural.toLowerCase()}` : brief.archetype === 'commerce' || !brief.archetype ? 'You may also like' : `Related ${ent.plural.toLowerCase()}` },
       binding: { entity: ent.id, field: facetField ? facetField.id : null },
     });
   }
@@ -781,8 +789,8 @@ export function planApp(brief, profile, opts) {
   if (intent && intent.composition) decide('composition', intent.composition,
     intent.source === 'stated' ? 'declared in design-spec.intent' : 'compiled from design-spec prose',
     intent.source === 'stated' ? 'brief' : 'reference');
-  decide('collectionVariant', intent && intent.composition === 'index' ? 'index' : (ent.media ? 'card' : 'row'),
-    ent.media ? 'the entity declares media, so records lead with an image' : 'no media role, so records are text-led', 'brief');
+  decide('collectionVariant', intent && intent.composition === 'index' ? 'index' : intent && intent.composition === 'row-list' ? 'row' : (ent.media ? 'card' : 'row'),
+    intent && intent.composition === 'row-list' ? 'the composition is a row list (M051)' : ent.media ? 'the entity declares media, so records lead with an image' : 'no media role, so records are text-led', 'brief');
   decide('desktopColumns', String(d.desktopCols), `density "${dInfo.density}" sets ${d.desktopCols} columns`, 'rule');
   if (brief.table) decide('collectionSurface', 'data-table', `${(brief.table.columns || []).length} declared table columns cannot be shown as a list`, 'brief');
   else decide('collectionSurface', 'entity-collection', 'no table declared', 'brief');

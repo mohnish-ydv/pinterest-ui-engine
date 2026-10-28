@@ -177,6 +177,10 @@ try {
 // brand colour, the same mark the header draws) as PNGs. Best-effort:
 // without PIL the build still succeeds and the manifest's icon entries
 // are removed rather than left pointing at files that do not exist.
+// M051: compile.mjs also emits sw.js (offline app shell) into every app;
+// its precache tolerates the missing icons via per-asset allSettled.
+// App-readiness of the output is checkable with:
+//   node engine/tools/app_readiness.mjs <appDir>
 try {
   const initials = String(brief.brand || 'A').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
   const script = [

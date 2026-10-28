@@ -122,6 +122,16 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .pill[data-tone="ok"] { color: {{color.success}}; }
 .pill[data-tone="bad"] { color: {{color.error}}; }
 .pill[data-tone="warn"] { background: color-mix(in srgb, {{color.star}} 30%, {{color.surface}}); color: {{color.ink}}; }
+/* M051: the roster status chip — a person's state on their card, in
+   the same tinted-chip language as the pill, with state tones. */
+.card-status { display: block; margin-top: 8px; }
+.status-chip {
+  display: inline-block; background: {{state.badge.bg}}; color: {{state.badge.fg}};
+  border-radius: {{radius.pill}}px; padding: 3px 10px; font-size: 0.78em; font-weight: 700;
+}
+.status-chip.tone-ok { color: {{color.success}}; }
+.status-chip.tone-bad { color: {{color.error}}; }
+.status-chip.tone-warn { background: color-mix(in srgb, {{color.star}} 30%, {{color.surface}}); color: {{color.ink}}; }
 .save-btn {
   position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%;
   background: {{color.surface}}; color: {{color.brand}}; font-size: 1.1em; line-height: 1;
