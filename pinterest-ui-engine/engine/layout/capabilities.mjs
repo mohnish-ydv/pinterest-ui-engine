@@ -57,6 +57,17 @@ export const CAPABILITIES = {
   'bag-add': { regions: ['record'], repeated: false, extra: false, variants: { action: ['action'] } },
   'promo-banner': { regions: ['page'], repeated: false, extra: false, variants: { banner: ['status'] } },
   'related-rail': { regions: ['record'], repeated: true, extra: false, variants: { rail: ['item'] } },
+  // M046: the Evira families — declared-content renderers. They host no
+  // entity fields (their content is the brief's declaration or the
+  // record's own variants/reviews), so their role lists are their own.
+  'category-medallions': { regions: ['page'], repeated: false, extra: false, variants: { rail: ['facet'] } },
+  'variant-selectors': { regions: ['record'], repeated: false, extra: false, variants: { rows: ['variant'] } },
+  'reviews': { regions: ['record'], repeated: false, extra: false, variants: { list: ['review'] } },
+  'wallet-card': { regions: ['page'], repeated: false, extra: false, variants: { card: ['aggregate'] } },
+  'txn-list': { regions: ['page'], repeated: true, extra: false, variants: { list: ['item'] } },
+  'profile-sheet': { regions: ['page'], repeated: false, extra: false, variants: { sheet: ['field'] } },
+  'faq-list': { regions: ['page'], repeated: false, extra: false, variants: { list: ['item'] } },
+  'notice-list': { regions: ['page'], repeated: true, extra: false, variants: { list: ['item'] } },
 };
 
 /** Does this section render the role natively? */

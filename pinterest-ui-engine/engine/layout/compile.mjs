@@ -48,6 +48,18 @@ export function buildModel(brief, ir, tokens, composition) {
     filters: ir.filters,
     availability: ir.availability || null,
     bag: brief.bag || null,
+    // M046: the Evira families — declared in the brief, never derived
+    // from prose. A brief that declares a wallet, a profile, notices,
+    // help content, an onboarding flow or an auth gate gets those
+    // screens in the board's constructions; a brief that declares none
+    // of them compiles exactly as it did before this mission.
+    wallet: brief.wallet || null,
+    profile: brief.profile || null,
+    notices: brief.notices || null,
+    greetingHome: brief.homeHeader === 'greeting',
+    faq: brief.faq || null,
+    onboarding: brief.onboarding || null,
+    auth: brief.auth || null,
     collections: ir.collections || [],
     banners: ir.banners || [],
     actions: ir.actions,
@@ -84,7 +96,7 @@ export function buildModel(brief, ir, tokens, composition) {
       if (brief.availability) out.dayLabel = 'Day';
       // M039: a bag order's carried values — the items summary and the
       // charged total are computed at commit time, not form fields.
-      if (brief.bag) { out.items = 'Items'; out.total = 'Total'; out.delivery = 'Delivery'; }
+      if (brief.bag) { out.items = 'Items'; out.total = 'Total'; out.deliveryFee = 'Delivery fee'; out.at = 'Date'; out.delivery = 'Delivery'; }
       return out;
     })(),
   };

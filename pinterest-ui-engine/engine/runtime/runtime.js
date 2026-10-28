@@ -121,7 +121,7 @@
   var store = loadStore();
 
   function loadStore() {
-    var empty = { saved: [], collections: {}, bag: {} };
+    var empty = { saved: [], collections: {}, bag: {}, wallet: null, authed: false, seenIntro: false, myReviews: {}, profile: {} };
     try {
       var raw = localStorage.getItem(KEY);
       if (!raw) return empty;
@@ -131,6 +131,14 @@
         saved: Array.isArray(p.saved) ? p.saved : [],
         collections: p.collections && typeof p.collections === 'object' ? p.collections : {},
         bag: p.bag && typeof p.bag === 'object' ? p.bag : {},
+        // M046: the declared families keep their own local state under
+        // the same key — a topped-up balance, a finished onboarding, a
+        // review the user wrote, a settings toggle they flipped.
+        wallet: p.wallet && typeof p.wallet === 'object' ? p.wallet : null,
+        authed: !!p.authed,
+        seenIntro: !!p.seenIntro,
+        myReviews: p.myReviews && typeof p.myReviews === 'object' ? p.myReviews : {},
+        profile: p.profile && typeof p.profile === 'object' ? p.profile : {},
       };
     } catch (e) { return empty; }
   }
@@ -142,6 +150,11 @@
       // M039: the bag persists like everything else — leave the app,
       // come back, your items are still there.
       if (model.bag) out.bag = store.bag || {};
+      if (model.wallet) out.wallet = store.wallet;
+      if (model.auth) out.authed = !!store.authed;
+      if (model.onboarding) out.seenIntro = !!store.seenIntro;
+      out.myReviews = store.myReviews || {};
+      out.profile = store.profile || {};
       localStorage.setItem(KEY, JSON.stringify(out));
     } catch (e) { /* private mode: the app still works, it just forgets */ }
   }
@@ -149,7 +162,33 @@
   function collectionItems(id) { return (store.collections[id] || []).slice(); }
 
   // ------------------------------------------------------------- the bag
-  function bagQty(id) { return (store.bag && store.bag[id]) || 0; }
+  // M046: a bag line is a record, or a record in a chosen variant.
+  // The key carries the variant signature ('id::Size=M|Colour=Red');
+  // the plain id remains the key when no variant was chosen, so every
+  // pre-M046 saved bag still reads correctly.
+  function bagKey(id, sig) { return sig ? id + '::' + sig : id; }
+  function parseBagKey(k) {
+    var i = k.indexOf('::');
+    if (i === -1) return { id: k, sig: '' };
+    return { id: k.slice(0, i), sig: k.slice(i + 2) };
+  }
+  function sigLabel(sig) {
+    return sig ? sig.split('|').map(function (p) { return p.split('=').slice(1).join('='); }).join(' \u00b7 ') : '';
+  }
+  function bagQtyKey(k) { return (store.bag && store.bag[k]) || 0; }
+  function bagQty(id) {
+    // A card or tab badge counts the record, across all its variants.
+    var n = 0;
+    Object.keys(store.bag || {}).forEach(function (k) { if (parseBagKey(k).id === id) n += store.bag[k]; });
+    return n;
+  }
+  function variantSig(rec) {
+    if (!rec || !Array.isArray(rec.variants)) return '';
+    return rec.variants.map(function (v) {
+      var sel = (S.variantSel[rec.id] || {})[v.label];
+      return v.label + '=' + (sel != null ? sel : (v.options || [])[0]);
+    }).join('|');
+  }
   // M045: how many of a record the bag may hold. A brief can declare
   // its items unique (classifieds listings, one-off pieces); a record
   // can also carry a numeric stock field. Everything else is uncapped.
@@ -163,8 +202,9 @@
   }
   function bagEntries() {
     if (!model.bag) return [];
-    return Object.keys(store.bag || {}).map(function (id) {
-      return { rec: model.records.filter(function (r) { return r.id === id; })[0], qty: store.bag[id] };
+    return Object.keys(store.bag || {}).map(function (k) {
+      var p = parseBagKey(k);
+      return { key: k, sig: p.sig, rec: model.records.filter(function (r) { return r.id === p.id; })[0], qty: store.bag[k] };
     }).filter(function (e) { return e.rec && e.qty > 0; });
   }
   function bagCount() {
@@ -196,6 +236,21 @@
     confirmation: null,
     step: 0,
     creating: false,
+    // M046 state: variant choices per record, the open sheet (filter /
+    // remove / topup), advanced browse filters, hero position, the
+    // expanded receipt, the open FAQ row, the auth mode, the intro
+    // step, the top-up amount being keyed, the review being written.
+    variantSel: {},
+    sheet: null,
+    sheetKey: null,
+    filtersX: { minPrice: null, maxPrice: null, sort: '', minRating: null },
+    heroIdx: {},
+    receiptFor: null,
+    faqOpen: -1,
+    authMode: 'in',
+    introStep: 0,
+    topupAmt: '',
+    reviewStars: 0,
   };
   (model.filters || []).forEach(function (f) { S.filters[f.id] = 'All'; });
   (model.actions || []).forEach(function (a) { if (a.options) S.options[a.options.id] = null; });
@@ -233,6 +288,30 @@
       var v = S.filters[f.id];
       if (v && v !== 'All') out = out.filter(function (r) { return String(r[f.field]) === v; });
     });
+    // M046: the filter sheet's terms — a price span, a rating floor,
+    // an ordering. All optional; an untouched sheet changes nothing.
+    var fx = S.filtersX;
+    if (priceF && (fx.minPrice != null || fx.maxPrice != null)) {
+      out = out.filter(function (r) {
+        var p = Number(r[priceF.id]);
+        if (!isFinite(p)) return false;
+        if (fx.minPrice != null && p < fx.minPrice) return false;
+        if (fx.maxPrice != null && p > fx.maxPrice) return false;
+        return true;
+      });
+    }
+    var ratingF = ((model.entity && model.entity.fields) || []).filter(function (f) { return f.type === 'rating'; })[0];
+    if (ratingF && fx.minRating != null) {
+      out = out.filter(function (r) { return Number(r[ratingF.id]) >= fx.minRating; });
+    }
+    if (fx.sort && priceF) {
+      out = out.slice().sort(function (a, b) {
+        return fx.sort === 'price-asc' ? Number(a[priceF.id]) - Number(b[priceF.id])
+          : fx.sort === 'price-desc' ? Number(b[priceF.id]) - Number(a[priceF.id]) : 0;
+      });
+    } else if (fx.sort === 'rating' && ratingF) {
+      out = out.slice().sort(function (a, b) { return Number(b[ratingF.id]) - Number(a[ratingF.id]); });
+    }
     return out;
   }
 
@@ -284,6 +363,18 @@
   var R = {};
 
   R['app-header'] = function (s) {
+    // M046: the reference home opens with a person, not a logo block —
+    // avatar, greeting, and two outline circle buttons (notices, profile).
+    if (s.props.variant === 'greeting') {
+      var nm = s.props.profileName || model.app.brand;
+      return '<div class="wrap hdr-in greet">' +
+        '<button class="greet-av" data-act="nav" data-view="profile" aria-label="Profile">' + esc(initials(nm)) + '</button>' +
+        '<span class="greet-txt"><span class="greet-hi">Good day</span>' +
+        '<span class="greet-name">' + esc(nm) + '</span></span>' +
+        (model.notices ? '<button class="circ-btn" data-act="nav" data-view="notices" data-testid="notices-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 19a2 2 0 0 0 4 0"/></svg></button>' : '') +
+        (model.wallet ? '<button class="circ-btn" data-act="nav" data-view="wallet" data-testid="wallet-btn" aria-label="Wallet"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/></svg></button>' : '') +
+        '</div>';
+    }
     return '<div class="wrap hdr-in">' +
       (s.props.back
         ? '<button class="back-btn" data-act="back" data-testid="' + esc(s.props.backTestid || 'back-btn') + '" aria-label="Back">\u2190</button>'
@@ -307,6 +398,11 @@
       '<svg class="search-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>' +
       '<input type="search" data-act="search-input" data-testid="' + esc(t) + '" value="' + esc(S.query) + '" placeholder="' + esc(s.props.placeholder) + '">' +
       '</label>' +
+      // M046: the board's search pill carries its filter entry inside
+      // the pill's row — a sliders button that opens the filter sheet.
+      (currentView().sections.some(function (x) { return x.component === 'filter-chips' || x.component === 'category-medallions'; })
+        ? '<button class="filter-btn" data-act="sheet-filter" data-testid="filter-btn" aria-label="Sort and filter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>'
+        : '') +
       '</div></div>';
   };
 
@@ -372,7 +468,14 @@
     var recs = visibleRecords();
     var variant = s.variant || 'row';
     if (!recs.length) {
-      return '<div class="wrap"><div class="empty" data-testid="empty-state">' +
+      // M046: a failed search gets the board's treatment — line art, a
+      // headline, one sentence — not a bare apology in a dashed box.
+      var searching = !!S.query.trim();
+      return '<div class="wrap"><div class="empty' + (searching ? ' is-notfound' : '') + '" data-testid="empty-state">' +
+        (searching
+          ? '<svg class="empty-art" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4a3 3 0 0 1 6 0"/><path d="M9 11h6M9 14.5h4"/></svg>' +
+            '<p class="empty-h">Not Found</p>'
+          : '') +
         '<p>' + esc(s.emptyMessage || 'Nothing here yet.') + '</p>' +
         (S.query || (model.filters || []).some(function (f) { return S.filters[f.id] !== 'All'; })
           ? '<button class="btn-quiet" data-act="reset">Clear filters</button>' : '') +
@@ -482,7 +585,10 @@
         '</button>' +
         '</article>';
     }).join('');
-    return '<div class="wrap"><div class="collection ' + (variant === 'card' ? 'is-cards' : 'is-rows') + '"' +
+    var resultsLine = (S.query.trim() && variant === 'card')
+      ? '<p class="results-line" data-testid="results-count">Results for \u201c' + esc(S.query.trim()) + '\u201d \u00b7 ' + recs.length + ' found</p>'
+      : '';
+    return '<div class="wrap">' + resultsLine + '<div class="collection ' + (variant === 'card' ? 'is-cards' : 'is-rows') + '"' +
       ' data-testid="' + esc(s.props.testid) + '" data-cols-mobile="' + (s.props.columns ? s.props.columns.mobile : 1) + '"' +
       ' data-cols-desktop="' + (s.props.columns ? s.props.columns.desktop : 2) + '">' + inner + '</div></div>';
   };
@@ -497,8 +603,18 @@
         ' data-testid="' + esc(s.props.saveTestid || 'save-toggle') + '" aria-pressed="' + saved + '" aria-label="' + (saved ? 'Remove from saved' : 'Save') + '">' +
         (saved ? '\u2665' : '\u2661') + (s.props.showMedia ? '' : (saved ? ' Saved' : ' Save')) + '</button>'
       : '';
+    var hero = mediaBlock(rec, 'rec-media');
+    if (s.props.showMedia && Array.isArray(rec.images) && rec.images.length > 1) {
+      var hi = Math.min(S.heroIdx[rec.id] || 0, rec.images.length - 1);
+      hero = '<span class="rec-media" aria-hidden="true"><img class="media-img" src="' + esc(rec.images[hi]) + '" alt="" onerror="this.remove()"></span>' +
+        '<button class="hero-nav hero-prev" data-act="hero-prev" aria-label="Previous photo">\u2039</button>' +
+        '<button class="hero-nav hero-next" data-act="hero-next" aria-label="Next photo">\u203a</button>' +
+        '<span class="hero-dots">' + rec.images.map(function (_, i) {
+          return '<button class="hero-dot' + (i === hi ? ' is-on' : '') + '" data-act="hero-dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"></button>';
+        }).join('') + '</span>';
+    }
     return '<div class="wrap">' +
-      (s.props.showMedia ? '<div class="rec-media-wrap">' + mediaBlock(rec, 'rec-media') + saveBtn + '</div>' : '') +
+      (s.props.showMedia ? '<div class="rec-media-wrap">' + hero + saveBtn + '</div>' : '') +
       '<div class="rec-head">' +
         '<h1 class="' + esc(titleCls) + '" data-testid="detail-title" data-field="' + esc(titleF.id) + '" data-record="' + esc(rec.id) + '">' + esc(fmt(titleF, rec)) + '</h1>' +
         (badgeF && rec[badgeF.id] ? '<p class="rec-badges"><span class="badge">' + esc(fmt(badgeF, rec)) + '</span></p>' : '') +
@@ -595,9 +711,32 @@
 
   function fieldInputId(f) { return 'f-' + f.id; }
 
+  // M046: a choice field renders the way the boards render every choice
+  // — a row with a medallion, a name, a caption, a price, and a radio
+  // that fills when chosen. A <select> is a desktop habit.
+  function radioRows(f, etid) {
+    var cur = S.form[f.id] || '';
+    var err = S.errors[f.id];
+    return '<div class="field"><span class="field-label">' + esc(f.label) + '</span>' +
+      '<div class="radio-rows" role="radiogroup" aria-label="' + esc(f.label) + '">' +
+      (f.options || []).map(function (o) {
+        var opt = typeof o === 'string' ? { label: o, value: o } : o;
+        var on = String(opt.value) === String(cur);
+        return '<button class="radio-row' + (on ? ' is-on' : '') + '" data-act="radio" data-field="' + esc(f.id) + '"' +
+          ' data-value="' + esc(opt.value) + '" data-testid="radio-' + esc(f.id) + '" role="radio" aria-checked="' + on + '">' +
+          '<span class="radio-med" aria-hidden="true">' + esc(initials(opt.label)) + '</span>' +
+          '<span class="radio-main"><span class="radio-name">' + esc(opt.label) + '</span>' +
+          (opt.caption ? '<span class="radio-cap">' + esc(opt.caption) + '</span>' : '') + '</span>' +
+          (opt.price != null ? '<span class="radio-price">' + esc(money(opt.price)) + '</span>' : '') +
+          '<span class="radio-dot" aria-hidden="true"></span></button>';
+      }).join('') + '</div>' +
+      '<p class="err" data-testid="' + esc(etid) + '"' + (err ? '' : ' hidden') + '>' + esc(err || '') + '</p></div>';
+  }
+
   R['form-fields'] = function (s) {
     return '<div class="wrap"><div class="form" data-testid="' + esc(s.props.testid) + '">' +
       (s.binding.fields || []).map(function (f) {
+        if (f.options) return radioRows(f, f.errorTestid || ('error-' + f.id));
         var err = S.errors[f.id];
         var tid = f.testid || ('field-' + f.id);
         var etid = f.errorTestid || ('error-' + f.id);
@@ -653,8 +792,42 @@
         // M040: a placed order has a lifecycle. The timeline shows it
         // honestly — the order exists, so "Placed" is done (with its
         // date); the kitchen and delivery stages are what's next.
+        var stages = ['Placed', 'Preparing', 'On the way', 'Delivered'];
+        var stageIcons = ['<path d="M5.5 8h13l-1 12.5h-11L5.5 8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/>',
+          '<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5v-7Z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
+          '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',
+          '<path d="m5 12.5 4.5 4.5L19 7.5"/>'];
+        var tracker = model.bag
+          ? '<div class="tracker" data-testid="order-tracker" aria-hidden="true">' + stages.map(function (lb, i) {
+              return '<span class="tracker-step' + (i === 0 ? ' is-done' : '') + '"><span class="tracker-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + stageIcons[i] + '</svg></span><span class="tracker-lb">' + lb + '</span></span>' +
+                (i < stages.length - 1 ? '<span class="tracker-line' + (i === 0 ? ' is-done' : '') + '"></span>' : '');
+            }).join('') + '</div>'
+          : '';
+        var receipt = '';
+        if (model.bag && S.receiptFor === it.ref) {
+          var bars = '';
+          var seedStr = String(it.ref || '');
+          for (var bi = 0; bi < 56; bi++) {
+            var bc = seedStr.charCodeAt(bi % seedStr.length);
+            bars += '<span style="width:' + (1 + (bc % 3)) + 'px"></span><span class="gap" style="width:' + (1 + (bc % 2)) + 'px"></span>';
+          }
+          var rrows = ['items', 'delivery', 'total', 'at'].map(function (fid) {
+            var v = it[fid];
+            if (v === undefined || v === null || v === '') return '';
+            var lab = (model.fieldLabels || {})[fid] || fid;
+            return '<div class="dl-row"><span class="dl-label">' + esc(lab) + '</span><span class="dl-value">' + esc(v) + '</span></div>';
+          }).join('');
+          receipt = '<div class="receipt" data-testid="receipt">' +
+            '<div class="barcode" aria-hidden="true">' + bars + '</div>' +
+            '<div class="dl">' + rrows + '</div>' +
+            '<p class="receipt-status"><span class="pill">Placed</span></p></div>';
+        }
+        var receiptBtn = model.bag
+          ? '<button class="btn-quiet receipt-btn" data-act="receipt" data-ref="' + esc(it.ref) + '" data-testid="receipt-btn">' +
+            (S.receiptFor === it.ref ? 'Hide receipt' : 'View receipt') + '</button>'
+          : '';
         var track = model.bag
-          ? '<ol class="track">' + ['Placed', 'Preparing', 'On the way', 'Delivered'].map(function (lb, i) {
+          ? '<ol class="track">' + stages.map(function (lb, i) {
               return '<li class="track-step' + (i === 0 ? ' is-done' : '') + '">' +
                 '<span class="track-dot"></span><span class="track-lb">' + lb + '</span>' +
                 (i === 0 && it.at ? '<span class="track-at">' + esc(it.at) + '</span>' : '') + '</li>';
@@ -662,7 +835,7 @@
           : '';
         return '<article class="cm-item" data-testid="' + esc(s.props.itemTestid) + '" data-ref="' + esc(it.ref) + '">' +
           '<div class="cm-head"><span class="cm-ref">' + esc(it.ref) + '</span></div>' +
-          '<div class="dl">' + rows + '</div>' + track +
+          '<div class="dl">' + rows + '</div>' + tracker + track + receipt + receiptBtn +
           (confirming
             ? '<div class="cancel-confirm">' +
               '<button class="btn-danger" data-act="cancel-confirm" data-ref="' + esc(it.ref) + '" data-testid="' + esc(s.props.confirmTestid) + '">' + esc(s.props.confirmLabel) + '</button>' +
@@ -685,16 +858,19 @@
       entries.map(function (e) {
         var name = titleF ? e.rec[titleF.id] : e.rec.id;
         var unit = Number(e.rec[priceId]) || 0;
+        var vl = sigLabel(e.sig);
         return '<article class="bag-item" data-testid="' + esc(s.props.itemTestid) + '" data-id="' + esc(e.rec.id) + '">' +
           mediaBlock(e.rec, 'bag-media') +
           '<div class="bag-info"><span class="bag-name">' + esc(name) + '</span>' +
+          (vl ? '<span class="bag-variant">' + esc(vl) + '</span>' : '') +
           '<span class="bag-unit">' + esc(money(unit)) + '</span></div>' +
           '<div class="stepper">' +
-          '<button class="step-btn" data-act="bag-dec" data-id="' + esc(e.rec.id) + '" data-testid="bag-dec" aria-label="Remove one">\u2212</button>' +
+          '<button class="step-btn" data-act="bag-dec" data-key="' + esc(e.key) + '" data-testid="bag-dec" aria-label="Remove one">\u2212</button>' +
           '<span class="step-qty" data-testid="bag-qty">' + e.qty + '</span>' +
-          (e.qty < bagCap(e.rec) ? '<button class="step-btn" data-act="bag-inc" data-id="' + esc(e.rec.id) + '" data-testid="bag-inc" aria-label="Add one">+</button>' : '') +
+          (bagQty(e.rec.id) < bagCap(e.rec) ? '<button class="step-btn" data-act="bag-inc" data-key="' + esc(e.key) + '" data-testid="bag-inc" aria-label="Add one">+</button>' : '') +
           '</div>' +
           '<span class="bag-line">' + esc(money(unit * e.qty)) + '</span>' +
+          '<button class="bag-remove" data-act="bag-remove-ask" data-key="' + esc(e.key) + '" data-testid="bag-remove" aria-label="Remove ' + esc(name) + ' from ' + esc(String(model.bag.label || 'bag').toLowerCase()) + '">Remove</button>' +
           '</article>';
       }).join('') + '</div></div>';
   };
@@ -719,9 +895,10 @@
   R['bag-add'] = function (s) {
     var rec = selectedRecord();
     if (!rec) return '';
-    var qty = bagQty(rec.id);
+    var key = bagKey(rec.id, variantSig(rec));
+    var qty = bagQtyKey(key);
     return '<div class="wrap"><div class="bag-add">' +
-      '<button class="cta" data-act="add" data-id="' + esc(rec.id) + '" data-testid="' + esc(s.props.testid) + '">' +
+      '<button class="cta" data-act="add" data-id="' + esc(rec.id) + '" data-key="' + esc(key) + '" data-testid="' + esc(s.props.testid) + '">' +
       esc(s.props.label || 'Add to bag') + '</button>' +
       (qty ? '<p class="bag-note">' + qty + ' in your ' + esc(String(model.bag.label || 'bag').toLowerCase()) + '</p>' : '') +
       '</div></div>';
@@ -730,14 +907,16 @@
   // ---- M040: the promo banner a product declares for its home ------
   R['promo-banner'] = function (s) {
     var p = s.props;
-    var inner = '<div class="promo-txt"><span class="promo-title">' + esc(p.title) + '</span>' +
+    var inner = '<div class="promo-txt">' +
+      (p.percent ? '<span class="promo-pct">' + esc(p.percent) + '</span>' : '') +
+      '<span class="promo-title">' + esc(p.title) + '</span>' +
       (p.subtitle ? '<span class="promo-sub">' + esc(p.subtitle) + '</span>' : '') +
       (p.recordId ? '<button class="promo-btn" data-act="open" data-id="' + esc(p.recordId) + '">' + esc(p.cta || 'Shop now') + '</button>' : '') +
       '</div>';
     var media = p.image
       ? '<span class="promo-media"><img class="media-img" src="' + esc(p.image) + '" alt="" loading="lazy" onerror="this.parentNode.remove()"></span>'
       : '';
-    return '<div class="wrap"><div class="promo" data-testid="' + esc(p.testid || 'promo') + '">' + inner + media + '</div></div>';
+    return '<div class="wrap"><div class="promo' + (p.percent ? ' has-pct' : '') + '" data-testid="' + esc(p.testid || 'promo') + '">' + inner + media + '</div></div>';
   };
 
   // ---- M040: related records — "You may also like" ------------------
@@ -928,6 +1107,7 @@
     var panel = panelFields.map(function (fid) {
       var f = (action.form || []).filter(function (x) { return x.id === fid; })[0];
       if (!f) return '';
+      if (f.options) return radioRows(f, f.errorTestid || ('error-' + f.id));
       var err = S.errors[f.id];
       var tid = f.testid || ('field-' + f.id);
       var etid = f.errorTestid || ('error-' + f.id);
@@ -977,15 +1157,335 @@
         }).join('') +
         '</div>';
     }
-    return '<div class="wrap confirm">' +
+    return '<div class="wrap confirm"><div class="confirm-card">' +
       '<div class="confirm-mark" aria-hidden="true">\u2713</div>' +
       '<h1 class="confirm-h">' + esc(s.props.title) + '</h1>' +
       '<p class="confirm-ref">' + esc(s.props.referenceLabel || 'Reference') + ' <strong data-testid="' + esc(s.props.testid) + '">' + esc(c.ref) + '</strong></p>' +
       summary +
       '<div class="confirm-actions">' +
         '<button class="cta" data-act="nav" data-view="' + esc(layout.views[0].id) + '">Back to ' + esc(layout.views[0].id) + '</button>' +
+      '</div></div></div>';
+  };
+
+
+  // ==========================================================================
+  // MISSION 046 — the Evira families. Every renderer below exists because
+  // the board repeats the pattern across dozens of screens and the engine
+  // could not produce it at all. All are data-driven and declared: records
+  // carry variants/reviews/images; the brief declares wallet, profile,
+  // notices, faq, onboarding, auth. Undeclared, none of this renders.
+  // ==========================================================================
+
+  function starRow(n, cls) {
+    var out = '';
+    for (var i = 1; i <= 5; i++) out += '<span class="star' + (i <= Math.round(n) ? ' is-on' : '') + '">\u2605</span>';
+    return '<span class="stars ' + (cls || '') + '" aria-label="' + n + ' of 5 stars">' + out + '</span>';
+  }
+
+  R['category-medallions'] = function (s) {
+    var fid = s.binding.filterId;
+    var active = S.filters[fid] || 'All';
+    var opts = ['All'].concat(s.binding.options || []);
+    return '<div class="wrap"><div class="medallions" data-testid="' + esc(s.props.testid) + '">' +
+      opts.map(function (o) {
+        var on = o === active;
+        return '<button class="medallion' + (on ? ' is-on' : '') + '" data-act="filter" data-filter="' + esc(fid) + '"' +
+          ' data-value="' + esc(o) + '" data-testid="' + esc(s.props.itemTestid) + '" aria-pressed="' + on + '">' +
+          '<span class="med-disc" aria-hidden="true">' + esc(initials(o === 'All' ? 'All' : o)) + '</span>' +
+          '<span class="med-lb">' + esc(o) + '</span></button>';
+      }).join('') + '</div></div>';
+  };
+
+  R['variant-selectors'] = function (s) {
+    var rec = selectedRecord();
+    if (!rec || !Array.isArray(rec.variants) || !rec.variants.length) return '';
+    var sel = S.variantSel[rec.id] || {};
+    return '<div class="wrap"><div class="variants" data-testid="' + esc(s.props.testid) + '">' +
+      rec.variants.map(function (v) {
+        var cur = sel[v.label] != null ? sel[v.label] : (v.options || [])[0];
+        var opts = (v.options || []).map(function (o) {
+          var opt = typeof o === 'string' ? { label: o, value: o } : o;
+          var on = String(opt.value) === String(cur);
+          if (v.style === 'swatch') {
+            var col = opt.color || (/^#/.test(String(opt.value)) ? String(opt.value) : 'hsl(' + (hashOf(String(opt.value)) % 360) + ' 45% 55%)');
+            return '<button class="swatch' + (on ? ' is-on' : '') + '" data-act="variant" data-id="' + esc(rec.id) + '"' +
+              ' data-label="' + esc(v.label) + '" data-value="' + esc(opt.value) + '" data-testid="variant-option"' +
+              ' style="--sw:' + esc(col) + '" aria-pressed="' + on + '" aria-label="' + esc(v.label + ': ' + opt.label) + '">' +
+              (on ? '<span class="swatch-tick">\u2713</span>' : '') + '</button>';
+          }
+          if (v.style === 'circles') {
+            return '<button class="size-dot' + (on ? ' is-on' : '') + '" data-act="variant" data-id="' + esc(rec.id) + '"' +
+              ' data-label="' + esc(v.label) + '" data-value="' + esc(opt.value) + '" data-testid="variant-option"' +
+              ' aria-pressed="' + on + '">' + esc(opt.label) + '</button>';
+          }
+          return '<button class="opt-pill' + (on ? ' is-on' : '') + '" data-act="variant" data-id="' + esc(rec.id) + '"' +
+            ' data-label="' + esc(v.label) + '" data-value="' + esc(opt.value) + '" data-testid="variant-option"' +
+            ' aria-pressed="' + on + '">' + esc(opt.label) + '</button>';
+        }).join('');
+        return '<div class="variant-row"><span class="variant-lb">' + esc(v.label) + '</span>' +
+          '<span class="variant-opts">' + opts + '</span></div>';
+      }).join('') + '</div></div>';
+  };
+
+  R['reviews'] = function (s) {
+    var rec = selectedRecord();
+    if (!rec) return '';
+    var mine = (store.myReviews && store.myReviews[rec.id]) || [];
+    var list = (rec.reviews || []).concat(mine);
+    if (!list.length) return '';
+    var avg = list.reduce(function (a, r) { return a + (Number(r.rating) || 0); }, 0) / list.length;
+    var rows = list.map(function (r) {
+      return '<article class="review" data-testid="' + esc(s.props.itemTestid) + '">' +
+        '<span class="rev-av" aria-hidden="true">' + esc(initials(r.name || 'A')) + '</span>' +
+        '<span class="rev-main"><span class="rev-top"><span class="rev-name">' + esc(r.name || 'Anonymous') + '</span>' +
+        starRow(Number(r.rating) || 0, 'rev-stars') +
+        (r.date ? '<span class="rev-date">' + esc(r.date) + '</span>' : '') + '</span>' +
+        (r.text ? '<span class="rev-text">' + esc(r.text) + '</span>' : '') + '</span></article>';
+    }).join('');
+    var form = S.reviewOpen
+      ? '<div class="rev-form">' +
+        '<div class="rev-pick" role="radiogroup" aria-label="Your rating">' +
+        [1, 2, 3, 4, 5].map(function (i) {
+          return '<button class="star pick' + (i <= S.reviewStars ? ' is-on' : '') + '" data-act="rev-star" data-i="' + i + '" aria-label="' + i + ' stars">\u2605</button>';
+        }).join('') + '</div>' +
+        '<textarea id="rev-text" class="rev-input" rows="3" placeholder="How is your order?" aria-label="Your review"></textarea>' +
+        '<div class="rev-actions"><button class="btn-quiet" data-act="rev-cancel">Cancel</button>' +
+        '<button class="cta rev-submit" data-act="rev-submit" data-testid="review-submit">Submit</button></div></div>'
+      : '<button class="btn-quiet rev-open" data-act="rev-open" data-testid="review-open">Write a review</button>';
+    return '<div class="wrap"><div class="reviews" data-testid="' + esc(s.props.testid) + '">' +
+      '<div class="rev-head"><span class="rev-avg">' + avg.toFixed(1) + '</span>' +
+      '<span class="rev-head-meta">' + starRow(avg, 'rev-stars') +
+      '<span class="rev-count">' + list.length + ' review' + (list.length === 1 ? '' : 's') + '</span></span></div>' +
+      rows + form + '</div></div>';
+  };
+
+  function walletState() {
+    if (!store.wallet) {
+      store.wallet = {
+        balance: Number(model.wallet && model.wallet.balance) || 0,
+        txns: ((model.wallet && model.wallet.transactions) || []).slice(),
+      };
+    }
+    return store.wallet;
+  }
+
+  R['wallet-card'] = function (s) {
+    var w = walletState();
+    return '<div class="wrap"><div class="wallet-card" data-testid="' + esc(s.props.testid) + '">' +
+      '<span class="wallet-lb">' + esc(s.props.label) + '</span>' +
+      '<span class="wallet-bal" data-testid="wallet-balance">' + esc(money(w.balance)) + '</span>' +
+      '<button class="wallet-topup" data-act="sheet-topup" data-testid="wallet-topup">+ Top Up</button>' +
       '</div></div>';
   };
+
+  R['txn-list'] = function (s) {
+    var w = walletState();
+    if (!w.txns.length) return '<div class="wrap"><div class="empty" data-testid="empty-state"><p>No transactions yet.</p></div></div>';
+    return '<div class="wrap"><h2 class="sect-title">' + esc(s.props.title) + '</h2>' +
+      '<div class="txns" data-testid="' + esc(s.props.testid) + '">' +
+      w.txns.map(function (t) {
+        var amt = Number(t.amount) || 0;
+        return '<div class="txn" data-testid="' + esc(s.props.itemTestid) + '">' +
+          '<span class="txn-disc" aria-hidden="true">' + (t.kind === 'topup' ? '\u2193' : esc(initials(t.label || 'T'))) + '</span>' +
+          '<span class="txn-main"><span class="txn-name">' + esc(t.label || '') + '</span>' +
+          (t.when ? '<span class="txn-when">' + esc(t.when) + '</span>' : '') + '</span>' +
+          '<span class="txn-amt ' + (amt < 0 ? 'is-neg' : 'is-pos') + '">' + (amt < 0 ? '\u2212' : '+') + esc(money(Math.abs(amt))) + '</span></div>';
+      }).join('') + '</div></div>';
+  };
+
+  R['profile-sheet'] = function (s) {
+    var p = model.profile || {};
+    var st = store.profile || {};
+    var head = '<div class="prof-head">' +
+      '<span class="prof-av" aria-hidden="true">' + esc(initials(p.name || model.app.brand)) +
+      '<span class="prof-edit" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3Z"/></svg></span></span>' +
+      '<span class="prof-name">' + esc(p.name || '') + '</span>' +
+      (p.sub ? '<span class="prof-sub">' + esc(p.sub) + '</span>' : '') + '</div>';
+    var secs = (p.sections || []).map(function (sec, si) {
+      var rows = (sec.rows || []).map(function (row, ri) {
+        var key = si + ':' + ri;
+        if (row.kind === 'toggle') {
+          var on = st[key] != null ? !!st[key] : !!row.value;
+          return '<div class="prof-row"><span class="prof-lb">' + esc(row.label) + '</span>' +
+            '<button class="switch' + (on ? ' is-on' : '') + '" data-act="prof-toggle" data-key="' + esc(key) + '"' +
+            ' role="switch" aria-checked="' + on + '" data-testid="prof-toggle" aria-label="' + esc(row.label) + '"><span class="knob"></span></button></div>';
+        }
+        if (row.kind === 'radio') {
+          var cur = st[key] != null ? st[key] : row.value;
+          return '<div class="prof-radio-group"><span class="prof-lb prof-radio-lb">' + esc(row.label) + '</span>' +
+            (row.options || []).map(function (o) {
+              var on = String(o) === String(cur);
+              return '<button class="prof-row prof-radio' + (on ? ' is-on' : '') + '" data-act="prof-radio" data-key="' + esc(key) + '"' +
+                ' data-value="' + esc(o) + '" role="radio" aria-checked="' + on + '">' +
+                '<span class="prof-lb">' + esc(o) + '</span><span class="radio-dot" aria-hidden="true"></span></button>';
+            }).join('') + '</div>';
+        }
+        var inner = '<span class="prof-lb">' + esc(row.label) + '</span>' +
+          (row.value ? '<span class="prof-val">' + esc(row.value) + '</span>' : '') +
+          '<span class="prof-chev" aria-hidden="true">\u203a</span>';
+        return row.view
+          ? '<button class="prof-row" data-act="nav" data-view="' + esc(row.view) + '">' + inner + '</button>'
+          : '<div class="prof-row">' + inner + '</div>';
+      }).join('');
+      return (sec.title ? '<h2 class="sect-title">' + esc(sec.title) + '</h2>' : '') + '<div class="prof-sec">' + rows + '</div>';
+    }).join('');
+    var logout = model.auth
+      ? '<button class="prof-logout" data-act="auth-out" data-testid="logout">Logout</button>' : '';
+    return '<div class="wrap"><div class="profile" data-testid="' + esc(s.props.testid) + '">' + head + secs + logout + '</div></div>';
+  };
+
+  R['faq-list'] = function (s) {
+    var items = model.faq || [];
+    if (!items.length) return '';
+    return '<div class="wrap"><h2 class="sect-title">' + esc(s.props.title) + '</h2>' +
+      '<div class="faq" data-testid="' + esc(s.props.testid) + '">' +
+      items.map(function (it, i) {
+        var open = S.faqOpen === i;
+        return '<div class="faq-item"><button class="faq-q" data-act="faq" data-i="' + i + '" aria-expanded="' + open + '">' +
+          '<span>' + esc(it.q) + '</span><span class="faq-chev" aria-hidden="true">\u203a</span></button>' +
+          (open ? '<p class="faq-a">' + esc(it.a) + '</p>' : '') + '</div>';
+      }).join('') + '</div></div>';
+  };
+
+  R['notice-list'] = function (s) {
+    var items = model.notices || [];
+    if (!items.length) return '<div class="wrap"><div class="empty" data-testid="empty-state"><p>No notifications yet.</p></div></div>';
+    var groups = [];
+    items.forEach(function (n) {
+      var g = n.when || 'Earlier';
+      var last = groups[groups.length - 1];
+      if (!last || last.label !== g) { last = { label: g, items: [] }; groups.push(last); }
+      last.items.push(n);
+    });
+    return '<div class="wrap"><div class="notices" data-testid="' + esc(s.props.testid) + '">' +
+      groups.map(function (g) {
+        return '<h2 class="sect-title">' + esc(g.label) + '</h2>' + g.items.map(function (n) {
+          return '<div class="notice" data-testid="' + esc(s.props.itemTestid) + '">' +
+            '<span class="notice-disc" aria-hidden="true">' + esc(initials(n.title || 'N')) + '</span>' +
+            '<span class="notice-main"><span class="notice-title">' + esc(n.title || '') + '</span>' +
+            (n.text ? '<span class="notice-text">' + esc(n.text) + '</span>' : '') + '</span></div>';
+        }).join('');
+      }).join('') + '</div></div>';
+  };
+
+  // ---- M046 sheets: one scrim, three bodies -----------------------------
+  function sheetHtml() {
+    if (!S.sheet) return '';
+    var body = '';
+    if (S.sheet === 'filter') {
+      var groups = (model.filters || []).map(function (f) {
+        var opts = ['All'].concat(f.options || []);
+        var active = S.filters[f.id] || 'All';
+        return '<div class="sheet-group"><span class="sheet-lb">' + esc(f.label || f.id) + '</span><div class="chips">' +
+          opts.map(function (o) {
+            return '<button class="chip' + (o === active ? ' chip-on' : '') + '" data-act="filter" data-filter="' + esc(f.id) + '" data-value="' + esc(o) + '">' + esc(o) + '</button>';
+          }).join('') + '</div></div>';
+      }).join('');
+      var prices = (model.records || []).map(function (r) { return Number(r[priceF ? priceF.id : '']); }).filter(function (n) { return isFinite(n); });
+      var pMin = prices.length ? Math.min.apply(null, prices) : 0;
+      var pMax = prices.length ? Math.max.apply(null, prices) : 0;
+      var fx = S.filtersX;
+      var priceGroup = priceF && pMax > pMin
+        ? '<div class="sheet-group"><span class="sheet-lb">Price range</span>' +
+          '<div class="range-row"><span>Min <strong data-xfl="minPrice">' + esc(money(fx.minPrice != null ? fx.minPrice : pMin)) + '</strong></span>' +
+          '<input type="range" data-xf="minPrice" min="' + pMin + '" max="' + pMax + '" value="' + (fx.minPrice != null ? fx.minPrice : pMin) + '" aria-label="Minimum price"></div>' +
+          '<div class="range-row"><span>Max <strong data-xfl="maxPrice">' + esc(money(fx.maxPrice != null ? fx.maxPrice : pMax)) + '</strong></span>' +
+          '<input type="range" data-xf="maxPrice" min="' + pMin + '" max="' + pMax + '" value="' + (fx.maxPrice != null ? fx.maxPrice : pMax) + '" aria-label="Maximum price"></div></div>'
+        : '';
+      var ratingF = ((model.entity && model.entity.fields) || []).filter(function (f) { return f.type === 'rating'; })[0];
+      var ratingGroup = ratingF
+        ? '<div class="sheet-group"><span class="sheet-lb">Rating</span><div class="chips">' +
+          [['', 'Any'], ['4', '4.0+'], ['4.5', '4.5+']].map(function (pair) {
+            var on = String(fx.minRating == null ? '' : fx.minRating) === pair[0];
+            return '<button class="chip' + (on ? ' chip-on' : '') + '" data-act="fx-rating" data-value="' + pair[0] + '">\u2605 ' + pair[1] + '</button>';
+          }).join('') + '</div></div>'
+        : '';
+      var sortGroup = '<div class="sheet-group"><span class="sheet-lb">Sort by</span><div class="chips">' +
+        [['', 'Featured'], ['price-asc', 'Price: low to high'], ['price-desc', 'Price: high to low'], ['rating', 'Top rated']].map(function (pair) {
+          return '<button class="chip' + (fx.sort === pair[0] ? ' chip-on' : '') + '" data-act="fx-sort" data-value="' + pair[0] + '">' + pair[1] + '</button>';
+        }).join('') + '</div></div>';
+      body = '<div class="sheet-head"><span class="sheet-title">Sort &amp; Filter</span>' +
+        '<button class="sheet-x" data-act="sheet-close" aria-label="Close">\u00d7</button></div>' +
+        groups + priceGroup + ratingGroup + sortGroup +
+        '<div class="sheet-actions"><button class="btn-quiet" data-act="fx-reset" data-testid="filter-reset">Reset</button>' +
+        '<button class="cta" data-act="sheet-close" data-testid="filter-apply">Apply</button></div>';
+    } else if (S.sheet === 'remove') {
+      var e = bagEntries().filter(function (x) { return x.key === S.sheetKey; })[0];
+      if (e) {
+        var nm = titleF ? e.rec[titleF.id] : e.rec.id;
+        var unit = Number(e.rec[model.bag.priceField]) || 0;
+        body = '<div class="sheet-head"><span class="sheet-title">Remove From ' + esc(model.bag.label || 'Bag') + '?</span></div>' +
+          '<article class="bag-item">' + mediaBlock(e.rec, 'bag-media') +
+          '<div class="bag-info"><span class="bag-name">' + esc(nm) + '</span>' +
+          (sigLabel(e.sig) ? '<span class="bag-variant">' + esc(sigLabel(e.sig)) + '</span>' : '') +
+          '<span class="bag-unit">' + esc(money(unit)) + '</span></div>' +
+          '<span class="bag-line">' + esc(money(unit * e.qty)) + '</span></article>' +
+          '<div class="sheet-actions"><button class="btn-quiet" data-act="sheet-close">Cancel</button>' +
+          '<button class="cta" data-act="bag-remove-confirm" data-testid="remove-confirm">Yes, Remove</button></div>';
+      }
+    } else if (S.sheet === 'topup') {
+      var amt = S.topupAmt || '';
+      body = '<div class="sheet-head"><span class="sheet-title">Top Up E-Wallet</span>' +
+        '<button class="sheet-x" data-act="sheet-close" aria-label="Close">\u00d7</button></div>' +
+        '<p class="topup-amt" data-testid="topup-amount">' + esc(amt ? money(Number(amt)) : money(0)) + '</p>' +
+        '<div class="chips topup-chips">' + [100, 200, 500, 1000].map(function (v) {
+          return '<button class="chip' + (amt === String(v) ? ' chip-on' : '') + '" data-act="topup-chip" data-value="' + v + '">' + esc(money(v)) + '</button>';
+        }).join('') + '</div>' +
+        '<div class="keypad">' + ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'].map(function (d) {
+          return d === ''
+            ? '<span></span>'
+            : '<button class="key" data-act="topup-key" data-d="' + d + '">' + (d === 'del' ? '\u232b' : d) + '</button>';
+        }).join('') + '</div>' +
+        '<button class="cta" data-act="topup-confirm" data-testid="topup-confirm">Continue</button>';
+    }
+    if (!body) return '';
+    return '<div class="scrim" data-act="sheet-close"></div>' +
+      '<div class="sheet" role="dialog" aria-modal="true" data-testid="sheet">' + body + '</div>';
+  }
+
+  // ---- M046 entry gates: onboarding, then auth, then the app ------------
+  function gateHtml() {
+    if (model.onboarding && !store.seenIntro) {
+      var slides = model.onboarding.slides || [];
+      var i = Math.min(S.introStep, slides.length - 1);
+      var sl = slides[i] || {};
+      var last = i === slides.length - 1;
+      return '<div class="intro" data-testid="onboarding">' +
+        '<button class="intro-skip" data-act="intro-skip">Skip</button>' +
+        '<div class="intro-hero">' + (sl.image
+          ? '<img class="media-img" src="' + esc(sl.image) + '" alt="" onerror="this.remove()">'
+          : '<span class="intro-mark">' + esc(initials(model.app.brand)) + '</span>') + '</div>' +
+        '<h1 class="intro-h">' + esc(sl.headline || '') + '</h1>' +
+        (sl.text ? '<p class="intro-t">' + esc(sl.text) + '</p>' : '') +
+        '<div class="intro-dashes">' + slides.map(function (_, j) {
+          return '<span class="dash' + (j === i ? ' is-on' : '') + '"></span>';
+        }).join('') + '</div>' +
+        '<button class="cta" data-act="intro-next" data-testid="intro-next">' + (last ? (model.onboarding.cta || 'Get Started') : 'Next') + '</button>' +
+        '</div>';
+    }
+    if (model.auth && !store.authed) {
+      var a = model.auth;
+      var up = S.authMode === 'up';
+      var social = (a.providers || []).length
+        ? '<div class="auth-social">' + a.providers.map(function (pv) {
+            return '<button class="social-btn" data-act="auth-social" data-testid="auth-social" aria-label="Continue with ' + esc(pv) + '">' + esc(initials(pv)) + '</button>';
+          }).join('') + '</div><p class="auth-or">or continue with</p>'
+        : '';
+      return '<div class="auth" data-testid="auth">' +
+        '<h1 class="auth-h">' + esc(up ? (a.titleUp || 'Create your Account') : (a.titleIn || 'Login to your Account')) + '</h1>' +
+        social +
+        (up ? '<div class="field"><label for="auth-name">Full name</label><input id="auth-name" data-act="field" data-field="auth-name" type="text" autocomplete="name"></div>' : '') +
+        '<div class="field"><label for="auth-email">Email</label><input id="auth-email" data-act="field" data-field="auth-email" type="email" autocomplete="email"></div>' +
+        '<div class="field"><label for="auth-pass">Password</label><input id="auth-pass" data-act="field" data-field="auth-pass" type="password" autocomplete="current-password"></div>' +
+        '<label class="auth-remember"><span class="checkbox' + (S.remember ? ' is-on' : '') + '" data-act="auth-remember" role="checkbox" aria-checked="' + !!S.remember + '">' + (S.remember ? '\u2713' : '') + '</span> Remember me</label>' +
+        (S.authError ? '<p class="err" data-testid="auth-error">' + esc(S.authError) + '</p>' : '') +
+        '<button class="cta" data-act="auth-submit" data-testid="auth-submit">' + (up ? 'Sign up' : 'Sign in') + '</button>' +
+        '<p class="auth-foot">' + (up ? 'Already have an account? ' : 'Do not have an account? ') +
+        '<button class="auth-link" data-act="auth-mode">' + (up ? 'Sign in' : 'Sign up') + '</button></p>' +
+        '</div>';
+    }
+    return null;
+  }
 
   // ------------------------------------------------------------- rendering
   function renderHeader(view) {
@@ -1068,6 +1568,21 @@
   function render(opts) {
     opts = opts || {};
     syncInputsFromDom();
+    // M046: the entry gates stand in front of the shell — onboarding
+    // until it has been seen, auth until it has been passed. Neither
+    // is a view; both are the app's front door.
+    var gate = gateHtml();
+    if (gate != null) {
+      $('#hdr').innerHTML = '';
+      var gTabs = $('#tabs'); if (gTabs) gTabs.innerHTML = '';
+      var gBar = $('#actionbar'); if (gBar) { gBar.innerHTML = ''; gBar.hidden = true; }
+      document.body.classList.remove('has-actionbar');
+      var gMain = $('#main');
+      gMain.dataset.view = 'gate';
+      gMain.innerHTML = '<div class="wrap gate-wrap">' + gate + '</div>';
+      if (!opts.keepScroll) window.scrollTo(0, 0);
+      return;
+    }
     var view = currentView();
     S.view = view.id;
     renderHeader(view);
@@ -1119,6 +1634,7 @@
     if (bar) {
       document.body.classList.toggle('is-home', view.id === ((layout.views[0] || {}).id || ''));
       document.body.classList.toggle('is-detail', view.id === 'detail');
+      document.body.classList.toggle('greet-home', !!model.greetingHome && view.id === ((layout.views[0] || {}).id || ''));
       if (model.composition) document.body.classList.add('comp-' + model.composition);
       var stepnav = (view.id === 'detail' || view.id === 'checkout')
         ? main.querySelector('.sect[data-section="steps"] .stepnav') : null;
@@ -1166,6 +1682,9 @@
     } else {
       syncTableAffordance();
     }
+
+    var sheet = sheetHtml();
+    if (sheet) main.insertAdjacentHTML('beforeend', sheet);
 
     if (opts.focus) { var el = $('#' + opts.focus); if (el) el.focus(); }
     if (!opts.keepScroll) window.scrollTo(0, 0);
@@ -1239,7 +1758,8 @@
       var order = { ref: refB, id: 'bag', at: new Date().toISOString().slice(0, 10) };
       (action.form || []).forEach(function (f) { order[f.id] = readField(f); });
       order.items = bagEntries().map(function (e) {
-        return e.qty + ' \u00d7 ' + (titleF ? e.rec[titleF.id] : e.rec.id);
+        return e.qty + ' \u00d7 ' + (titleF ? e.rec[titleF.id] : e.rec.id) +
+          (e.sig ? ' (' + sigLabel(e.sig) + ')' : '');
       }).join(', ');
       order.delivery = totals.subtotal === 0 ? money(0) : (totals.free ? 'Free' : money(totals.delivery));
       order.total = money(totals.total);
@@ -1317,9 +1837,12 @@
     if (act === 'nav') {
       S.view = el.getAttribute('data-view');
       S.confirmCancel = null;
+      S.sheet = null;
       render();
     } else if (act === 'open') {
       S.selectedId = el.getAttribute('data-id');
+      S.sheet = null;
+      S.reviewOpen = false;
       S.errors = {};
       S.slot = null;
       S.day = 0;
@@ -1339,17 +1862,21 @@
       var addId = el.getAttribute('data-id');
       if (!store.bag) store.bag = {};
       // M045: unique items and stock caps are hard limits, not hints.
+      // M046: the cap counts the record across all its variants; the
+      // line added is the one the button names (data-key) — on a card
+      // that is the plain line, on a record page the chosen variant.
       if (bagQty(addId) >= bagCap(recById(addId))) return;
-      store.bag[addId] = bagQty(addId) + 1;
+      var addKey = el.getAttribute('data-key') || addId;
+      store.bag[addKey] = bagQtyKey(addKey) + 1;
       saveStore();
       render({ keepScroll: true });
     } else if (act === 'bag-inc' || act === 'bag-dec') {
       e.preventDefault();
-      var bagId = el.getAttribute('data-id');
-      var next = bagQty(bagId) + (act === 'bag-inc' ? 1 : -1);
-      var cap = bagCap(recById(bagId));
-      if (next > cap) next = cap;
-      if (next <= 0) delete store.bag[bagId]; else store.bag[bagId] = next;
+      var bagKeyAttr = el.getAttribute('data-key') || el.getAttribute('data-id');
+      var bagRecId = parseBagKey(bagKeyAttr).id;
+      if (act === 'bag-inc' && bagQty(bagRecId) >= bagCap(recById(bagRecId))) return;
+      var next = bagQtyKey(bagKeyAttr) + (act === 'bag-inc' ? 1 : -1);
+      if (next <= 0) delete store.bag[bagKeyAttr]; else store.bag[bagKeyAttr] = next;
       saveStore();
       render({ keepScroll: true });
     } else if (act === 'checkout') {
@@ -1433,6 +1960,163 @@
       S.step = Math.max(0, (S.step || 0) - 1);
       S.errors = {};
       render({ keepScroll: true });
+    } else if (act === 'sheet-filter') {
+      S.sheet = 'filter';
+      render({ keepScroll: true });
+    } else if (act === 'sheet-close') {
+      S.sheet = null;
+      render({ keepScroll: true });
+    } else if (act === 'fx-sort') {
+      S.filtersX.sort = el.getAttribute('data-value') || '';
+      render({ keepScroll: true });
+    } else if (act === 'fx-rating') {
+      var rv = el.getAttribute('data-value');
+      S.filtersX.minRating = rv ? Number(rv) : null;
+      render({ keepScroll: true });
+    } else if (act === 'fx-reset') {
+      S.filtersX = { minPrice: null, maxPrice: null, sort: '', minRating: null };
+      (model.filters || []).forEach(function (f) { S.filters[f.id] = 'All'; });
+      render({ keepScroll: true });
+    } else if (act === 'bag-remove-ask') {
+      S.sheet = 'remove';
+      S.sheetKey = el.getAttribute('data-key');
+      render({ keepScroll: true });
+    } else if (act === 'bag-remove-confirm') {
+      if (S.sheetKey) delete store.bag[S.sheetKey];
+      S.sheet = null;
+      S.sheetKey = null;
+      saveStore();
+      render({ keepScroll: true });
+    } else if (act === 'sheet-topup') {
+      S.sheet = 'topup';
+      S.topupAmt = '';
+      render({ keepScroll: true });
+    } else if (act === 'topup-chip') {
+      S.topupAmt = el.getAttribute('data-value') || '';
+      render({ keepScroll: true });
+    } else if (act === 'topup-key') {
+      var d = el.getAttribute('data-d');
+      if (d === 'del') S.topupAmt = S.topupAmt.slice(0, -1);
+      else if (S.topupAmt.length < 7) S.topupAmt += d;
+      render({ keepScroll: true });
+    } else if (act === 'topup-confirm') {
+      var amt = parseInt(S.topupAmt, 10) || 0;
+      if (amt > 0) {
+        var w = walletState();
+        w.balance += amt;
+        w.txns.unshift({ label: 'Top Up Wallet', amount: amt, when: 'Just now', kind: 'topup' });
+        store.wallet = w;
+        saveStore();
+      }
+      S.sheet = null;
+      render({ keepScroll: true });
+    } else if (act === 'variant') {
+      var vRec = el.getAttribute('data-id');
+      if (!S.variantSel[vRec]) S.variantSel[vRec] = {};
+      S.variantSel[vRec][el.getAttribute('data-label')] = el.getAttribute('data-value');
+      render({ keepScroll: true });
+    } else if (act === 'hero-prev' || act === 'hero-next' || act === 'hero-dot') {
+      var hRec = selectedRecord();
+      if (hRec && Array.isArray(hRec.images)) {
+        var cur = S.heroIdx[hRec.id] || 0;
+        if (act === 'hero-dot') cur = Number(el.getAttribute('data-i')) || 0;
+        else cur = (cur + (act === 'hero-next' ? 1 : -1) + hRec.images.length) % hRec.images.length;
+        S.heroIdx[hRec.id] = cur;
+      }
+      render({ keepScroll: true });
+    } else if (act === 'receipt') {
+      var rRef = el.getAttribute('data-ref');
+      S.receiptFor = S.receiptFor === rRef ? null : rRef;
+      render({ keepScroll: true });
+    } else if (act === 'radio') {
+      S.form[el.getAttribute('data-field')] = el.getAttribute('data-value');
+      if (S.errors[el.getAttribute('data-field')]) delete S.errors[el.getAttribute('data-field')];
+      render({ keepScroll: true });
+    } else if (act === 'faq') {
+      var fi = Number(el.getAttribute('data-i'));
+      S.faqOpen = S.faqOpen === fi ? -1 : fi;
+      render({ keepScroll: true });
+    } else if (act === 'prof-toggle') {
+      var pk = el.getAttribute('data-key');
+      var parts = pk.split(':');
+      var prow = ((model.profile.sections || [])[Number(parts[0])] || {}).rows || [];
+      var pdef = prow[Number(parts[1])] || {};
+      var pcur = store.profile[pk] != null ? !!store.profile[pk] : !!pdef.value;
+      store.profile[pk] = !pcur;
+      saveStore();
+      render({ keepScroll: true });
+    } else if (act === 'prof-radio') {
+      store.profile[el.getAttribute('data-key')] = el.getAttribute('data-value');
+      saveStore();
+      render({ keepScroll: true });
+    } else if (act === 'rev-open') {
+      S.reviewOpen = true;
+      render({ keepScroll: true });
+    } else if (act === 'rev-cancel') {
+      S.reviewOpen = false;
+      S.reviewStars = 0;
+      render({ keepScroll: true });
+    } else if (act === 'rev-star') {
+      S.reviewStars = Number(el.getAttribute('data-i')) || 0;
+      render({ keepScroll: true });
+    } else if (act === 'rev-submit') {
+      var rRec = selectedRecord();
+      var rTxt = $('#rev-text');
+      if (rRec && S.reviewStars > 0) {
+        if (!store.myReviews[rRec.id]) store.myReviews[rRec.id] = [];
+        store.myReviews[rRec.id].unshift({
+          name: (model.profile && model.profile.name) || 'You',
+          rating: S.reviewStars,
+          text: rTxt ? rTxt.value.trim() : '',
+          date: 'Just now',
+        });
+        saveStore();
+      }
+      S.reviewOpen = false;
+      S.reviewStars = 0;
+      render({ keepScroll: true });
+    } else if (act === 'intro-next') {
+      var slides = (model.onboarding && model.onboarding.slides) || [];
+      if (S.introStep >= slides.length - 1) {
+        store.seenIntro = true;
+        saveStore();
+        S.introStep = 0;
+      } else {
+        S.introStep += 1;
+      }
+      render();
+    } else if (act === 'intro-skip') {
+      store.seenIntro = true;
+      saveStore();
+      S.introStep = 0;
+      render();
+    } else if (act === 'auth-mode') {
+      S.authMode = S.authMode === 'up' ? 'in' : 'up';
+      S.authError = '';
+      render({ keepScroll: true });
+    } else if (act === 'auth-remember') {
+      S.remember = !S.remember;
+      render({ keepScroll: true });
+    } else if (act === 'auth-social') {
+      store.authed = true;
+      saveStore();
+      render();
+    } else if (act === 'auth-submit') {
+      var em = $('#auth-email');
+      var pw = $('#auth-pass');
+      var emv = em ? em.value.trim() : '';
+      var pwv = pw ? pw.value : '';
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emv)) { S.authError = 'Enter a valid email address.'; render({ keepScroll: true }); return; }
+      if (!pwv) { S.authError = 'Enter your password.'; render({ keepScroll: true }); return; }
+      S.authError = '';
+      store.authed = true;
+      saveStore();
+      render();
+    } else if (act === 'auth-out') {
+      store.authed = false;
+      saveStore();
+      S.view = (layout.views[0] && layout.views[0].id) || 'browse';
+      render();
     } else if (act === 'commit') {
       commit();
     }
@@ -1441,6 +2125,13 @@
   document.addEventListener('input', function (e) {
     var el = e.target;
     if (!el.getAttribute) return;
+    if (el.getAttribute('data-xf')) {
+      var xf = el.getAttribute('data-xf');
+      S.filtersX[xf] = Number(el.value);
+      var lab = document.querySelector('[data-xfl="' + xf + '"]');
+      if (lab) lab.textContent = money(Number(el.value));
+      return;
+    }
     if (el.getAttribute('data-act') === 'search-input') {
       S.query = el.value;
       render({ keepScroll: true });

@@ -502,9 +502,19 @@ export function deriveBrief(product, evidence) {
     brief.promo = {
       title: product.promo.title, subtitle: product.promo.subtitle || '',
       image: product.promo.image || '', recordId: product.promo.recordId || '',
-      cta: product.promo.cta || '',
+      cta: product.promo.cta || '', percent: product.promo.percent || '',
     };
   }
+  // M046: the Evira families are declared, never derived from prose —
+  // the same contract as the promo. A product that declares a wallet,
+  // a profile, notices, help content, an entry flow or a greeting home
+  // gets those screens; the planner and runtime take it from there.
+  for (const k of ['wallet', 'profile', 'notices', 'faq', 'onboarding', 'auth']) {
+    if (product[k]) { brief[k] = product[k]; notes.push(`a ${k} was declared in the product brief`); }
+  }
+  if (product.homeHeader) brief.homeHeader = product.homeHeader;
+  if (product.showCategories) { brief.showCategories = true; brief.categoriesLabel = product.categoriesLabel || 'Categories'; }
+
   const actions = [];
   if (cap.save) actions.push({ id: 'save', label: 'Save', kind: 'toggle', field: 'saved' });
 
@@ -517,7 +527,13 @@ export function deriveBrief(product, evidence) {
     // output, so a replenishment order asked for a name and an email and
     // never for a quantity.
     const parsedFlow = cap.steps ? parseSteppedFlow(reqs, fields) : null;
-    const form = parsedFlow ? parsedFlow.form : [
+    // M046: a product may declare its commit flow outright (form +
+    // steps, including choice fields with options) — declared beats
+    // derived, as everywhere else in this engine.
+    const declaredFlow = (!parsedFlow && product.flow && Array.isArray(product.flow.form) && Array.isArray(product.flow.steps))
+      ? product.flow : null;
+    const flowUsed = parsedFlow || declaredFlow;
+    const form = flowUsed ? flowUsed.form : [
       { id: 'fullName', label: 'Your name', type: 'text', testid: 'field-name', errorTestid: 'error-name', required: true, minLength: 2, message: 'Enter your name.' },
       { id: 'phone', label: 'Mobile number', type: 'tel', testid: 'field-phone', errorTestid: 'error-phone', required: true, pattern: '^\\d{10}$', stripWhitespace: true, message: 'Enter a 10-digit mobile number.' },
       { id: 'email', label: 'Email', type: 'text', testid: 'field-email', errorTestid: 'error-email', required: true, pattern: '^[^@\\s]+@[^@\\s]+\\.[a-z]{2,}$', message: 'Enter a valid email address.' },
@@ -533,9 +549,11 @@ export function deriveBrief(product, evidence) {
         summaryTestid: 'confirm-summary',
       },
     };
-    if (parsedFlow) {
-      commit.steps = parsedFlow.steps;
-      notes.push(`a stepped flow was derived from the requirement wording: ${parsedFlow.steps.map(s => s.label).join(' → ')}`);
+    if (flowUsed) {
+      commit.steps = flowUsed.steps;
+      notes.push(parsedFlow
+        ? `a stepped flow was derived from the requirement wording: ${parsedFlow.steps.map(s => s.label).join(' → ')}`
+        : 'the commit flow was declared in the product brief');
     } else if (cap.steps) {
       // Split the form across three steps, ending with a review.
       commit.steps = [
@@ -550,9 +568,9 @@ export function deriveBrief(product, evidence) {
       id: 'submissions', view: 'submissions', label: product.submissionsLabel || 'Your submissions',
       listTestid: 'submission-list', itemTestid: 'submission-item', backTestid: 'back-btn',
       fields: brief.bag
-        ? ['ref', 'items', 'total', ...((parsedFlow && parsedFlow.steps.find(s => !s.review)) || { fields: [] }).fields]
-        : parsedFlow
-          ? ['ref', ...(parsedFlow.steps.find(s => !s.review) || { fields: [form[0].id] }).fields]
+        ? ['ref', 'items', 'total', ...((flowUsed && flowUsed.steps.find(s => !s.review)) || { fields: [] }).fields]
+        : flowUsed
+          ? ['ref', ...(flowUsed.steps.find(s => !s.review) || { fields: [form[0].id] }).fields]
           : ['ref', 'fullName'],
       emptyMessage: 'Nothing here yet.',
     }];

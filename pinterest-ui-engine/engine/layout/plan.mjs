@@ -119,20 +119,24 @@ function bansCards(brief) {
 function browseSections(brief, ent, d, intent) {
   const ids = collectionTestids(brief, ent);
   const sections = [];
-  sections.push({ id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, testid: 'app-header' } });
+  sections.push({ id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, testid: 'app-header', variant: brief.homeHeader === 'greeting' ? 'greeting' : null, profileName: (brief.profile && brief.profile.name) || '' } });
   // A working surface is headed by the work, not the slogan. On operational
   // compositions (table, dashboard) the heading names the collection the
   // user came to scan; the tagline stays where it belongs — the document
   // title and the brand block. Editorial and gallery surfaces keep the
   // tagline heading: there the voice IS the content's frame.
   const operational = intent && (intent.composition === 'table' || intent.composition === 'dashboard');
-  sections.push({
-    id: 'heading', component: 'page-heading',
-    props: {
-      title: operational ? ent.plural : (brief.tagline || brief.brand),
-      subtitle: brief.subtitle || `Find your ${ent.label.toLowerCase()}.`,
-    },
-  });
+  // M046: a greeting home header IS the home's identity block — the
+  // tagline heading would only repeat it, so it is not planned.
+  if (brief.homeHeader !== 'greeting') {
+    sections.push({
+      id: 'heading', component: 'page-heading',
+      props: {
+        title: operational ? ent.plural : (brief.tagline || brief.brand),
+        subtitle: brief.subtitle || `Find your ${ent.label.toLowerCase()}.`,
+      },
+    });
+  }
 
   if (brief.search) {
     sections.push({
@@ -142,7 +146,13 @@ function browseSections(brief, ent, d, intent) {
     });
   }
 
-  for (const f of (brief.filters || []).slice(0, 2)) {
+  // M046: when medallions are planned (below) they ARE the first facet's
+  // home control — the board's home carries medallions, not a chip rail
+  // duplicating them. The facet still lives in the filter sheet.
+  const medallionField = (brief.filters || []).length ? allFields(ent).find(x => x.id === brief.filters[0].field) : null;
+  const medallionsPlanned = !!(brief.showCategories && medallionField && (medallionField.options || []).length);
+  for (const [fi2, f] of (brief.filters || []).slice(0, 2).entries()) {
+    if (medallionsPlanned && fi2 === 0) continue;
     const field = allFields(ent).find(x => x.id === f.field);
     sections.push({
       id: `filter-${f.id}`, component: 'filter-chips',
@@ -168,9 +178,26 @@ function browseSections(brief, ent, d, intent) {
       props: {
         testid: 'promo', title: brief.promo.title, subtitle: brief.promo.subtitle || '',
         image: brief.promo.image || '', recordId: brief.promo.recordId || '', cta: brief.promo.cta || 'Shop now',
+        percent: brief.promo.percent || '',
       },
       binding: { entity: ent.id },
     });
+  }
+
+  // M046: category medallions — the reference home's tint circles.
+  // Declared (product.showCategories), fed by the first facet's options;
+  // a tap is a facet filter by another shape, so it reuses the filter
+  // contract rather than inventing a second one.
+  if (medallionsPlanned) {
+    const f0 = brief.filters[0];
+    const field0 = medallionField;
+    if (field0 && (field0.options || []).length) {
+      sections.push({
+        id: 'categories', component: 'category-medallions',
+        props: { testid: 'category-medallions', itemTestid: 'category-medallion', label: brief.categoriesLabel || 'Categories' },
+        binding: { entity: ent.id, filterId: f0.id, field: f0.field, options: field0.options },
+      });
+    }
   }
 
   // Banners: a committed-record summary surfaced on the entry view.
@@ -643,6 +670,27 @@ export function planApp(brief, profile, opts) {
     });
   }
   const detailSecs = detailSections(brief, ent, d, commitAction, intent);
+  // M046: the Evira detail patterns. Records may carry purchase variants
+  // (colour/size/option selectors) and reviews; both belong to the
+  // record page, ahead of the purchase action — selectors because the
+  // choice must exist before the add, reviews because they inform it.
+  {
+    const anyVariants = (brief.entity.records || []).some(r => Array.isArray(r.variants) && r.variants.length);
+    const anyReviews = (brief.entity.records || []).some(r => Array.isArray(r.reviews) && r.reviews.length);
+    const extra = [];
+    if (anyVariants) extra.push({
+      id: 'variants', component: 'variant-selectors',
+      props: { testid: 'variant-selectors' }, binding: { entity: ent.id },
+    });
+    if (anyReviews) extra.push({
+      id: 'reviews', component: 'reviews',
+      props: { testid: 'reviews', itemTestid: 'review-item' }, binding: { entity: ent.id },
+    });
+    if (extra.length) {
+      const at = detailSecs.findIndex(s2 => ['bag-add', 'steps', 'form', 'action'].includes(s2.id));
+      if (at === -1) detailSecs.push(...extra); else detailSecs.splice(at, 0, ...extra);
+    }
+  }
   // M040: a record page in a collection product ends with its relatives
   // — same facet value first — the "You may also like" rail every
   // commerce reference shows. Only when there are records to relate.
@@ -657,6 +705,35 @@ export function planApp(brief, profile, opts) {
   views.push({ id: 'detail', purpose: 'record', title: ent.label, sections: detailSecs, hidden: true });
   if (commitAction) {
     views.push({ id: 'confirmation', purpose: 'confirmation', title: 'Confirmed', sections: confirmationSections(brief, ent, commitAction), hidden: true });
+  }
+  // M046: declared Evira families get real views. They are hidden from
+  // the tab bar — the board reaches them from the home header (avatar,
+  // bell) and the profile menu, and five tabs is the grammar's limit.
+  if (brief.wallet) {
+    views.push({ id: 'wallet', purpose: 'wallet', title: 'Wallet', hidden: true, sections: [
+      { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: true, testid: 'app-header', backTestid: 'back-btn' } },
+      { id: 'wallet', component: 'wallet-card', props: { testid: 'wallet-card', label: brief.wallet.label || 'My E-Wallet' }, binding: {} },
+      { id: 'txns', component: 'txn-list', props: { testid: 'txn-list', itemTestid: 'txn-item', title: 'Transaction History' }, binding: {} },
+    ] });
+  }
+  if (brief.profile) {
+    const profSecs = [
+      { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: true, testid: 'app-header', backTestid: 'back-btn' } },
+      { id: 'profile', component: 'profile-sheet', props: { testid: 'profile' }, binding: {} },
+    ];
+    if (brief.faq) profSecs.push({ id: 'faq', component: 'faq-list', props: { testid: 'faq-list', title: 'Help Center' }, binding: {} });
+    views.push({ id: 'profile', purpose: 'profile', title: 'Profile', hidden: true, sections: profSecs });
+  } else if (brief.faq) {
+    views.push({ id: 'help', purpose: 'help', title: 'Help Center', hidden: true, sections: [
+      { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: true, testid: 'app-header', backTestid: 'back-btn' } },
+      { id: 'faq', component: 'faq-list', props: { testid: 'faq-list', title: 'Help Center' }, binding: {} },
+    ] });
+  }
+  if (brief.notices) {
+    views.push({ id: 'notices', purpose: 'notices', title: 'Notification', hidden: true, sections: [
+      { id: 'header', component: 'app-header', props: { brand: brief.brand, context: brief.location, back: true, testid: 'app-header', backTestid: 'back-btn' } },
+      { id: 'notices', component: 'notice-list', props: { testid: 'notice-list', itemTestid: 'notice-item' }, binding: {} },
+    ] });
   }
 
   // Every major planning decision, with the evidence it rests on. Mission 024
@@ -702,7 +779,13 @@ export function planApp(brief, profile, opts) {
       titleClass: ent.titleClass || null,
     },
     search: brief.search || null,
-    filters: brief.filters || [],
+    // M046: the filter sheet needs each facet's options on the model;
+    // the derive-level filter objects name the field but do not carry
+    // its options, so they are resolved here from the entity.
+    filters: (brief.filters || []).map(f => {
+      const fld = allFields(ent).find(x => x.id === f.field);
+      return { ...f, options: (fld && fld.options) || [], fieldType: (fld && fld.type) || '' };
+    }),
     availability: brief.availability || null,
     actions: brief.actions || [],
     collections: brief.collections || [],
@@ -753,6 +836,15 @@ const COMPONENT_PROPS = {
   'bag-add': ['testid'],
   'promo-banner': ['testid', 'title'],
   'related-rail': ['testid', 'itemTestid'],
+  // M046: the Evira families.
+  'category-medallions': ['testid', 'itemTestid'],
+  'variant-selectors': ['testid'],
+  'reviews': ['testid', 'itemTestid'],
+  'wallet-card': ['testid'],
+  'txn-list': ['testid', 'itemTestid'],
+  'profile-sheet': ['testid'],
+  'faq-list': ['testid'],
+  'notice-list': ['testid', 'itemTestid'],
 };
 
 export function validateIR(ir, brief) {

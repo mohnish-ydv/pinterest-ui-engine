@@ -16,5 +16,5 @@
     "test:fixtures": "node run-suites.mjs fixtures",
     "verify:env": "node pinterest-ui-engine/engine/verify_env.mjs"
   },
-  "version": "1.25.0-mission045"
+  "version": "1.26.0-mission046"
 }

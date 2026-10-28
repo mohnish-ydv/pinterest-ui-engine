@@ -82,6 +82,17 @@ const ARCHETYPES = {
     hairline: '#DCE6F2', inputBg: '#EDF2F9', lineHeight: 1.45,
     shadow: '0 4px 14px rgba(21,34,56,0.06)',
   },
+  mono: {
+    // M046: the Evira world, decoded screen by screen — white ground,
+    // black as the only brand colour, a grotesque face, generous radii;
+    // the photography carries every other colour on the screen.
+    why: 'fashion and lifestyle commerce: a white ground, black as the only brand colour, grotesque type and generous radii — the product photography carries all the colour',
+    brand: '#141414', ground: '#FFFFFF', ink: '#141414',
+    displayStrategy: 'sans', displayStack: null, displayPx: 0,
+    shape: { sheetRadius: 24, cardRadius: 18, controlRadius: 999, addBtn: 36 },
+    hairline: '#ECECEC', inputBg: '#F4F4F4', lineHeight: 1.5,
+    shadow: '0 8px 22px rgba(20,20,20,0.07)',
+  },
   studio: {
     why: 'no stronger signal in the brief: a quiet petrol-and-paper default, deliberately neutral rather than the old universal teal',
     brand: '#2E4A5A', ground: '#F7F6F2', ink: '#191B1E',
@@ -100,6 +111,8 @@ export function pickArchetype(product, engineBrief) {
     return { id: 'editorial', ...ARCHETYPES.editorial };
   if (['health', 'clinic', 'medical', 'care', 'dental', 'therapy', 'physio', 'wellness'].some(w => domain.includes(w)) || has(['clinic', 'patients', 'doctor', 'therapy']))
     return { id: 'care', ...ARCHETYPES.care };
+  if (['fashion', 'apparel', 'clothing', 'footwear', 'streetwear', 'boutique'].some(w => domain.includes(w)) || has(['fashion', 'apparel']))
+    return { id: 'mono', ...ARCHETYPES.mono };
   if (['food', 'grocery', 'restaurant', 'bakery', 'cafe', 'retail', 'commerce', 'shop', 'store', 'marketplace'].some(w => domain.includes(w)) || composition === 'gallery')
     return { id: 'market', ...ARCHETYPES.market };
   if (['inventory', 'logistics', 'operations', 'finance', 'manufacturing', 'field', 'admin', 'saas', 'b2b', 'warehouse'].some(w => domain.includes(w)) || composition === 'table' || composition === 'dashboard')

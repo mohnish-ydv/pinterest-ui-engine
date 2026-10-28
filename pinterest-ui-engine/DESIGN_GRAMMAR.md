@@ -115,3 +115,27 @@ output still read as generated. These rules close the gaps found:
 21. **An in-bag card control is a stepper** (− quantity +), never
     a bare number in a filled circle — that reads as a notification
     badge. Unique items show no stepper at all.
+22. **A home has one identity block.** Either the brand zone or a
+    greeting header (avatar, greeting, name) — never both stacked.
+    A home in the board's language opens with the person, not the
+    slogan.
+23. **One facet may wear two shapes, not two rows.** When a facet
+    becomes category medallions on the home, its chip rail is not
+    also planned; the facet still lives, whole, in the filter
+    sheet.
+24. **Filters live in a sheet.** The home carries one sliders
+    button in the search row; facets, price span, rating floor and
+    sort are chosen together in a bottom sheet and applied
+    together.
+25. **Choices are rows, not dropdowns.** Delivery and payment are
+    radio rows — a medallion, a name, a caption, a price, one
+    filled radio. A choice the user cannot see is a choice they
+    cannot make.
+26. **Money that can change is a card.** The wallet's balance sits
+    on a black card with one white action; its history is plain
+    rows with signed amounts. Top-up is a sheet with an amount
+    keypad, never a settings toggle.
+27. **A receipt proves, it does not repeat.** The barcode is drawn
+    from the order reference, wide; the reference itself is never
+    printed under it. An order's stages are one icon tracker —
+    never two stage rows saying the same thing.

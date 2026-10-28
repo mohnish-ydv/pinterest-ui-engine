@@ -1,4 +1,4 @@
-# Integration Guide — Pinterest UI Engine 1.24.0
+# Integration Guide — Pinterest UI Engine 1.26.0
 
 For an AI coding agent or developer integrating this engine into
 another system (e.g. Indus AI). Everything here was verified in a
@@ -50,8 +50,29 @@ The same pattern — plain capability sentences — drives search,
 filters, favourites (a "save … with a heart toggle" sentence) and
 the three-step checkout sentence; the worked example's
 `requirements` are safe templates to copy and adapt.
-| `promo` | Optional `{ title, subtitle, cta, recordId, image? }` banner. |
+| `promo` | Optional `{ title, subtitle, cta, recordId, image? }` banner. `percent` (e.g. `"30%"`) makes it the board's percent-led card. |
 | `commitTitle`, `referencePrefix`, `submissionsLabel` | Optional flow wording (confirmation title, order-reference prefix, orders tab label). |
+| `flow` | Optional declared checkout: `{ form: [...], steps: [...] }` in the same shape a parsed flow produces. Declared beats derived. An `enum` form field whose `options` are objects `{ label, value, caption?, price? }` renders as priced **radio rows** (delivery/payment choices) and its `price` joins the order total. |
+| `homeHeader` | `"greeting"` replaces the brand-zone heading on the home with the board's greeting header (avatar, greeting, name; circle buttons to notices and wallet when declared). |
+| `showCategories`, `categoriesLabel` | `true` plans category medallions fed by the first facet's options; that facet's chip rail is then not duplicated on the home (it remains in the filter sheet). |
+| Record `variants` | A record may carry `variants: [{ label, style?, options }]` — `style: "swatch"` (options `{ label, value, color }`) draws colour circles, `style: "circles"` draws filled-when-chosen dots, anything else draws option pills. The choice rides into the bag line and the order's item text (`Name (Black · 9)`). |
+| Record `images` | `images: [...]` (2+) turns the record page's photo into a carousel with arrows and dots; every listed file is bundled like `image`. |
+| Record `reviews` | `reviews: [{ name, rating, text, date? }]` renders the reviews section (average, stars, rows) and a write-a-review form that keeps the review on the device. |
+| `wallet` | `{ label, balance, transactions: [{ label, amount, when, kind? }] }` — a black balance card, signed transaction rows, and a top-up sheet (amount chips + keypad) that really moves the on-device balance. Local only; no payment rail exists to connect. |
+| `profile` | `{ name, sub, sections: [{ title?, rows }] }` — avatar header and settings rows. A row is `{ kind: "link", label, view? }`, `{ kind: "toggle", label, value }` (persisted) or `{ kind: "radio", label, options, value }` (persisted). |
+| `notices` | `[{ when, title, text }]` — a notifications list grouped by the declared `when`. |
+| `faq` | `[{ q, a }]` — an accordion; rides the profile view when one is declared, else its own Help view. |
+| `onboarding` | `{ slides: [{ headline, text?, image? }], cta }` — a first-run gate in front of the shell: photo/brand hero, headline, dash indicator, Skip/Next. Slide images bundle like record images. |
+| `auth` | `{ providers: [...], titleIn, titleUp }` — a sign-in/sign-up gate after onboarding. Social buttons are discs with the provider's initial. Entirely local: any plausible email + password (or a provider tap) signs in on the device; nothing is verified or sent anywhere. |
+
+**The declared families (Mission 046).** Everything in the second
+half of the table is *declared, never derived*: the engine does not
+guess a wallet out of prose. A brief that declares none of it
+compiles exactly as before. Two visual consequences ride along:
+fashion-domain briefs derive the **mono design world** (white
+ground, black as the only brand colour — the board's world), and
+every browse home with a facet gets the filter-sheet button in its
+search row (facet chips, price range, rating floor, sort).
 
 Optional beside the brief: `reference-evidence.json` — measured
 facts about a reference design (palette samples, composition) that

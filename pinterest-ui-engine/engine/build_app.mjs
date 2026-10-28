@@ -154,8 +154,14 @@ try {
 // falls back to its substituted media.
 try {
   const wanted = new Set();
-  for (const r of brief.entity?.records || []) if (r.image) wanted.add(r.image);
+  for (const r of brief.entity?.records || []) {
+    if (r.image) wanted.add(r.image);
+    // M046: a record's photo set (the detail carousel) bundles too.
+    if (Array.isArray(r.images)) for (const im of r.images) if (im) wanted.add(im);
+  }
   if (brief.promo?.image) wanted.add(brief.promo.image);
+  // M046: onboarding slide photography bundles like any other image.
+  for (const sl of brief.onboarding?.slides || []) if (sl.image) wanted.add(sl.image);
   let copied = 0;
   for (const rel of wanted) {
     if (/^https?:\/\//i.test(rel)) continue;
